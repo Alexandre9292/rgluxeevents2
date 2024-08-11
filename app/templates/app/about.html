@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="sub-header">        
+        <img class="ban" src="{% static 'images/ban-about.jpg'%}">
+        <h1>A PROPOS DE NOUS</h1>
+    </div>
+
+    <!-- <div class="about-content">
+        <h1>RG LUXE EVENTS</h1>
+        <h2 style="text-transform: uppercase;">Votге сhаuffeur VТС au départ de toute la Réunion</h2>
+        </br>
+        <div class="about-bloc">
+            <div class="about-bloc-left">
+                <p>RG Luxe Events est une entreprise de transport de personnes et notament dans la location de véhicules haut gamme avec chauffeur privé.</p>
+                <p>Notre priorité est de proposer à nos clients, un service de prestige, de luxe et de confort. </p></div>
+            <div class="about-bloc-right">
+                <img class="about-photo" src="{% static 'images/mariage.jpg'%}" alt="about1">
+            </div>
+        </div>
+        </br>
+        <div class="about-bloc">
+            <div class="about-bloc-left">
+                <img class="about-photo" src="{% static 'images/tourisme.jpg'%}" alt="about2">
+            </div>
+            <div class="about-bloc-right">
+                <p>Nous vous proposons des prestations pour tous types de clients, notamment les particuliers, les touristes, les hommes d'affaires, les entreprises, les célébrités, ... </p>
+                <p>Notre priorité est de proposer à nos clients, un service de prestige, de luxe et de confort. </p></div>
+        </div>
+        </br>
+        <div class="about-bloc">
+            <div class="about-bloc-left">
+                <p>Pour satisfaire, toutes vos exigences, offrez-vous le luxe d'avoir un chauffeur privé avec RG Luxe Events disposition pour vos :</p>
+                <p>- Mariages,</br>- Déplacements privés et professionnels,</br>- Transferts aéroports,</br>- Congrés, Séminaires et rendez-vous d'affaires,
+                    </br>- Sorties nocturnes ( discothèques, restaurants,...),</br>- Excursions touristiques</p></div>
+            <div class="about-bloc-right">
+                <img class="about-photo" src="{% static 'images/aeroport.jpg'%}" alt="about3">
+            </div>
+        </div>
+        </br>
+    </div> -->
+
+    <div class="body-content">
+        <div class="about-content">
+            <h1>RG LUXE EVENTS</h1>
+            <h2 style="text-transform: uppercase;">Votге сhаuffeur VТС au départ de toute la Réunion</h2>
+            </br>
+            <div class="about-bloc">
+                <div class="about-bloc-left">
+                    <p>RG Luxe Events est une entreprise de transport de personnes et notament dans la location de véhicules haut gamme avec chauffeur privé.</p>
+                    <p>Notre priorité est de proposer à nos clients, un service de prestige, de luxe et de confort. </p>
+                    <br><br>
+                    <p>Nous vous proposons des prestations pour tous types de clients, notamment les particuliers, les touristes, les hommes d'affaires, les entreprises, les célébrités, ... </p>
+                    <br><br>
+                    <p>Pour satisfaire, toutes vos exigences, offrez-vous le luxe d'avoir un chauffeur privé avec RG Luxe Events disposition pour vos :</p>
+                    <p>- Mariages,</br>- Déplacements privés et professionnels,</br>- Transferts aéroports,</br>- Congrés, Séminaires et rendez-vous d'affaires,
+                        </br>- Sorties nocturnes ( discothèques, restaurants,...),</br>- Excursions touristiques</p>
+                </div>
+                <div class="about-bloc-right">
+                    <img class="about-photo" src="{% static 'images/mariage.jpg'%}" alt="about1">
+                </div>
+            </div>
+            <br><br>
+            <p>Les chauffeurs professionnels de RG Luxe Events sont toutes titulaires du permis de conduire plus 
+                que 10ans et de la carte professionel de VTC délivrée par la préfecture ainsi la capacité de transport 
+                de personne </p>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block css %}
+    <style>
+
+        .about-content {
+            color: #ddd;
+            font-size: 20px;
+        }
+
+        .about-bloc {
+            display: grid;
+            grid-template-columns: 50% 50%;
+        }
+
+        .about-photo {
+            height: 500px;
+        }
+
+        .about-bloc-left {
+            padding-top: 50px;
+        }
+
+        .about-bloc-right {
+            width: 200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+{% endblock %}

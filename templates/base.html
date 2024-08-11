@@ -1,0 +1,128 @@
+{% load static %}
+<html>
+
+<head>
+    <title>RGLuxeEvents</title>
+    <link rel="stylesheet" href="{% static 'app.css' %}">
+    <link rel="stylesheet" href="{% static 'app_rd.css' %}">
+
+    <script src="{% static 'app.js' %}"></script>
+    
+    {% block css %}
+    {% endblock css %}
+
+    {% block js %}
+    {% endblock js %}
+
+    <style>
+        .icon-over-header {
+            height: 15px;
+        }
+
+        .icon-media-over-header {
+            height: 25px;
+        }
+
+        .text-over-header {
+            font-size: 15px;
+            padding-left: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="over-header">
+            <div class="bloc-over-header">
+                <nav class="link" role="navigation">
+                    <ul class="nav_link">
+                        <li>
+                            <p><img class="icon-over-header" src="{% static 'images/iconPhone.png'%}" alt="Phone"><span class="text-over-header">0693 40 00 15</span></p>
+                        </li>
+                        <li>
+                            <p><img class="icon-over-header" src="{% static 'images/iconMail.png'%}" alt="Mail"><span class="text-over-header">rg.luxeevents@gmail.com</span></p>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="bloc-over-header">
+                <nav class="link" role="navigation">
+                    <ul class="nav_link">
+                        <li>
+                            <a href="https://www.facebook.com/profile.php?id=100095259547213" target="_blank"><img class="icon-media-over-header" src="{% static 'images/iconFb.png'%}" alt="Facebook"></a>
+                        </li>
+                        <li>
+                            <a href="https://www.instagram.com/rg.luxeevents/" target="_blank"><img class="icon-media-over-header" src="{% static 'images/iconInsta.png'%}" alt="instagram"></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="content-header">
+            <div class="header-logo">
+                <a href="{% url 'home' %}" style="text-decoration: none;">
+                    <img class="logo" src="{% static 'images/logo.jpg'%}">
+                </a>
+            </div>
+            <div class="header-menu">
+                <nav class="menu" role="navigation">
+                    <ul class="nav_menu">
+                        <li>
+                            <a href="{% url 'home' %}">Accueil</a>
+                        </li>
+                        <li class="menu-deroulant">
+                            <a href="{% url 'services' %}">Services &ensp;</a>
+                            <ul class="sous-menu">
+                                <li><a href="{% url 'aeroport' %}">Transport aéroports</a></li>
+                                <li><a href="{% url 'mariage' %}">Mariage</a></li>
+                                <li><a href="{% url 'transport' %}">Transport sur l'île</a></li>
+                                <li><a href="{% url 'tourisme' %}">Excursion touristique</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="{% url 'about' %}">about</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'contact' %}">Contact</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <div class="main">
+        {% block content %}{% endblock content %}
+    </div>
+    <footer>
+        <div class="content-footer">
+            <div class="bloc_footer footer-contact">
+                <h3>RGLuxeEvents</h3>
+                <h5>Description </h5>
+                <p>0693 40 00 15</p>
+                <p>rg.luxeevents@gmail.com</p>
+                <div>
+                    <a href="https://www.facebook.com/profile.php?id=100095259547213" target="_blank"><img src="{% static 'images/iconFb.png'%}" alt="Facebook"></a>
+                    <a href="https://www.instagram.com/rg.luxeevents/" target="_blank"><img src="{% static 'images/iconInsta.png'%}" alt="instagram"></a>
+                </div>
+            </div>
+                
+            <div class="bloc_footer footer-services">
+                <h3>Services</h3>
+                <ul class="services-list">
+                    <li><a href="{% url 'home' %}">Accueil</a></li>
+                    <li><a href="{% url 'services' %}">Services</a></li>
+                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                </ul>
+            </div>
+            <div class="bloc_footer ">
+                <h3>Intervention sur toute La Réunion</h3>
+                </br>
+            </div>
+        </div>
+        <div class="sub_footer">
+            <p>Copyright 2023 RGLuxeEvents - <a href="{% url 'mention' %}">Mentions Légales</a></p>
+        </div>
+    </footer>
+</body>
+
+</html>

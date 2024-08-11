@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="sub-header"> 
+        <img class="ban" src="{% static 'images/aeroport.jpg'%}">
+        <h1>NOS SERVICES - MARIAGE</h1>
+    </div>
+
+    <div class="body-content">
+        <div class="service-in-content">
+            <h1 style="text-transform: uppercase;">Mariages</h1>
+            <h2>Sur toute La Réunion - Avec ou sans chauffeur</h2>
+            </br>
+            <div class="service-in-bloc">
+                <div class="service-in-bloc-left">
+                    <p>Faites de votre journée spéciale un événement inoubliable avec notre service de location de voiture de mariage de luxe, accompagné d'un chauffeur professionnel.</p>
+                    <p>Chez <span style="color: #dbc067;">RG.LUXEEVENTS</span>, nous comprenons l'importance de chaque détail de votre mariage, et nous sommes là pour vous offrir un service exceptionnel qui ajoutera une touche de sophistication et d'élégance à votre grand jour.</p>
+                    <br><br>
+                    <p>Notre flotte de voitures de mariage comprend une sélection de modèles de luxe, élégants et impeccables, parfaitement entretenus pour votre confort et votre sécurité.</p>
+                    <br><br>
+                    <p>Nos chauffeurs sont des professionnels expérimentés, élégamment habillés et dévoués à fournir un service de qualité supérieure. Ils sont attentifs à tous vos besoins et s'assureront que votre trajet se déroule en toute sérénité, vous permettant de vous détendre et de profiter pleinement de chaque instant de votre mariage.</p>
+                    <br><br>
+                    <p>Nous comprenons que chaque mariage est unique, c'est pourquoi nous offrons des options de personnalisation pour répondre à vos besoins spécifiques. Que vous ayez besoin d'une décoration spéciale pour la voiture, de boissons rafraîchissantes à bord ou de tout autre service supplémentaire, nous sommes là pour réaliser vos souhaits.</p>
+                    <br><br>
+                    <p>Vous avez le choix entre conduire vous-même la voiture de mariage ou profiter de notre service de chauffeur professionnel. Que vous souhaitiez une expérience de conduite inoubliable ou que vous préfériez vous détendre et laisser un expert prendre le volant, nous avons la solution idéale pour vous.</p>
+                </div>
+                <div class="service-in-bloc-right">
+                    <img class="service-in-photo" src="{% static 'images/mariage.jpg'%}" alt="aeroport">
+                </div>
+            </div>
+            <br><br>
+            <p>Comment cela fonctionne-t-il ?</p>
+            <br><br>
+            <p>
+                - Consultation Personnalisée : Nous commençons par une consultation personnalisée pour comprendre vos besoins et vos préférences en matière de transport pour votre mariage. Nous vous aidons à choisir le véhicule idéal en fonction de votre style et de votre budget.
+                </br></br>- Réservation Facile : Notre processus de réservation est simple et sans tracas. Il vous suffit de nous fournir les détails de votre mariage, y compris la date, l'heure et le lieu, et nous nous occupons du reste. Nous sommes flexibles et nous adaptons à vos horaires et à vos exigences.
+                </br></br>- Service Exceptionnel le Jour J : Le jour de votre mariage, notre chauffeur arrivera à l'heure convenue, prêt à vous conduire avec élégance vers votre destination. Il veillera à ce que chaque moment de votre trajet soit parfait, vous offrant un service attentionné et courtois à chaque étape du chemin.
+            </p>
+            <br><br><br>
+            <div class="mariage-formule">
+                <div class="mariage-formule-bloc">
+                    <img src="{% static 'images/voiture-classeC.jpg'%}">
+                    <p class="mariage-formule-titre">Mercedes Classe C350e</p>
+                    <p class="mariage-formule-prix">A partir de 550€</p>
+                </div>
+                <div class="mariage-formule-bloc">                
+                    <img src="{% static 'images/voiture-amg.jpg'%}">
+                    <p class="mariage-formule-titre">4x4 Mercedes GLE 400 AMG</p> 
+                    <p class="mariage-formule-prix">A partir de 900€</p>
+                </div>
+                <div class="mariage-formule-bloc">
+                    <img src="{% static 'images/voiture-amg.jpg'%}">
+                    <p class="mariage-formule-titre">Porsche Taycan turbo S</p> 
+                    <p class="mariage-formule-prix">A partir de 1000€</p>
+                </div>
+            </div>
+            <br><br><br>
+            <p>Contactez-nous dès maintenant pour réserver votre voiture de mariage ou pour discuter de vos besoins en matière de transport pour votre mariage.</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block css %}
+<style>
+    .mariage-formule {
+        display: grid;
+        grid-template-columns: auto auto auto;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .mariage-formule-bloc {
+        position: relative;
+        text-align: center;
+        color: #111;     
+        margin-top: 20px;
+        border-radius: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        width: 80%;
+        height: 300px;
+        background-color: #dbc067;
+        overflow: hidden;
+
+        a {
+            display: inline-block;
+        }
+
+        img {
+            height: 250px;
+            width: 100%;
+        }
+    }
+
+    .mariage-formule-titre {
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    .mariage-formule-prix {
+        font-size: 15px;
+        font-style: italic;
+        color: #eee;
+        text-shadow: 0 0 20px black, 0 0 20px black, 0 0 20px black;
+    }
+</style>
+{% endblock %}

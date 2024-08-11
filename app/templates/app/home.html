@@ -1,0 +1,284 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+   
+    <div class="sub-header-home">
+        <video autoplay loop controls controlsList="nodownload" id="ban-video">
+            <source src="{% static 'images/ban-video.mp4'%}" type="video/mp4">
+            Votre navigateur ne supporte pas la lecture de vidéos HTML5.
+        </video>
+    </div>
+
+    <div class="body-content">
+        <div class="home-bloc1">
+            <div class="module-reservation">
+                <img class="module-background" src="{% static 'images/aeroport.jpg'%}">
+                <div class="reservation-body">
+                    <div class="reservation-title">
+                        <h1>Réservation</h1>
+                        <h2>Calculez le prix de votre trajet</h2>
+                    </div>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit">Calculer le prix</button>     
+                    </form>
+                </div>
+            </div>
+            <div class="text-presa-home">
+
+            </div>
+        </div>
+    </div>
+    <div class="home-ban1">
+        <img class="home-ban" src="{% static 'images/ban-contact.jpg'%}">
+        <h1>Le prestige, le Luxe et le Confort <br><br>RG.LUXEEVENTS est à votre disposition pour tous vos événements</h1>
+    </div>
+    <div class="body-content">
+        <div class="home-bloc2">
+            <div class="home-bullea">
+                <img src="{% static 'images/aeroport.jpg'%}">
+                <p>Transfert <br>aéroport</p>
+            </div>
+            <div class="home-bulleb">
+                <img src="{% static 'images/mariage.jpg'%}">
+                <p>Mariage</p>
+            </div>
+            <div class="home-bullea">
+                <img src="{% static 'images/tourisme.jpg'%}">
+                <p>Déplacements <br> professionels</p>
+            </div>
+        </div>
+    </div>
+    <div class="home-ban1">
+        <img class="home-ban" src="{% static 'images/ban-about.jpg'%}">
+        <h1>Plongez dans l'univers du luxe et de l'élégance <br><br>pour célébrer le mariage de vos rêves</h1>
+    </div>
+    <div class="body-content">
+        <div class="home-bloc3">
+            <div class="home-bloc3-bloc">
+                <div class="home-bloc3-bloc-left">
+                    <img class="home-bloc3-photo" src="{% static 'images/tourisme.jpg'%}" alt="about2">
+                </div>
+                <div class="home-bloc3-bloc-right">
+                    <div class="home-bloc3-bloc-text">
+                        <p>Nous vous proposons des prestations pour tous types de clients, notamment les particuliers, les touristes, les hommes d'affaires, les entreprises, les célébrités, ... </p>
+                        <p>Notre priorité est de proposer à nos clients, un service de prestige, de luxe et de confort. </p>
+                    </div>
+                </div>
+            </div>
+            </br>
+            <div class="home-bloc3-bloc">
+                <div class="home-bloc3-bloc-left">
+                    <div class="home-bloc3-bloc-text">
+                        <p>RG Luxe Events est une entreprise de transport de personnes et notament dans la location de véhicules haut gamme avec chauffeur privé.</p>
+                        <p>Notre priorité est de proposer à nos clients, un service de prestige, de luxe et de confort. </p>
+                    </div>
+                </div>
+                <div class="home-bloc3-bloc-right">
+                    <img class="home-bloc3-photo" src="{% static 'images/mariage.jpg'%}" alt="about1">
+                </div>
+            </div>
+            </br>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block css %}
+    <style>
+        .home-bloc1 {
+            display: grid;
+            grid-template-columns: auto auto;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .home-ban1 {
+            display: flex;
+            padding-bottom: 20px;
+            position: relative;
+            text-align: center;
+            width: 100%;
+            height: 300px;
+            border-top: solid 1px #111;
+            border-bottom: solid 1px #111;
+            background-color: #aaa;
+            box-shadow: 0px 4px 4px #dbc067;
+            margin-bottom: 50px;
+        }
+
+        .home-ban {
+            height: 300px;
+            position: relative;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            opacity: 0.6;
+        }
+
+        .home-ban1 h1 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+
+            color: #111;
+            text-shadow: 0 0 15px #dbc067,0 0 15px #dbc067,0 0 15px #dbc067;
+            font-size: 40px;
+            font-family: Rockwell Extra Bold;
+        }
+
+        .home-bloc2 {
+            display: grid;
+            grid-template-columns: auto auto auto;
+            padding: 10px;
+            text-align: center;
+            margin-top: 200px;
+        }
+
+        .home-bullea img {
+            height: 400px;
+            width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 50%;
+            background-color: #555;
+            border: solid 2px white;
+        }
+        .home-bulleb img {
+            height: 400px;
+            width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 50%;
+            background-color: #555;
+            margin-top: 100px;
+            border: solid 2px white;
+        }
+
+        .home-bullea p, .home-bulleb p{
+            font-size: 30px;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: #dbc067;
+        }
+
+        .home-bloc3-bloc {
+            display: grid;
+            grid-template-columns: 50% 50%;
+        }
+
+        .home-bloc3-photo {
+            height: 700px;
+            width: 100%;
+        }
+
+        .home-bloc3-bloc-left {
+            width: 80%;
+            margin-left: 20%;
+        }
+
+        .home-bloc3-bloc-right {
+            width: 80%;
+            margin-right: 20%;
+        }
+
+        .home-bloc3-bloc-text {
+            color: white;
+            font-size: 20px;
+            margin-left: 10%;
+            margin-right: 10%;
+            padding-top: 80px;
+        }
+
+
+        /* ////////// MODULE RESA ////////// */
+
+.module-reservation {
+    position: relative;
+    text-align: center;
+    display: inline-block;
+    height: 700px;
+    width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 10px;
+    background-color: #777;
+    -webkit-box-shadow: 0 0 200px #dbc067, 0 1px 2px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 200px #dbc067, 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.module-background {
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    opacity: 0.4;
+}
+
+.reservation-body {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+.reservation-title {
+    width: 100%;
+    height: 100px;
+    background: linear-gradient(#dbc067, #ffeaa7);
+    border-bottom: 1px solid #333;
+}
+
+.module-reservation h1 {
+    line-height: 50px;
+    font-size: 40px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #000;
+    text-align: center;
+}
+
+.module-reservation p {
+    margin: 20px 0 0;
+}
+
+.module-reservation p:first-child {
+    margin-top: 0;
+}
+
+.module-reservation input[type=text],
+.module-reservation input[type=password] {
+    width: 278px;
+}
+
+.module-reservation p.submit {
+    text-align: center;
+}
+
+:-moz-placeholder {
+    color: #c9c9c9 !important;
+    font-size: 13px;
+}
+
+::-webkit-input-placeholder {
+    color: #ccc;
+    font-size: 13px;
+}
+
+    </style>
+{% endblock %}
+
+{% block js %}
+
+    <script>
+        document.getElementById('ban-video').addEventListener('contextmenu', function(e) {
+            e.preventDefault(); // Empêcher l'apparition du menu contextuel
+        });
+    </script>
+
+{% endblock %}
