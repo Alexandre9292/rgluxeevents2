@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+    <div class="sub-header">
+        <img class="ban" src="{% static 'images/aeroport.jpg'%}">
+        <h1>Photomaton</h1>
+    </div>
+
+    <div class="body-content">
+        <div class="service-in-content">
+            <h1 style="text-transform: uppercase;">Location de photomaton</h1>
+            <h2>Pour vos soirées et êvénements, partout sur l'île</h2>
+            </br>
+            <div class="service-in-bloc">
+                <div class="service-in-bloc-left">
+                    <p>Chez <span style="color: #dbc067;">RG.LUXEEVENTS</span>, nous sommes fiers de vous offrir un service de transport complet et fiable sur toute l'île de La Réunion.</p>
+                    <br><br>
+                    <p>Que ce soit pour vos déplacements domicile-travail, pour célébrer des occasions spéciales ou pour explorer les merveilles de l'île, nous sommes là pour répondre à tous vos besoins de transport.</p>
+                    <br><br>
+                    <p>Nous vous offrons une gamme de services de transport flexibles pour répondre à tous vos besoins. Que vous ayez besoin d'un trajet unique ou d'une solution de transport régulière, nous sommes là pour vous aider.</p>
+                    <br><br>
+                    <p>Votre confort et votre sécurité sont notre priorité absolue. Nos véhicules sont modernes, bien entretenus et équipés pour vous offrir une expérience de transport agréable et sécurisée, quel que soit votre itinéraire.</p>
+                    <br><br>
+                    <p>Nos chauffeurs sont des professionnels expérimentés, courtois et fiables. Ils connaissent parfaitement l'île de La Réunion et sont là pour vous offrir un service de qualité supérieure à chaque trajet.</p>
+                </div>
+                <div class="service-in-bloc-right">
+                    <img class="service-in-photo" src="{% static 'images/tourisme.jpg'%}" alt="aeroport">
+                </div>
+            </div>
+            <br><br>
+            <p>Que ce soit pour vos déplacements quotidiens, pour célébrer des occasions spéciales ou pour explorer les trésors de l'île de La Réunion, faites confiance à <span style="color: #dbc067;">RG.LUXEEVENTS</span> pour vous offrir un service de transport fiable et professionnel à chaque étape du chemin.</p>  
+            <br><br>
+            <p>Contactez-nous dès aujourd'hui pour réserver votre transport ou pour obtenir de plus amples informations sur nos services de transport sur l'île de La Réunion.</p>
+        </div>
+    </div>
+
+{% endblock %}

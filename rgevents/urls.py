@@ -32,6 +32,8 @@ urlpatterns = [
     path('services/transport/', app.views.transport, name='transport'),
     path('services/mariage/', app.views.mariage, name='mariage'),
     path('services/tourisme/', app.views.tourisme, name='tourisme'),
+    path('utilitaire/', app.views.utilitaire, name='utilitaire'),
+    path('photomaton/', app.views.photomaton, name='photomaton'),
     path('about/', app.views.about, name='about'),
     path('contact/', app.views.contact, name='contact'),
 ]

@@ -12,18 +12,87 @@
     <div class="body-content">
         <div class="home-bloc1">
             <div class="module-reservation">
-                <img class="module-background" src="{% static 'images/aeroport.jpg'%}">
-                <div class="reservation-body">
-                    <div class="reservation-title">
-                        <h1>Réservation</h1>
-                        <h2>Calculez le prix de votre trajet</h2>
-                    </div>
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <button type="submit">Calculer le prix</button>     
-                    </form>
+                <div class="reservation-title">
+                    <h1>Réservation</h1>
+                    <h2>Calculez le prix de votre trajet</h2>
                 </div>
+                <ul class="tab-nav">
+                    <li><a href="#tab1">Tab 1</a></li>
+                    <li><a href="#tab2">Tab 2</a></li>
+                    <li><a href="#tab3">Tab 3</a></li>
+                    <li><a href="#tab4">Tab 4</a></li>
+                    <li><a href="#tab5">Tab 5</a></li>
+                    <li><a href="#tab6">Tab 6</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tab1">
+                        <img class="module-background" src="{% static 'images/aeroport.jpg'%}">
+                        <div class="reservation-body">
+                            
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <button type="submit">Calculer le prix</button>     
+                            </form>
+                        </div>
+                    </div>
+                    <div id="tab2">
+                        <img class="module-background" src="{% static 'images/aeroport.jpg'%}">
+                        <div class="reservation-body">
+                            
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <button type="submit">Calculer le prix</button>     
+                            </form>
+                        </div>
+                    </div>
+                    <div id="tab3">
+                        <img class="module-background" src="{% static 'images/aeroport.jpg'%}">
+                        <div class="reservation-body">
+                            
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <button type="submit">Calculer le prix</button>     
+                            </form>
+                        </div>
+                    </div>
+                    <div id="tab4">
+                        <img class="module-background" src="{% static 'images/aeroport.jpg'%}">
+                        <div class="reservation-body">
+                            
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <button type="submit">Calculer le prix</button>     
+                            </form>
+                        </div>
+                    </div>
+                    <div id="tab5">
+                        <img class="module-background" src="{% static 'images/aeroport.jpg'%}">
+                        <div class="reservation-body">
+                            
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <button type="submit">Calculer le prix</button>     
+                            </form>
+                        </div>
+                    </div>
+                    <div id="tab6">
+                        <img class="module-background" src="{% static 'images/aeroport.jpg'%}">
+                        <div class="reservation-body">
+                            
+                            <form method="post">
+                                {% csrf_token %}
+                                {{ form.as_p }}
+                                <button type="submit">Calculer le prix</button>     
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
             <div class="text-presa-home">
 
@@ -270,6 +339,66 @@
     font-size: 13px;
 }
 
+.tab-nav {
+
+list-style: none;
+
+margin: 0;
+
+padding: 0;
+
+display: flex;
+
+justify-content: space-between;
+
+}
+
+
+.tab-nav li {
+
+margin-right: 20px;
+
+}
+
+
+.tab-nav a {
+
+text-decoration: none;
+
+color: #337ab7;
+
+}
+
+
+.tab-nav a:hover {
+
+color: #23527c;
+
+}
+
+
+/* Tab content styling */
+
+.tab-content {
+
+padding: 20px;
+
+}
+
+
+.tab-content > div {
+
+display: none;
+
+}
+
+
+.tab-content > div.active {
+
+display: block;
+
+}
+
     </style>
 {% endblock %}
 
@@ -279,6 +408,37 @@
         document.getElementById('ban-video').addEventListener('contextmenu', function(e) {
             e.preventDefault(); // Empêcher l'apparition du menu contextuel
         });
+
+        const tabNav = document.querySelector('.tab-nav');
+
+const tabContent = document.querySelectorAll('.tab-content > div');
+
+
+tabNav.addEventListener('click', (e) => {
+
+  if (e.target.tagName === 'A') {
+
+    const tabId = e.target.getAttribute('href').replace('#', '');
+
+    const tabContentElement = document.getElementById(tabId);
+
+
+    // Remove active class from all tab content elements
+
+    tabContent.forEach((element) => {
+
+      element.classList.remove('active');
+
+    });
+
+
+    // Add active class to the selected tab content element
+
+    tabContentElement.classList.add('active');
+
+  }
+
+});
     </script>
 
 {% endblock %}

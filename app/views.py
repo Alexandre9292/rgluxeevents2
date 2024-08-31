@@ -6,7 +6,7 @@ from . import forms, models
 #Page d'accueil
 def home(request):
     if request.method == 'POST':
-        form = forms.BookingForm(request.POST)
+        form = forms.DriverBookingForm(request.POST)
         if form.is_valid():
             resa = form.save()
 
@@ -23,7 +23,7 @@ def home(request):
             except BadHeaderError:
                 return HttpResponse('Invalid header found.') """
       
-    form = forms.BookingForm()
+    form = forms.DriverBookingForm()
     return render(request, 'app/home.html', {'form':form})
 
 #Page des services
@@ -45,6 +45,14 @@ def mariage(request):
 #Page du service tourisme
 def tourisme(request):
     return render(request, 'app/tourisme.html')
+
+#Page utilitaire
+def utilitaire(request):
+    return render(request, 'app/utilitaire.html')
+
+#Page photomaton
+def photomaton(request):
+    return render(request, 'app/photomaton.html')
 
 #Page about
 def about(request):
