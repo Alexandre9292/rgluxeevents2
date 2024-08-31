@@ -23,8 +23,9 @@ def home(request):
             except BadHeaderError:
                 return HttpResponse('Invalid header found.') """
       
-    form = forms.DriverBookingForm()
-    return render(request, 'app/home.html', {'form':form})
+    driverForm = forms.DriverBookingForm()
+    airportForm = forms.AeroportBookingForm()
+    return render(request, 'app/home.html', {'driverForm':driverForm, 'airportForm': airportForm})
 
 #Page des services
 def services(request):

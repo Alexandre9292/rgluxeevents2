@@ -17,76 +17,28 @@
                     <h2>Calculez le prix de votre trajet</h2>
                 </div>
                 <ul class="tab-nav">
-                    <li><a href="#tab1">Tab 1</a></li>
-                    <li><a href="#tab2">Tab 2</a></li>
-                    <li><a href="#tab3">Tab 3</a></li>
-                    <li><a href="#tab4">Tab 4</a></li>
-                    <li><a href="#tab5">Tab 5</a></li>
-                    <li><a href="#tab6">Tab 6</a></li>
+                    <li class="tab-header transport"><a onClick="changeTab('tab-transport')">Transport</a></li>
+                    <li class="tab-header airport"><a onClick="changeTab('tab-airport')">Aéroport</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div id="tab1">
+                    <div id="tab-transport" class="mod-resa-block active">
                         <img class="module-background" src="{% static 'images/aeroport.jpg'%}">
                         <div class="reservation-body">
                             
                             <form method="post">
                                 {% csrf_token %}
-                                {{ form.as_p }}
+                                {{ driverForm.as_p }}
                                 <button type="submit">Calculer le prix</button>     
                             </form>
                         </div>
                     </div>
-                    <div id="tab2">
+                    <div id="tab-airport" class="mod-resa-block">
                         <img class="module-background" src="{% static 'images/aeroport.jpg'%}">
                         <div class="reservation-body">
                             
                             <form method="post">
                                 {% csrf_token %}
-                                {{ form.as_p }}
-                                <button type="submit">Calculer le prix</button>     
-                            </form>
-                        </div>
-                    </div>
-                    <div id="tab3">
-                        <img class="module-background" src="{% static 'images/aeroport.jpg'%}">
-                        <div class="reservation-body">
-                            
-                            <form method="post">
-                                {% csrf_token %}
-                                {{ form.as_p }}
-                                <button type="submit">Calculer le prix</button>     
-                            </form>
-                        </div>
-                    </div>
-                    <div id="tab4">
-                        <img class="module-background" src="{% static 'images/aeroport.jpg'%}">
-                        <div class="reservation-body">
-                            
-                            <form method="post">
-                                {% csrf_token %}
-                                {{ form.as_p }}
-                                <button type="submit">Calculer le prix</button>     
-                            </form>
-                        </div>
-                    </div>
-                    <div id="tab5">
-                        <img class="module-background" src="{% static 'images/aeroport.jpg'%}">
-                        <div class="reservation-body">
-                            
-                            <form method="post">
-                                {% csrf_token %}
-                                {{ form.as_p }}
-                                <button type="submit">Calculer le prix</button>     
-                            </form>
-                        </div>
-                    </div>
-                    <div id="tab6">
-                        <img class="module-background" src="{% static 'images/aeroport.jpg'%}">
-                        <div class="reservation-body">
-                            
-                            <form method="post">
-                                {% csrf_token %}
-                                {{ form.as_p }}
+                                {{ airportForm.as_p }}
                                 <button type="submit">Calculer le prix</button>     
                             </form>
                         </div>
@@ -266,179 +218,184 @@
 
         /* ////////// MODULE RESA ////////// */
 
-.module-reservation {
-    position: relative;
-    text-align: center;
-    display: inline-block;
-    height: 700px;
-    width: 500px;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 10px;
-    background-color: #777;
-    -webkit-box-shadow: 0 0 200px #dbc067, 0 1px 2px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 0 200px #dbc067, 0 1px 2px rgba(0, 0, 0, 0.3);
-}
+        .module-reservation {
+            position: relative;
+            text-align: center;
+            display: inline-block;
+            height: 700px;
+            width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 10px;
+            background-color: #777;
+            -webkit-box-shadow: 0 0 200px #dbc067, 0 1px 2px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 200px #dbc067, 0 1px 2px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
 
-.module-background {
-    height: 100%;
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-    opacity: 0.4;
-}
+        .reservation-title {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(#dbc067, #ffeaa7);
+            border-bottom: 1px solid #333;
+        }
 
-.reservation-body {
-    position: absolute;
-    width: 100%;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, 0);
-}
+        .mod-resa-block {
+            display: inline-block;
+            height: 100%;
+            width: 100%
+        }
 
-.reservation-title {
-    width: 100%;
-    height: 100px;
-    background: linear-gradient(#dbc067, #ffeaa7);
-    border-bottom: 1px solid #333;
-}
+        .module-background {
+            height: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            opacity: 0.4;
+        }
 
-.module-reservation h1 {
-    line-height: 50px;
-    font-size: 40px;
-    font-weight: bold;
-    text-transform: uppercase;
-    color: #000;
-    text-align: center;
-}
+        .reservation-body {
+            position: absolute;
+            width: 100%;
+            top: 170px;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
 
-.module-reservation p {
-    margin: 20px 0 0;
-}
+        .module-reservation h1 {
+            line-height: 50px;
+            font-size: 40px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #000;
+            text-align: center;
+        }
 
-.module-reservation p:first-child {
-    margin-top: 0;
-}
+        .module-reservation p {
+            margin: 20px 0 0;
+        }
 
-.module-reservation input[type=text],
-.module-reservation input[type=password] {
-    width: 278px;
-}
+        .module-reservation p:first-child {
+            margin-top: 0;
+        }
 
-.module-reservation p.submit {
-    text-align: center;
-}
+        .module-reservation input[type=text],
+        .module-reservation input[type=password] {
+            width: 278px;
+        }
 
-:-moz-placeholder {
-    color: #c9c9c9 !important;
-    font-size: 13px;
-}
+        .module-reservation p.submit {
+            text-align: center;
+        }
 
-::-webkit-input-placeholder {
-    color: #ccc;
-    font-size: 13px;
-}
+        :-moz-placeholder {
+            color: #c9c9c9 !important;
+            font-size: 13px;
+        }
 
-.tab-nav {
+        ::-webkit-input-placeholder {
+            color: #ccc;
+            font-size: 13px;
+        }
 
-list-style: none;
+        .tab-nav {
+            list-style: none;
+            padding: 0;
+            margin-top: -52px;
+            display: flex;
+        }
 
-margin: 0;
+        .tab-header {
+            position: relative;
+            line-height: 50px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #000;
+            background: linear-gradient(#dbc067, #ffeaa7);
+            
+            margin-left: -10px;
 
-padding: 0;
+            border-radius: 10px 10px 0 0;
+            border-top: solid 1px #111;
+            border-right: solid 1px #111;
+            border-left: solid 1px #111;
+        }
 
-display: flex;
+        .tab-nav a {
+            text-decoration: none;
+            padding: 0 50px;
+        }
 
-justify-content: space-between;
+        .tab-nav a:hover {
+            cursor: pointer;
+            text-shadow: 0 0 15px #dbc067,0 0 15px #dbc067,0 0 15px #dbc067;
+        }
 
-}
+        /* Tab content styling */
+        .tab-content {
+            height: 550px;
+            width: 100%;
+        }
 
+        .tab-content > div {
+            display: none;
+        }
 
-.tab-nav li {
-
-margin-right: 20px;
-
-}
-
-
-.tab-nav a {
-
-text-decoration: none;
-
-color: #337ab7;
-
-}
-
-
-.tab-nav a:hover {
-
-color: #23527c;
-
-}
-
-
-/* Tab content styling */
-
-.tab-content {
-
-padding: 20px;
-
-}
-
-
-.tab-content > div {
-
-display: none;
-
-}
-
-
-.tab-content > div.active {
-
-display: block;
-
-}
+        .tab-content > div.active {
+            display: block;
+        }
 
     </style>
 {% endblock %}
 
 {% block js %}
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+
+        $(document).ready(function() {
+            tabActive('tab-transport');
+        });
+
         document.getElementById('ban-video').addEventListener('contextmenu', function(e) {
             e.preventDefault(); // Empêcher l'apparition du menu contextuel
         });
 
-        const tabNav = document.querySelector('.tab-nav');
+        function changeTab(tab) {            
+            const tabContent = document.querySelectorAll('.tab-content > div');
+            
+            tabContent.forEach((element) => {
+                element.classList.remove('active');
+            });
 
-const tabContent = document.querySelectorAll('.tab-content > div');
+            const tabContentElement = document.getElementById(tab);
+            tabContentElement.classList.add('active');
 
+            tabActive(tab);
+        };
 
-tabNav.addEventListener('click', (e) => {
+        function tabActive(tab) {
+            const tabContent = document.querySelectorAll('.tab-nav > li');
+            tabContent.forEach((element) => {
+                element.style.zIndex = 1;
 
-  if (e.target.tagName === 'A') {
+                const links = element.querySelectorAll('a');
+                links.forEach(link => {
+                    link.style.padding = '0 50px'; 
+                });
+            });
 
-    const tabId = e.target.getAttribute('href').replace('#', '');
+            const headerClass = tab.split('-')[1];
+            const headerElement = document.querySelector('.' + headerClass);
 
-    const tabContentElement = document.getElementById(tabId);
+            headerElement.style.zIndex = 2;
+            
+            const links = headerElement.querySelectorAll('a');
+            links.forEach(link => {
+                link.style.padding = '0 55px'; 
+            });
+        };
 
-
-    // Remove active class from all tab content elements
-
-    tabContent.forEach((element) => {
-
-      element.classList.remove('active');
-
-    });
-
-
-    // Add active class to the selected tab content element
-
-    tabContentElement.classList.add('active');
-
-  }
-
-});
     </script>
 
 {% endblock %}
