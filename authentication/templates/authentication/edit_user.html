@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="title-name" style="margin-top: 25px;">
+        <h1>Administration</h1>
+    </div>
+    <h2>Modifier l'utilisateur</h2>
+    {% if edit_form.errors %}
+        {{ edit_form.errors }}
+    {% endif %}
+    <div class="form">
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-user-edit">
+                <div class="form-user-edit-block">
+                    <p>
+                        <label for="id_email">Adresse électronique&nbsp;:</label>
+                        {{ edit_form.email }}              
+                    </p>
+                    <p>
+                        <label for="id_first_name">Prénom&nbsp;:</label>
+                        {{ edit_form.first_name }} 
+                    </p> 
+                    <p>
+                        <label for="id_last_name">Nom&nbsp;:</label>
+                        {{ edit_form.last_name }} 
+                    </p>
+                    <p>
+                        <label for="id_role">Rôle&nbsp;:</label>
+                        <div class="select">
+                            {{ edit_form.role }} 
+                        </div>
+                    </p>
+                    </br></br>
+                    <p>
+                        <label for="id_password1">Mot de passe&nbsp;:</label>
+                        {{ edit_form.password1 }} 
+                    </p>
+                    <p>
+                        <label for="id_password2">Confirmation Mot de passe&nbsp;:</label>
+                        {{ edit_form.password2 }} 
+                    </p>
+                </div>                
+            </div>
+            {% csrf_token %}
+            <p class="button-form"><input type="submit" name="commit" value="Enregistrer"></p>          
+        </form>
+    </div>
+{% endblock content %}

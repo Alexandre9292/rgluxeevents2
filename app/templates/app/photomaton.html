@@ -14,25 +14,151 @@
             </br>
             <div class="service-in-bloc">
                 <div class="service-in-bloc-left">
-                    <p>Chez <span style="color: #dbc067;">RG.LUXEEVENTS</span>, nous sommes fiers de vous offrir un service de transport complet et fiable sur toute l'île de La Réunion.</p>
-                    <br><br>
-                    <p>Que ce soit pour vos déplacements domicile-travail, pour célébrer des occasions spéciales ou pour explorer les merveilles de l'île, nous sommes là pour répondre à tous vos besoins de transport.</p>
-                    <br><br>
-                    <p>Nous vous offrons une gamme de services de transport flexibles pour répondre à tous vos besoins. Que vous ayez besoin d'un trajet unique ou d'une solution de transport régulière, nous sommes là pour vous aider.</p>
-                    <br><br>
-                    <p>Votre confort et votre sécurité sont notre priorité absolue. Nos véhicules sont modernes, bien entretenus et équipés pour vous offrir une expérience de transport agréable et sécurisée, quel que soit votre itinéraire.</p>
-                    <br><br>
-                    <p>Nos chauffeurs sont des professionnels expérimentés, courtois et fiables. Ils connaissent parfaitement l'île de La Réunion et sont là pour vous offrir un service de qualité supérieure à chaque trajet.</p>
+                    <div class="module-reservation">
+                        <div class="reservation-title">
+                            <h1>Réservation</h1>
+                            <h2>Calculez le prix de votre réservation</h2>
+                        </div>
+                        <div class="tab-content">
+                            <div id="tab-utilitaire" class="mod-resa-block active">
+                                <img class="module-background" src="{% static 'images/tourisme.jpg'%}">
+                                <div class="reservation-body">
+                                    
+                                    <form method="post">
+                                        {% csrf_token %}
+                                        {{ form.as_p }}
+                                        <button type="submit">Calculer le prix</button>     
+                                    </form>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
                 </div>
                 <div class="service-in-bloc-right">
-                    <img class="service-in-photo" src="{% static 'images/tourisme.jpg'%}" alt="aeroport">
                 </div>
             </div>
-            <br><br>
-            <p>Que ce soit pour vos déplacements quotidiens, pour célébrer des occasions spéciales ou pour explorer les trésors de l'île de La Réunion, faites confiance à <span style="color: #dbc067;">RG.LUXEEVENTS</span> pour vous offrir un service de transport fiable et professionnel à chaque étape du chemin.</p>  
-            <br><br>
-            <p>Contactez-nous dès aujourd'hui pour réserver votre transport ou pour obtenir de plus amples informations sur nos services de transport sur l'île de La Réunion.</p>
         </div>
     </div>
 
+{% endblock %}
+
+{% block css %}
+    <style>
+        .module-reservation {
+            position: relative;
+            text-align: center;
+            display: inline-block;
+            height: 700px;
+            width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 10px;
+            background-color: #777;
+            -webkit-box-shadow: 0 0 200px #dbc067, 0 1px 2px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 200px #dbc067, 0 1px 2px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .reservation-title {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(#dbc067, #ffeaa7);
+            border-bottom: 1px solid #333;
+        }
+
+        .mod-resa-block {
+            display: inline-block;
+            height: 100%;
+            width: 100%
+        }
+
+        .module-background {
+            height: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+            opacity: 0.4;
+        }
+
+        .reservation-body {
+            position: absolute;
+            width: 100%;
+            top: 170px;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+
+        .module-reservation h1 {
+            line-height: 50px;
+            font-size: 40px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #000;
+            text-align: center;
+        }
+
+        .module-reservation p {
+            margin: 20px 0 0;
+        }
+
+        .module-reservation p:first-child {
+            margin-top: 0;
+        }
+
+        .module-reservation input[type=text],
+        .module-reservation input[type=password] {
+            width: 278px;
+        }
+
+        .module-reservation p.submit {
+            text-align: center;
+        }
+
+        :-moz-placeholder {
+            color: #c9c9c9 !important;
+            font-size: 13px;
+        }
+
+        ::-webkit-input-placeholder {
+            color: #ccc;
+            font-size: 13px;
+        }
+
+        /* Formulaire */
+        .reservation-body input[type=text], .contact-form textarea {
+            width: 100%; 
+            padding: 8px;
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+            box-sizing: border-box; 
+            margin-top: 6px; 
+            resize: vertical; 
+            text-align: left;
+        }
+
+        .reservation-body button[type=submit] {
+            background-color: #dbc067;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .reservation-body button[type=submit]:hover {
+            background-color: #d1af3e;
+        }
+
+        .reservation-body p {
+            text-align: left;
+        }
+
+        .reservation-body form{
+            width: 80%;
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+    </style>
 {% endblock %}

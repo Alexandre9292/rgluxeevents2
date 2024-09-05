@@ -49,11 +49,49 @@ def tourisme(request):
 
 #Page utilitaire
 def utilitaire(request):
-    return render(request, 'app/utilitaire.html')
+    if request.method == 'POST':
+        form = forms.UtilityBookingForm(request.POST)
+        if form.is_valid():
+            resa = form.save()
+
+            return redirect('home')
+            """ subject = "RGLuxeEnvents - Réservation" 
+            body = {
+            'name': form.cleaned_data['name'], 
+            'email': form.cleaned_data['email_address'], 
+            'message':form.cleaned_data['message'], 
+            }
+            message = "\n".join(body.values())
+            try:
+                send_mail(subject, message, form.cleaned_data['email_address'], ['alexandre.boucher92@gmail.com']) 
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.') """
+      
+    form = forms.UtilityBookingForm()
+    return render(request, 'app/utilitaire.html', {'form':form})
 
 #Page photomaton
 def photomaton(request):
-    return render(request, 'app/photomaton.html')
+    if request.method == 'POST':
+        form = forms.PhotomatonBookingForm(request.POST)
+        if form.is_valid():
+            resa = form.save()
+
+            return redirect('home')
+            """ subject = "RGLuxeEnvents - Réservation" 
+            body = {
+            'name': form.cleaned_data['name'], 
+            'email': form.cleaned_data['email_address'], 
+            'message':form.cleaned_data['message'], 
+            }
+            message = "\n".join(body.values())
+            try:
+                send_mail(subject, message, form.cleaned_data['email_address'], ['alexandre.boucher92@gmail.com']) 
+            except BadHeaderError:
+                return HttpResponse('Invalid header found.') """
+      
+    form = forms.PhotomatonBookingForm()
+    return render(request, 'app/photomaton.html', {'form':form})
 
 #Page about
 def about(request):

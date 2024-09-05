@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="title-name" style="margin-top: 25px;">
+        <h1>Administration</h1>
+    </div>
+    <h2>Nouvel Utilisateur</h2>
+    {% if form.errors %}
+        {{ form.errors }}
+    {% endif %}
+    <div class="form">
+        <form method="post" enctype="multipart/form-data">
+            {{ form.as_p }}
+            {% csrf_token %}
+            <p class="button-form"><input type="submit" name="commit" value="Enregistrer"></p> 
+        </form>
+    </div>
+    <div class="button-form-retour">
+        <a class="button-element button-retour" href="{% url 'administration' %}">Retour</a>
+    </div>
+{% endblock content %}
+
