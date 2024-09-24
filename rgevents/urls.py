@@ -40,7 +40,9 @@ urlpatterns = [
          ),
     path('login/', authentication.views.login_page, name='login'),
     path('logout/', authentication.views.logout_user, name='logout'),
+    path('new-user/', authentication.views.new_user_page, name='new_user'),
     path('customer/', authentication.views.customer_page, name='customer'),
+    path('customer/<int:user_id>/change/', authentication.views.edit_user, name='edit_user'),
     path('administration/', authentication.views.admin_page, name='administration'),
 
     path('', app.views.home, name='home'),

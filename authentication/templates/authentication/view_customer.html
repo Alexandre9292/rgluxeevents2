@@ -1,8 +1,19 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<div class="sidebar">
-    
-</div>
+    <div class="login" style="margin-bottom: 10%;">
+        <a href="{% url 'upload_profile_photo' user.id %}">
+            {% if user.profile_photo %}
+                <img class="avatar" src={{ user.profile_photo.url }}>
+            {% else %}
+                <img class="avatar" src="{% static 'images/default_profile.png'%}">
+            {% endif %}
+        </a>
+        <div class="user-info">
+            <p>{{ user.first_name }} {{ user.last_name }}</p>
+            <p>{{ user.email }}</p>
+        </div>
+        <a href="{% url 'edit_user' user.id %}">Modifier</a>
+    </div>
 
 {% endblock content %}

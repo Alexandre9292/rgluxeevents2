@@ -19,14 +19,13 @@ from authentication.models import User
 def mentions_legales(request):
     return render(request, 'authentication/mentions_legales.html')
 
-@login_required
 def new_user_page(request):
     form = forms.NewUserForm()
     if request.method == 'POST':
         form = forms.NewUserForm(request.POST)
         if form.is_valid():
             user = form.save()
-            return redirect('administration')
+            return redirect('home')
     return render(request, 'authentication/new_user.html', context={'form': form})
 
 def login_page(request):

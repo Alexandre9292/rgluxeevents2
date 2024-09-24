@@ -8,8 +8,6 @@ class NewUserForm(UserCreationForm):
         fields = ('first_name', 'last_name', 'email')
 
 class ChangeUserForm(UserChangeForm):    
-    password1 = forms.CharField(max_length=63, widget=forms.PasswordInput, label='Mot de passe', required=False)
-    password2 = forms.CharField(max_length=63, widget=forms.PasswordInput, label='Confirmation Mot de passe', required=False)
     class Meta(UserChangeForm.Meta):
         model = get_user_model()
         fields = ('first_name', 'last_name', 'email')
