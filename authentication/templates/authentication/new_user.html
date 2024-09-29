@@ -10,7 +10,8 @@
             <p><input type="text" name="first_name" value="" placeholder="Prénom"></p>
             <p><input type="text" name="last_name" value="" placeholder="Nom"></p>
             <p><input type="text" name="email" value="" placeholder="E-mail"></p>
-            <p><input type="password" name="password" value="" placeholder="Mot de passe"></p>
+            <p><input type="password" name="password1" value="" placeholder="Mot de passe"></p>
+            <p><input type="password" name="password2" value="" placeholder="Confirmation du mot de passe"></p>
             {% csrf_token %}
             <p class="submit"><input type="submit" name="commit" value="Valider"></p>      
         </form>

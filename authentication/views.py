@@ -24,7 +24,9 @@ def new_user_page(request):
     if request.method == 'POST':
         form = forms.NewUserForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
+            user.role = 'CUSTOMER'
+            user.save()
             return redirect('home')
     return render(request, 'authentication/new_user.html', context={'form': form})
 
@@ -40,12 +42,7 @@ def login_page(request):
             )
             if user is not None:
                 login(request, user)
-                if user.role == 'ADMIN' :
-                    return redirect('administration')
-                elif user.role == 'CONTRIBUTOR' :
-                    return redirect('contributor')
-                else :
-                    return redirect('student')
+                return redirect('home')
             else:
                 message = 'Identifiants invalides.'
                 print(message)
@@ -59,8 +56,7 @@ def logout_user(request):
 
 @login_required
 def customer_page(request):
-    user = request.user()
-    return render(request, 'authentication/view_customer.html', context={'user': user})
+    return render(request, 'authentication/view_customer.html')
 
 @login_required
 def admin_page(request):

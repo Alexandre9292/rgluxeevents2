@@ -7,10 +7,9 @@
             {% if edit_form.errors %}
                 {{ edit_form.errors }}
             {% endif %}
-            <p><input type="text" name="first_name" value="" placeholder="Prénom"></p>
-            <p><input type="text" name="last_name" value="" placeholder="Nom"></p>
-            <p><input type="text" name="email" value="" placeholder="E-mail"></p>
-            <p><input type="password" name="password" value="" placeholder="Mot de passe"></p>
+            <p><input type="text" name="first_name" value="{{user.first_name}}" placeholder="Prénom"></p>
+            <p><input type="text" name="last_name" value="{{user.last_name}}" placeholder="Nom"></p>
+            <p><input type="text" name="email" value="{{user.email}}" placeholder="E-mail"></p>
             {% csrf_token %}
             <p class="submit"><input type="submit" name="commit" value="Valider"></p>      
         </form>

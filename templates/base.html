@@ -54,11 +54,23 @@
                         <li>
                             <a href="https://www.instagram.com/rg.luxeevents/" target="_blank"><img class="icon-media-over-header" src="{% static 'images/iconInsta.png'%}" alt="instagram"></a>
                         </li>
+                        {%  if user.is_authenticated %}
+                        <li>
+                            {%  if user.role == 'CUSTOMER' %}
+                                <a href="{% url 'customer' %}">Mon compte</a>
+                            {%  else %}
+                                <a href="{% url 'administration' %}">Admin</a>
+                            {% endif %}
+                            -
+                            <a href="{% url 'logout' %}">Se déconnecter</a>
+                        </li>
+                        {%  else %}
                         <li>
                             <a href="{% url 'login' %}">Se connecter</a>
                             -
                             <a href="{% url 'new_user' %}">Créer un compte</a>
                         </li>
+                        {% endif %}
                     </ul>
                 </nav>
             </div>
