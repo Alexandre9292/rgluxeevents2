@@ -2,11 +2,64 @@
 {% load static %}
 {% block content %}
     <div class="login" style="margin-bottom: 10%;">
+        <h1>Mon compte</h1>
         <div class="user-info">
-            <p>{{ user.first_name }} {{ user.last_name }}</p>
-            <p>{{ user.email }}</p>
+            {% if user.profile_photo %}
+                <img class="avatar" width="150" height="150" src={{ user.profile_photo.url }}>
+            {% else %}
+                <img class="avatar" width="150" height="150" src="{% static 'images/default_profile.png'%}">
+            {% endif %}
+            <p><input type="text" value="{{user.first_name}} {{user.last_name}}" disabled></p>
+            <p><input type="text" value="{{user.email}}" disabled></p>
+            <p><input type="text" value="{{user.phone_number}}" disabled></p>
         </div>
-        <a href="{% url 'edit_user' user.id %}">Modifier</a>
+        <p class="submit"><a class="change-user" href="{% url 'edit_user' user.id %}">Modifier</a></p>
     </div>
 
 {% endblock content %}
+
+{% block css %}
+    <style>
+        .avatar {
+            width: 80%;
+            border-radius: 10%;
+            display: block;
+            margin: auto;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .change-user {
+            padding: 5px 18px 5px;
+            height: 29px;
+            font-size: 12px;            
+            padding: 12px 20px;
+            font-weight: bold;
+            color: #423301;
+            text-shadow: 0 1px #e3f1f1;
+            background: #dbc067;
+            border: 1px solid;
+            border-color: #e6dbb4 #e6e1cf #e2dabe;
+            border-radius: 8px;
+            outline: 0;
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+            background-image: -webkit-linear-gradient(top, #dbc067, #f9e398);
+            background-image: -moz-linear-gradient(top, #dbc067, #f9e398);
+            background-image: -o-linear-gradient(top, #dbc067, #f9e398);
+            background-image: linear-gradient(to bottom, #dbc067, #f9e398);
+            -webkit-box-shadow: inset 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.15);
+            box-shadow: inset 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.15);
+
+            font-family: 'Lucida Grande', Tahoma, Verdana, sans-serif;
+        }
+
+        .change-user:active {
+            background: #cde5ef;
+            border-color: #9eb9c2 #b3c0c8 #b4ccce;
+            -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
+            box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+{% endblock %}

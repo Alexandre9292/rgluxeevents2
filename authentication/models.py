@@ -1,6 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Group, BaseUserManager 
 from django.utils.translation import gettext_lazy  as _
+from phonenumber_field.modelfields import PhoneNumberField
+import os
+
+def upload_to_profile(instance, filename):
+    # Extraire l'extension du fichier
+    ext = filename.split('.')[-1]
+    # Créer un nouveau nom de fichier basé sur l'email et l'extension originale
+    filename = f"profile.{ext}"
+    # Retourner le chemin : email de la personne / profile_pics / nom du fichier
+    return os.path.join(instance.email, 'profile_pics', filename)
 
 class UserManager(BaseUserManager):
     """Define a model manager for User model with no username field."""
@@ -53,6 +63,8 @@ class User(AbstractUser):
     )
 
     role = models.CharField(max_length=30, choices=ROLE_CHOICES, verbose_name='rôle')
+    profile_photo = models.ImageField(verbose_name='photo de profil', null=True, upload_to=upload_to_profile, blank=True)
+    phone_number = PhoneNumberField(null=False, blank=False, unique=False)
 
     objects = UserManager()
     
@@ -64,6 +76,7 @@ class User(AbstractUser):
         elif self.role == self.CUSTOMER:
             group = Group.objects.get(name='customer')
             group.user_set.add(self)
+
 
 
 

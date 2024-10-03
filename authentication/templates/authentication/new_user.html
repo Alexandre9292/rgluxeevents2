@@ -7,11 +7,12 @@
             {% if form.errors %}
                 {{ form.errors }}
             {% endif %}
-            <p><input type="text" name="first_name" value="" placeholder="Prénom"></p>
-            <p><input type="text" name="last_name" value="" placeholder="Nom"></p>
-            <p><input type="text" name="email" value="" placeholder="E-mail"></p>
-            <p><input type="password" name="password1" value="" placeholder="Mot de passe"></p>
-            <p><input type="password" name="password2" value="" placeholder="Confirmation du mot de passe"></p>
+            <p><input type="text" name="first_name" value="" placeholder="Prénom" required ></p>
+            <p><input type="text" name="last_name" value="" placeholder="Nom" required ></p>
+            <p><input type="tel" name="phone_number" value="" placeholder="Numéro" required ></p>
+            <p><input type="email" name="email" value="" placeholder="E-mail" required ></p>
+            <p><input type="password" name="password1" value="" placeholder="Mot de passe" required ></p>
+            <p><input type="password" name="password2" value="" placeholder="Confirmation du mot de passe" required ></p>
             {% csrf_token %}
             <p class="submit"><input type="submit" name="commit" value="Valider"></p>      
         </form>

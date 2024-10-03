@@ -394,7 +394,7 @@ footer {
     font-size: 14px;
 }
 
-.login input[type=text], .login input[type=password] {
+.login input[type=text], .login input[type=password], .login input[type=tel], .login input[type=email] {
     margin: 5px;
     padding: 0 10px;
     width: 90%;
@@ -409,7 +409,7 @@ footer {
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
-.login input[type=text]:focus, .login input[type=password]:focus {
+.login input[type=text]:focus, .login input[type=password]:focus, .login input[type=tel]:focus, .login input[type=email]:focus {
     border-color: #dbc067;
     outline-color: #f5e5b7;
     outline-offset: 0;
@@ -449,7 +449,7 @@ footer {
     box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.2);
 }
 
-.login .lt-ie9 input[type=text], .lt-ie9 input[type=password] {
+.login .lt-ie9 input[type=text], .lt-ie9 input[type=password], .lt-ie9 input[type=tel], .lt-ie9 input[type=email] {
     line-height: 34px;
 }
   
