@@ -10,6 +10,8 @@ from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
 from django.db.models.query_utils import Q
+import calendar
+from datetime import datetime
 
 from . import forms, models
 
@@ -60,7 +62,42 @@ def customer_page(request):
 
 @login_required
 def admin_page_calendar(request):
-    return render(request, 'authentication/view_administration_calendar.html')
+    # Récupérer l'année et le mois actuels
+    now = datetime.now()
+    annee = now.year
+    mois = now.month
+
+    # Générer le tableau des jours du mois actuel
+    cal = calendar.Calendar(firstweekday=0)
+    
+    # Créer un tableau des jours pour le mois actuel
+    jours_mois = list(cal.itermonthdays4(annee, mois))
+
+    # Filtrer pour ne garder que les jours appartenant au mois actuel
+    jours_mois = [jour for jour in jours_mois if jour[1] == mois]
+
+    # jours_mois = [(année, mois, jour, jour_de_la_semaine)]
+    jours_formattes = [{
+        'jour': jour[2],
+        'jour_semaine': calendar.day_name[jour[3]],  # Nom du jour de la semaine
+        'jour_semaine_abbr': calendar.day_abbr[jour[3]]  # Abréviation (ex : "Lun" pour Lundi)
+    } for jour in jours_mois]
+
+    # Récupérer le premier jour du mois pour savoir combien de "jours vides" ajouter au début
+    premier_jour = jours_mois[0][3]  # jour[3] correspond au jour de la semaine (0 = lundi, 6 = dimanche)
+    jours_vides = [{'jour': '', 'jour_semaine': '', 'jour_semaine_abbr': ''}] * premier_jour
+
+    # Ajouter les jours vides au début de la liste
+    jours_formattes = jours_vides + jours_formattes
+
+    # Envoyer les données au template
+    contexte = {
+        'jours_formattes': jours_formattes,
+        'mois': now.strftime('%B'),  # Mois en toutes lettres
+        'annee': annee,
+    }
+
+    return render(request, 'authentication/view_administration_calendar.html', contexte)
 
 @login_required
 def admin_page_users(request):

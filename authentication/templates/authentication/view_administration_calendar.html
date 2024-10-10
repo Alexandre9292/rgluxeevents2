@@ -8,6 +8,44 @@
         <p><a href="{% url 'admin-calendar' %}">Calendrier</a> - <a href="{% url 'admin-users' %}">Utilisateurs</a></p>
     </div>
     
+    <div class="body-content"> 
+        <div class="admin-calendar">
+            <h1>{{ mois }} {{ annee }}</h1>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Lun</th>
+                        <th>Mar</th>
+                        <th>Mer</th>
+                        <th>Jeu</th>
+                        <th>Ven</th>
+                        <th>Sam</th>
+                        <th>Dim</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        {% for jour in jours_formattes %}
+                            {% if jour.jour %}
+                                {% if jour.jour_semaine_abbr == 'Sun' %}
+                                    <td style="color:red;">{{ jour.jour }}</td>
+                                {% else %}
+                                    <td>{{ jour.jour }}</td>
+                                {% endif %}
+                            {% else %}
+                                <td></td> <!-- Case vide pour les jours avant le début du mois -->
+                            {% endif %}
+                            {% if forloop.counter|divisibleby:7 and not forloop.first %}
+                                </tr><tr>
+                            {% endif %}                            
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 {% endblock content %}
 
 {% block css %}
@@ -33,6 +71,32 @@
                 font-size: 20px;
                 color: #a98e35;
             }
+        }
+
+        .admin-calendar {
+            margin-bottom: 30px;
+
+            h1 {
+                margin-bottom: 15px;
+            }
+        }
+
+        table {
+            width: 98%;
+            border-collapse: collapse;
+        }
+        th, td {
+            width: 14%;
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #dbc067;
+        }
+
+        td {
+            height: 100px;
         }
     </style>
 {% endblock %}
