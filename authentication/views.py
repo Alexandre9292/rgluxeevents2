@@ -72,7 +72,7 @@ def edit_user(request, user_id):
     edit_user = get_object_or_404(models.User, id=user_id)
     edit_form = forms.ChangeUserForm(instance=edit_user)
     if request.method == 'POST':
-        edit_form = forms.ChangeUserForm(request.POST, instance=edit_user)
+        edit_form = forms.ChangeUserForm(request.POST, request.FILES, instance=edit_user)
         if edit_form.is_valid():
             edit_form.save()
             return redirect('home')

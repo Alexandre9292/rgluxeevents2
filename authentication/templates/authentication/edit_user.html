@@ -3,15 +3,59 @@
 {% block content %}
     <div class="login" style="margin-bottom: 10%;">
         <h1>Modifier compte</h1>
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% if edit_form.errors %}
                 {{ edit_form.errors }}
             {% endif %}
+            <div>
+                <input id="profilePicInput" type="file" name="profile_photo" style="display: none;">
+                {% if user.profile_photo %}
+                    <img id="profilePicPreview" class="avatar" onClick="uploadPhoto()" src={{ user.profile_photo.url }} alt="Photo de profil" width="150" height="150" style="cursor: pointer;">
+                {% else %}
+                    <img id="profilePicPreview" class="avatar" onClick="uploadPhoto()" src="{% static 'images/default_profile.png'%}" alt="Photo de profil" width="150" height="150" style="cursor: pointer;">
+                {% endif %}
+            </div>
             <p><input type="text" name="first_name" value="{{user.first_name}}" placeholder="Prénom"></p>
             <p><input type="text" name="last_name" value="{{user.last_name}}" placeholder="Nom"></p>
-            <p><input type="text" name="email" value="{{user.email}}" placeholder="E-mail"></p>
+            <p><input type="tel" name="phone_number" value="{{user.phone_number}}" placeholder="Numéro" required ></p>
+            <p><input type="email" name="email" value="{{user.email}}" placeholder="E-mail"></p>
             {% csrf_token %}
             <p class="submit"><input type="submit" name="commit" value="Valider"></p>      
         </form>
     </div>
 {% endblock content %}
+
+{% block js %}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+        $(document).ready(function() {
+            $("#profilePicInput").change(function (event) {
+                const [file] = event.target.files;
+                if (file) {
+                    document.getElementById('profilePicPreview').src = URL.createObjectURL(file);
+                }
+            });
+        });
+
+        function uploadPhoto() {            
+            $('#profilePicInput').click();
+        };
+
+    </script>
+
+{% endblock %}
+
+{% block css %}
+    <style>
+        .avatar {
+            width: 80%;
+            border-radius: 10%;
+            display: block;
+            margin: auto;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+    </style>
+{% endblock %}
