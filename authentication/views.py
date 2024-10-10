@@ -59,9 +59,13 @@ def customer_page(request):
     return render(request, 'authentication/view_customer.html')
 
 @login_required
-def admin_page(request):
+def admin_page_calendar(request):
+    return render(request, 'authentication/view_administration_calendar.html')
+
+@login_required
+def admin_page_users(request):
     users = models.User.objects.all()
-    return render(request, 'authentication/view_administration.html', context={'list_users': users})
+    return render(request, 'authentication/view_administration_users.html', context={'list_users': users})
 
 @login_required
 def edit_user(request, user_id):

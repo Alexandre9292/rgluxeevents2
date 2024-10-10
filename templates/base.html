@@ -59,7 +59,7 @@
                             {%  if user.role == 'CUSTOMER' %}
                                 <a href="{% url 'customer' %}">Mon compte</a>
                             {%  else %}
-                                <a href="{% url 'administration' %}">Admin</a>
+                                <a href="{% url 'admin-calendar' %}">Admin</a>
                             {% endif %}
                             -
                             <a href="{% url 'logout' %}">Se déconnecter</a>

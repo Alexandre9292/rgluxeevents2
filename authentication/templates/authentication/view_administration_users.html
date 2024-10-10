@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="title-name">
+        <h1>Administration</h1>
+    </div>
+    <div class="sub-title-name">
+        <p><a href="{% url 'admin-calendar' %}">Calendrier</a> - <a href="{% url 'admin-users' %}">Utilisateurs</a></p>
+    </div>
+
+    <div class="body-content">    
+        <input id="searchbar" onkeyup="recherche()" type="text" name="search" placeholder="Recherche...">
+    
+        {% for customer in list_users %}
+            <div class="searchable">
+                <p>{{ customer.first_name }} {{ customer.last_name }}</p>
+            </div>                     
+        {% endfor %} 
+    </div>
+
+    
+{% endblock content %}
+
+{% block css %}
+    <style>
+        .title-name {
+            margin-top: 30px;
+            margin-bottom: 15px;
+
+            h1 {
+                width: max-content;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        .sub-title-name {
+            width: max-content;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 50px;
+
+            p, a {
+                font-size: 20px;
+                color: #a98e35;
+            }
+        }
+
+        .searchable {
+            font-size: 20px;
+            color: #a98e35;
+        }
+    </style>
+{% endblock %}
+
+{% block js %}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        function recherche() {
+            let input = document.getElementById('searchbar').value;
+            input = input.toLowerCase();
+            let user = document.getElementsByClassName('searchable');
+        
+            for (i = 0; i < user.length; i ++) {
+                if (! user[i].innerHTML.toLowerCase().includes(input)) {
+                    user[i].style.display = "none";
+                } else {
+                    user[i].style.display = "";
+                }
+            }
+        }
+    </script>
+{% endblock %}
+
+
+
+

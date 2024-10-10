@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="title-name">
+        <h1>Administration</h1>
+    </div>
+    <div class="sub-title-name">
+        <p><a href="{% url 'admin-calendar' %}">Calendrier</a> - <a href="{% url 'admin-users' %}">Utilisateurs</a></p>
+    </div>
+    
+{% endblock content %}
+
+{% block css %}
+    <style>
+        .title-name {
+            margin-top: 30px;
+            margin-bottom: 15px;
+
+            h1 {
+                width: max-content;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        .sub-title-name {
+            width: max-content;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 50px;
+
+            p, a {
+                font-size: 20px;
+                color: #a98e35;
+            }
+        }
+    </style>
+{% endblock %}
+
+
+
+

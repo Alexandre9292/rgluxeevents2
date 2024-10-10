@@ -43,7 +43,8 @@ urlpatterns = [
     path('new-user/', authentication.views.new_user_page, name='new_user'),
     path('customer/', authentication.views.customer_page, name='customer'),
     path('customer/<int:user_id>/change/', authentication.views.edit_user, name='edit_user'),
-    path('administration/', authentication.views.admin_page, name='administration'),
+    path('administration/calendrier', authentication.views.admin_page_calendar, name='admin-calendar'),
+    path('administration/utilisateurs', authentication.views.admin_page_users, name='admin-users'),
 
     path('', app.views.home, name='home'),
     path('mentions-legales/', authentication.views.mentions_legales, name='mention'),
