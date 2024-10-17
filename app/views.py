@@ -8,20 +8,17 @@ def home(request):
     if request.method == 'POST':
         form = forms.DriverBookingForm(request.POST)
         if form.is_valid():
-            resa = form.save()
-
+            resa = form.save(commit=False)
+            resa.customer = request.user
+            resa.save()
             return redirect('home')
-            """ subject = "RGLuxeEnvents - Réservation" 
-            body = {
-            'name': form.cleaned_data['name'], 
-            'email': form.cleaned_data['email_address'], 
-            'message':form.cleaned_data['message'], 
-            }
-            message = "\n".join(body.values())
-            try:
-                send_mail(subject, message, form.cleaned_data['email_address'], ['alexandre.boucher92@gmail.com']) 
-            except BadHeaderError:
-                return HttpResponse('Invalid header found.') """
+        else :            
+            form = forms.AeroportBookingForm(request.POST)
+            if form.is_valid():
+                resa = form.save(commit=False)
+                resa.customer = request.user
+                resa.save()
+                return redirect('home')
       
     driverForm = forms.DriverBookingForm()
     airportForm = forms.AeroportBookingForm()
@@ -52,8 +49,9 @@ def utilitaire(request):
     if request.method == 'POST':
         form = forms.UtilityBookingForm(request.POST)
         if form.is_valid():
-            resa = form.save()
-
+            resa = form.save(commit=False)
+            resa.customer = request.user
+            resa.save()
             return redirect('home')
             """ subject = "RGLuxeEnvents - Réservation" 
             body = {
@@ -75,7 +73,9 @@ def photomaton(request):
     if request.method == 'POST':
         form = forms.PhotomatonBookingForm(request.POST)
         if form.is_valid():
-            resa = form.save()
+            resa = form.save(commit=False)
+            resa.customer = request.user
+            resa.save()
 
             return redirect('home')
             """ subject = "RGLuxeEnvents - Réservation" 

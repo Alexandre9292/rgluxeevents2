@@ -9,40 +9,59 @@
     </div>
     
     <div class="body-content"> 
-        <div class="admin-calendar">
-            <h1>{{ mois }} {{ annee }}</h1>
+        <div class="admin-managment">
+            <div class="admin-activity">
+                <div class="navigation">
+                    <h1>{{ jourS_string }} {{ jourS }} {{ moisS_string }} {{ anneeS }}</h1>
+                </div>
+            </div>
+            <div class="admin-calendar">
+                <div class="navigation">
+                    <a href="{% url 'admin-calendar' annee_precedente mois_precedent %}">&larr;</a>
+                    <h1>{{ mois_string }} {{ annee }}</h1>
+                    <a href="{% url 'admin-calendar' annee_suivante mois_suivant %}">&rarr;</a>
+                </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Lun</th>
-                        <th>Mar</th>
-                        <th>Mer</th>
-                        <th>Jeu</th>
-                        <th>Ven</th>
-                        <th>Sam</th>
-                        <th>Dim</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        {% for jour in jours_formattes %}
-                            {% if jour.jour %}
-                                {% if jour.jour_semaine_abbr == 'Sun' %}
-                                    <td style="color:red;">{{ jour.jour }}</td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Lun</th>
+                            <th>Mar</th>
+                            <th>Mer</th>
+                            <th>Jeu</th>
+                            <th>Ven</th>
+                            <th>Sam</th>
+                            <th>Dim</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            {% for jour in jours_formattes %}
+                                {% if jour.jour %}
+                                    {% if jour.jour == jourS and mois == moisS and anneeS == annee %}
+                                        {% if jour.jour_semaine_abbr == 'Sun' %}
+                                            <td style="color:red; cursor: pointer;" onClick="changeDay('{{ annee }}', '{{ mois }}', '{{ jour.jour }}')"><span class="jour-selected">{{ jour.jour }}</span></td>
+                                        {% else %}
+                                            <td style="cursor: pointer;" onClick="changeDay('{{ annee }}', '{{ mois }}', '{{ jour.jour }}')"><span class="jour-selected">{{ jour.jour }}</span></td>
+                                        {% endif %}
+                                    {% else %}
+                                        {% if jour.jour_semaine_abbr == 'Sun' %}
+                                            <td style="color:red; cursor: pointer;" onClick="changeDay('{{ annee }}', '{{ mois }}', '{{ jour.jour }}')">{{ jour.jour }}</td>
+                                        {% else %}
+                                            <td style="cursor: pointer;" onClick="changeDay('{{ annee }}', '{{ mois }}', '{{ jour.jour }}')">{{ jour.jour }}</td>
+                                        {% endif %}
+                                    {% endif %}
                                 {% else %}
-                                    <td>{{ jour.jour }}</td>
+                                    <td></td> <!-- Case vide pour les jours avant le début du mois -->
                                 {% endif %}
-                            {% else %}
-                                <td></td> <!-- Case vide pour les jours avant le début du mois -->
-                            {% endif %}
-                            {% if forloop.counter|divisibleby:7 and not forloop.first %}
-                                </tr><tr>
-                            {% endif %}                            
-                        {% endfor %}
-                    </tr>
-                </tbody>
-            </table>
+                                {% if forloop.counter|divisibleby:7 and not forloop.first %}
+                                    </tr><tr>
+                                {% endif %}                            
+                            {% endfor %}
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -73,12 +92,40 @@
             }
         }
 
-        .admin-calendar {
-            margin-bottom: 30px;
+        .admin-managment {
+            display: grid;
+            grid-template-columns: 75% 25%;
+            padding: 10px;
+            text-align: center;
 
+            margin-bottom: 30px;
+        }
+
+        .admin-activity {
             h1 {
+                font-size: 20px;
                 margin-bottom: 15px;
             }
+        }
+
+        .admin-calendar {
+            width: max-content;
+            h1 {
+                font-size: 20px;
+                line-height: 38px;
+            }
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+        }
+        .navigation a {
+            font-size: 30px;
+            text-decoration: none;
+            color: #a98e35;
+            border-radius: 5px;
         }
 
         table {
@@ -88,17 +135,38 @@
         th, td {
             width: 14%;
             border: 1px solid #ddd;
-            padding: 8px;
+            padding: 5px;
             text-align: center;
+            font-size: 11px;
         }
         th {
             background-color: #dbc067;
         }
 
         td {
-            height: 100px;
+            color: white;
+        }
+
+        .jour-selected {
+            border: 1px solid #dbc067;
+            border-radius: 50px;
+            background-color: #dbc067;
+            color: black;
+            font-weight: bold;
         }
     </style>
+{% endblock %}
+
+{% block js %}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function changeDay(annee,mois,jour) {            
+            const href = '/administration/calendrier/' + annee + '/' + mois + '/' + jour;
+            window.location.href = href;
+        };
+    </script>
+
 {% endblock %}
 
 

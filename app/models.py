@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 #Class qui gère les réservations des chauffeurs
 class DriverBooking(models.Model):
@@ -8,6 +9,7 @@ class DriverBooking(models.Model):
     hour = models.TimeField(verbose_name='Heure')
     isReturn = models.BooleanField(default=False)
     price = models.FloatField(default=False, verbose_name='Prix')
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 #Class qui gère les réservations des Transfert aeroport
 class AeroportBooking(models.Model):
@@ -15,11 +17,13 @@ class AeroportBooking(models.Model):
     date = models.DateField(verbose_name='Date')
     hour = models.TimeField(verbose_name='Heure')
     price = models.FloatField(default=False, verbose_name='Prix')
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 #Class qui gère les réservations des Excursions
 class TourismBooking(models.Model):
     excursion = models.CharField(max_length=500, blank=True, verbose_name='Départ')
     price = models.FloatField(default=False, verbose_name='Prix')
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 #Class qui gère les réservations des Mariages
 class WeddingBooking(models.Model):
@@ -27,14 +31,17 @@ class WeddingBooking(models.Model):
     date = models.DateField(verbose_name='Date')
     hour = models.TimeField(verbose_name='Heure')
     price = models.FloatField(default=False, verbose_name='Prix')
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 #Class qui gère les locations des utilitaires
 class UtilityBooking(models.Model):
     start_date = models.DateField(verbose_name='Date')
     end_date = models.DateField(verbose_name='Date')
     price = models.FloatField(default=False, verbose_name='Prix')
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 #Class qui gère les locations des Photomatons
 class PhotomatonBooking(models.Model):
     date = models.DateField(verbose_name='Date')
     price = models.FloatField(default=False, verbose_name='Prix')
+    customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

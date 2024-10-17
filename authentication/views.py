@@ -61,20 +61,40 @@ def customer_page(request):
     return render(request, 'authentication/view_customer.html')
 
 @login_required
-def admin_page_calendar(request):
-    # Récupérer l'année et le mois actuels
+def admin_page_calendar(request, year=None, month=None, day=None):
+
     now = datetime.now()
-    annee = now.year
-    mois = now.month
+    jourS = now.day
+    moisS = now.month
+    anneeS = now.year
+    print(jourS)
+    print(moisS)
+    print(anneeS)
+    if year is None or month is None:
+        # Récupérer l'année et le mois actuels
+        annee = now.year
+        mois = now.month
+    else:
+        if day is not None:
+            jourS = int(day)
+            moisS = int(month)
+            anneeS = int(year)
+        annee = int(year)
+        mois = int(month)  
 
     # Générer le tableau des jours du mois actuel
     cal = calendar.Calendar(firstweekday=0)
+
+    jours_string = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
+    mois_string = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
     
     # Créer un tableau des jours pour le mois actuel
     jours_mois = list(cal.itermonthdays4(annee, mois))
+    joursS_mois = list(cal.itermonthdays4(anneeS, moisS))
 
     # Filtrer pour ne garder que les jours appartenant au mois actuel
     jours_mois = [jour for jour in jours_mois if jour[1] == mois]
+    joursS_mois = [jour for jour in joursS_mois if jour[1] == moisS]
 
     # jours_mois = [(année, mois, jour, jour_de_la_semaine)]
     jours_formattes = [{
@@ -83,6 +103,8 @@ def admin_page_calendar(request):
         'jour_semaine_abbr': calendar.day_abbr[jour[3]]  # Abréviation (ex : "Lun" pour Lundi)
     } for jour in jours_mois]
 
+    jourS_string = jours_string[joursS_mois[jourS-1][3]]
+    
     # Récupérer le premier jour du mois pour savoir combien de "jours vides" ajouter au début
     premier_jour = jours_mois[0][3]  # jour[3] correspond au jour de la semaine (0 = lundi, 6 = dimanche)
     jours_vides = [{'jour': '', 'jour_semaine': '', 'jour_semaine_abbr': ''}] * premier_jour
@@ -90,14 +112,33 @@ def admin_page_calendar(request):
     # Ajouter les jours vides au début de la liste
     jours_formattes = jours_vides + jours_formattes
 
+    # Gestion des mois précédent et suivant
+    mois_precedent = (mois - 1) if mois > 1 else 12
+    annee_precedente = annee if mois > 1 else annee - 1
+    mois_suivant = (mois + 1) if mois < 12 else 1
+    annee_suivante = annee if mois < 12 else annee + 1
+
     # Envoyer les données au template
     contexte = {
         'jours_formattes': jours_formattes,
-        'mois': now.strftime('%B'),  # Mois en toutes lettres
-        'annee': annee,
+        'jourS' : jourS,
+        'jourS_string' : jourS_string,
+        'moisS': moisS, 
+        'moisS_string': mois_string[moisS-1], 
+        'anneeS' : anneeS,
+        'mois': mois, 
+        'mois_string': mois_string[mois-1], 
+        'annee': annee,        
+        'mois_precedent': mois_precedent,
+        'annee_precedente': annee_precedente,
+        'mois_suivant': mois_suivant,
+        'annee_suivante': annee_suivante
     }
 
     return render(request, 'authentication/view_administration_calendar.html', contexte)
+
+def getDaysForMonth(nombre1, nombre2):
+    return nombre1 + nombre2
 
 @login_required
 def admin_page_users(request):
