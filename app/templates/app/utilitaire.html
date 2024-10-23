@@ -162,3 +162,23 @@
 
     </style>
 {% endblock %}
+
+{% block js %}
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+        $(document).ready(function() {
+            flatpickr(".flatpickr-date", {
+                dateFormat: "d/m/Y",    // Format combiné pour date et heure (dd/mm/yyyy hh:mm)
+                allowInput: true,     // Permet de saisir manuellement la date
+                altInput: true,       // Affiche un champ alternatif pour la saisie
+                altFormat: "d/m/Y",  // Format de la date dans l'affichage alternatif
+                minDate: "today",  // Empêche la sélection de dates avant aujourd'hui
+                maxDate: "31.12.2100"
+            });
+        });
+
+    </script>
+
+{% endblock %}

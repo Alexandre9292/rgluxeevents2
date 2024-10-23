@@ -13,6 +13,7 @@ from django.db.models.query_utils import Q
 import calendar
 from datetime import datetime
 
+from app import models as model_app
 from . import forms, models
 
 from authentication.models import User
@@ -47,7 +48,6 @@ def login_page(request):
                 return redirect('home')
             else:
                 message = 'Identifiants invalides.'
-                print(message)
     return render(
         request, 'authentication/login.html', context={'form': form, 'message': message})
 
@@ -67,9 +67,6 @@ def admin_page_calendar(request, year=None, month=None, day=None):
     jourS = now.day
     moisS = now.month
     anneeS = now.year
-    print(jourS)
-    print(moisS)
-    print(anneeS)
     if year is None or month is None:
         # Récupérer l'année et le mois actuels
         annee = now.year
@@ -118,6 +115,21 @@ def admin_page_calendar(request, year=None, month=None, day=None):
     mois_suivant = (mois + 1) if mois < 12 else 1
     annee_suivante = annee if mois < 12 else annee + 1
 
+    #Chargement des activités
+    date_selected = datetime.strptime(str(jourS) + '/' + str(moisS) + '/' + str(anneeS), '%d/%m/%Y').date()
+    all_activity = []
+    all_activity.extend(model_app.DriverBooking.objects.filter(
+        date = date_selected))
+    all_activity.extend(model_app.AeroportBooking.objects.filter(
+        date = date_selected))
+    all_activity.extend(model_app.TourismBooking.objects.all())
+    all_activity.extend(model_app.WeddingBooking.objects.filter(
+        date = date_selected))
+    all_activity.extend(model_app.UtilityBooking.objects.filter(
+        start_date = date_selected))
+    all_activity.extend(model_app.PhotomatonBooking.objects.filter(
+        date = date_selected))
+
     # Envoyer les données au template
     contexte = {
         'jours_formattes': jours_formattes,
@@ -132,7 +144,8 @@ def admin_page_calendar(request, year=None, month=None, day=None):
         'mois_precedent': mois_precedent,
         'annee_precedente': annee_precedente,
         'mois_suivant': mois_suivant,
-        'annee_suivante': annee_suivante
+        'annee_suivante': annee_suivante,
+        'all_activity': all_activity
     }
 
     return render(request, 'authentication/view_administration_calendar.html', contexte)

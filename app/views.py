@@ -11,14 +11,14 @@ def home(request):
             resa = form.save(commit=False)
             resa.customer = request.user
             resa.save()
-            return redirect('home')
-        else :            
-            form = forms.AeroportBookingForm(request.POST)
-            if form.is_valid():
-                resa = form.save(commit=False)
-                resa.customer = request.user
-                resa.save()
-                return redirect('home')
+
+        form = forms.AeroportBookingForm(request.POST)
+        if form.is_valid():
+            resa = form.save(commit=False)
+            resa.customer = request.user
+            resa.save()           
+            
+        return redirect('home') 
       
     driverForm = forms.DriverBookingForm()
     airportForm = forms.AeroportBookingForm()

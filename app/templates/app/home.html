@@ -27,7 +27,7 @@
                             
                             <form method="post">
                                 {% csrf_token %}
-                                {{ driverForm.as_p }}
+                                {{ driverForm.as_p }}                                
                                 <button type="submit">Calculer le prix</button>     
                             </form>
                         </div>
@@ -391,11 +391,30 @@
 
         $(document).ready(function() {
             tabActive('tab-transport');
+
+            flatpickr(".flatpickr-date", {
+                dateFormat: "d/m/Y",    // Format combiné pour date et heure (dd/mm/yyyy hh:mm)
+                allowInput: true,     // Permet de saisir manuellement la date
+                altInput: true,       // Affiche un champ alternatif pour la saisie
+                altFormat: "d/m/Y",  // Format de la date dans l'affichage alternatif
+                minDate: "today",  // Empêche la sélection de dates avant aujourd'hui
+                maxDate: "31.12.2100"
+            });
+
+            // Initialisation de Flatpickr pour le champ heure
+            flatpickr(".flatpickr-time", {
+                enableTime: true,           // Activer la sélection de l'heure
+                noCalendar: true,           // Désactive la partie calendrier
+                dateFormat: "H:i",          // Format de l'heure : hh:mm
+                time_24hr: true,            // Utiliser un format 24h
+                allowInput: true,           // Permet la saisie manuelle
+                minuteIncrement: 1          // Incrément de minutes
+            });
         });
 
-        document.getElementById('ban-video').addEventListener('contextmenu', function(e) {
+       /* document.getElementById('ban-video').addEventListener('contextmenu', function(e) {
             e.preventDefault(); // Empêcher l'apparition du menu contextuel
-        });
+        });*/
 
         function changeTab(tab) {            
             const tabContent = document.querySelectorAll('.tab-content > div');
