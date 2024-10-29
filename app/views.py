@@ -6,17 +6,22 @@ from . import forms, models
 #Page d'accueil
 def home(request):
     if request.method == 'POST':
-        form = forms.DriverBookingForm(request.POST)
-        if form.is_valid():
-            resa = form.save(commit=False)
-            resa.customer = request.user
-            resa.save()
+        form_type = request.POST.get('form_type')
+        if form_type == 'driver_form':
+            form = forms.DriverBookingForm(request.POST)
+            if form.is_valid():
+                resa = form.save(commit=False)
+                resa.customer = request.user
+                resa.acti = 'DRIVER'
+                resa.save()
 
-        form = forms.AeroportBookingForm(request.POST)
-        if form.is_valid():
-            resa = form.save(commit=False)
-            resa.customer = request.user
-            resa.save()           
+        elif form_type == 'airport_form':
+            form = forms.AeroportBookingForm(request.POST)
+            if form.is_valid():
+                resa = form.save(commit=False)
+                resa.customer = request.user
+                resa.acti = 'AEROPORT'
+                resa.save()         
             
         return redirect('home') 
       
@@ -51,6 +56,7 @@ def utilitaire(request):
         if form.is_valid():
             resa = form.save(commit=False)
             resa.customer = request.user
+            resa.acti = 'UTILITAIRE'
             resa.save()
             return redirect('home')
             """ subject = "RGLuxeEnvents - Réservation" 
@@ -75,6 +81,7 @@ def photomaton(request):
         if form.is_valid():
             resa = form.save(commit=False)
             resa.customer = request.user
+            resa.acti = 'PHOTOMATON'
             resa.save()
 
             return redirect('home')

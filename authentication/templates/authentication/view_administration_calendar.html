@@ -11,13 +11,34 @@
     <div class="body-content"> 
         <div class="admin-managment">
             <div class="admin-activity">
-                <div class="navigation">
-                    <h1>{{ jourS_string }} {{ jourS }} {{ moisS_string }} {{ anneeS }}</h1>
+                <div id="admin-activity-list" class="active">
+                    <div class="navigation">
+                        <h1>{{ jourS_string }} {{ jourS }} {{ moisS_string }} {{ anneeS }}</h1>
+                    </div>
+                    <div class="activity-list">
+                        {% for activity in all_activity %}
+                            <div class="activity-acti" onclick="showDesc('{{ activity.id }}', '{{ activity.acti }}')">
+                                <p>{{ activity.acti }}</p>
+                                <p>{{ activity.customer.first_name }} {{ activity.customer.last_name }}</p>
+                                {% if activity.hour %}
+                                    <p>{{ activity.hour }}</p>
+                                {% endif %} 
+                            </div>                        
+                        {% endfor %}
+                    </div>
                 </div>
-                <div class="activity-list">
-                    {% for activity in all_activity %}
-                        <p>{{ activity.customer }}</p>                          
-                    {% endfor %}
+                <div id="admin-activity-desc" class="">
+                    <h2 id="acti-acti"></h2>
+                    <p id="acti-departure"></p>
+                    <p id="acti-arrival"></p>
+                    <p id="acti-date"></p>
+                    <p id="acti-price"></p>
+                    <br>
+                    <h2>INFO CLIENT</h2>
+                    <p id="acti-customer-name"></p>
+                    <p id="acti-customer-phone"></p>
+                    <p id="acti-customer-email"></p>
+                    <button onclick="showList()">Retour</button>
                 </div>
             </div>
             <div class="admin-calendar">
@@ -133,6 +154,29 @@
             border-radius: 5px;
         }
 
+        .activity-acti {            
+            display: grid;
+            grid-template-columns: auto auto auto;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+
+            color: black;
+            background-color: #a98e35;
+            font-size: 18px;
+            width: 75%;
+            border-radius: 20px;
+            margin-bottom: 25px;
+        }
+
+        .admin-activity > div {
+            display: none;
+        }
+
+        .admin-activity > div.active {
+            display: block;
+        }
+
         table {
             width: 98%;
             border-collapse: collapse;
@@ -166,6 +210,34 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+
+        function showDesc(id, type) {
+            fetch(`/get_activity_info/${id}/${type}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('acti-acti').textContent = data.acti;
+                    document.getElementById('acti-departure').textContent = 'Départ: ' + data.departure;
+                    document.getElementById('acti-arrival').textContent = 'Arrivé: ' + data.arrival;
+                    document.getElementById('acti-date').textContent = 'Date: ' + data.date + ' ' + data.hour;
+                    document.getElementById('acti-price').textContent = 'Prix: ' + data.price;
+                    
+                    document.getElementById('acti-customer-name').textContent = data.name;
+                    document.getElementById('acti-customer-phone').textContent = data.phone;
+                    document.getElementById('acti-customer-email').textContent = data.email;
+
+                    // Afficher les infos et masquer la liste
+                    document.getElementById('admin-activity-desc').classList.add('active');
+                    document.getElementById('admin-activity-list').classList.remove('active');
+                    //document.getElementById('container').style.transform = 'translateX(-50%)';
+                });
+        }
+
+        function showList() {
+            //document.getElementById('container').style.transform = 'translateX(0)';
+            document.getElementById('admin-activity-desc').classList.remove('active');
+            document.getElementById('admin-activity-list').classList.add('active');
+        }
+
         function changeDay(annee,mois,jour) {            
             const href = '/administration/calendrier/' + annee + '/' + mois + '/' + jour;
             window.location.href = href;

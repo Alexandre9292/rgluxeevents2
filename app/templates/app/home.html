@@ -27,6 +27,7 @@
                             
                             <form method="post">
                                 {% csrf_token %}
+                                <input type="hidden" name="form_type" value="driver_form">
                                 {{ driverForm.as_p }}                                
                                 <button type="submit">Calculer le prix</button>     
                             </form>
@@ -38,6 +39,7 @@
                             
                             <form method="post">
                                 {% csrf_token %}
+                                <input type="hidden" name="form_type" value="airport_form">
                                 {{ airportForm.as_p }}
                                 <button type="submit">Calculer le prix</button>     
                             </form>

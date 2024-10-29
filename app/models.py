@@ -10,6 +10,7 @@ class DriverBooking(models.Model):
     isReturn = models.BooleanField(default=False)
     price = models.FloatField(default=False, verbose_name='Prix')
     customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    acti = models.CharField(max_length=100, blank=True)
 
 #Class qui gère les réservations des Transfert aeroport
 class AeroportBooking(models.Model):
@@ -18,12 +19,14 @@ class AeroportBooking(models.Model):
     hour = models.TimeField(verbose_name='Heure')
     price = models.FloatField(default=False, verbose_name='Prix')
     customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    acti = models.CharField(max_length=100, blank=True)
 
 #Class qui gère les réservations des Excursions
 class TourismBooking(models.Model):
     excursion = models.CharField(max_length=500, blank=True, verbose_name='Départ')
     price = models.FloatField(default=False, verbose_name='Prix')
     customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    acti = models.CharField(max_length=100, blank=True)
 
 #Class qui gère les réservations des Mariages
 class WeddingBooking(models.Model):
@@ -32,6 +35,7 @@ class WeddingBooking(models.Model):
     hour = models.TimeField(verbose_name='Heure')
     price = models.FloatField(default=False, verbose_name='Prix')
     customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    acti = models.CharField(max_length=100, blank=True)
 
 #Class qui gère les locations des utilitaires
 class UtilityBooking(models.Model):
@@ -39,9 +43,11 @@ class UtilityBooking(models.Model):
     end_date = models.DateField(verbose_name='Date')
     price = models.FloatField(default=False, verbose_name='Prix')
     customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    acti = models.CharField(max_length=100, blank=True)
 
 #Class qui gère les locations des Photomatons
 class PhotomatonBooking(models.Model):
     date = models.DateField(verbose_name='Date')
     price = models.FloatField(default=False, verbose_name='Prix')
     customer = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    acti = models.CharField(max_length=100, blank=True)

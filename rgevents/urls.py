@@ -47,6 +47,7 @@ urlpatterns = [
     path('administration/calendrier/<int:year>/<int:month>/', authentication.views.admin_page_calendar, name='admin-calendar'),
     path('administration/calendrier/<int:year>/<int:month>/<int:day>', authentication.views.admin_page_calendar, name='admin-calendar'),
     path('administration/utilisateurs', authentication.views.admin_page_users, name='admin-users'),
+    path('get_activity_info/<int:acti_id>/<str:acti_type>', authentication.views.get_activity_info, name='get_activity_info'),
 
     path('', app.views.home, name='home'),
     path('mentions-legales/', authentication.views.mentions_legales, name='mention'),

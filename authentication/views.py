@@ -17,6 +17,7 @@ from app import models as model_app
 from . import forms, models
 
 from authentication.models import User
+from django.http import JsonResponse
 
 #Chargement de la page de mention légales
 def mentions_legales(request):
@@ -150,8 +151,36 @@ def admin_page_calendar(request, year=None, month=None, day=None):
 
     return render(request, 'authentication/view_administration_calendar.html', contexte)
 
-def getDaysForMonth(nombre1, nombre2):
-    return nombre1 + nombre2
+def get_activity_info(request, acti_id, acti_type):
+    acti = ""
+    data = {}
+
+    if acti_type == 'DRIVER':
+        acti = get_object_or_404(model_app.DriverBooking, id=acti_id)
+        data['departure'] = acti.departure
+        data['arrival'] = acti.arrival
+        data['date'] = acti.date 
+        data['hour'] = acti.hour 
+    if acti_type == 'AEROPORT':
+        acti = get_object_or_404(model_app.AeroportBooking, id=acti_id)
+        data['departure'] = acti.departure
+        data['date'] = acti.date
+        data['hour'] = acti.hour 
+    if acti_type == 'UTILITAIRE':
+        acti = get_object_or_404(model_app.UtilityBooking, id=acti_id)
+        data['date'] = acti.start_date + ' au ' + acti.end_date,
+    if acti_type == 'PHOTOMATON':
+        acti = get_object_or_404(model_app.PhotomatonBooking, id=acti_id)
+        data['date'] = acti.date,
+         
+    
+    data['acti'] = acti.acti
+    data['price'] = acti.price
+    data['name'] = acti.customer.first_name + ' ' + acti.customer.last_name
+    data['phone'] = acti.customer.phone_number
+    data['email'] = acti.customer.email
+    
+    return JsonResponse(data)
 
 @login_required
 def admin_page_users(request):
