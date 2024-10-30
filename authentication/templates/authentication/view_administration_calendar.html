@@ -38,7 +38,7 @@
                     <p id="acti-customer-name"></p>
                     <p id="acti-customer-phone"></p>
                     <p id="acti-customer-email"></p>
-                    <button onclick="showList()">Retour</button>
+                    <button onclick="showList()">&larr;</button>
                 </div>
             </div>
             <div class="admin-calendar">
@@ -89,6 +89,25 @@
                 </table>
             </div>
         </div>
+        <!-- Pop-up new acti -->
+        <div id="popupNewActi" class="popup">
+            <div class="login" style="margin-bottom: 10%;">
+                <span id="closePopupBtn" class="close-btn">&times;</span>
+                <select name="chooseActi" id="chooseActi">
+                    <option value=""></option>
+                    <option value="DRIVER">DRIVER</option>
+                    <option value="AEROPORT">AEROPORT</option>
+                    <option value="TOURISM">TOURISM</option>
+                    <option value="DRIVER">PHOTOMATON</option>
+                    <option value="MARIAGE">MARIAGE</option>
+                    <option value="PHOTOMATON">PHOTOMATON</option>
+                </select>
+                <p><input type="text" value="{{user.first_name}} {{user.last_name}}" disabled></p>
+                <p><input type="text" value="{{user.email}}" disabled></p>
+                <p><input type="text" value="{{user.phone_number}}" disabled></p>
+            </div>
+        </div>
+        <button id="newActiPopup"><span>+</span></button>
     </div>
 
 {% endblock content %}
@@ -177,6 +196,38 @@
             display: block;
         }
 
+        #admin-activity-desc {
+            width: 40%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #a98e35;
+            border-radius: 10px;
+
+            h2 {
+                font-size: 20px;
+                color: #a98e35;
+                margin-bottom: 15px;
+            }
+
+            p {
+                font-size: 17px;
+                color: #ccc;
+                margin-bottom: 10px;
+            }
+
+            button {
+                margin-top: 15px;
+                font-size: 30px;
+                color: #a98e35;
+                background: none;
+                border: none;
+                padding: 0;
+                cursor: pointer;
+            }
+        }
+
         table {
             width: 98%;
             border-collapse: collapse;
@@ -203,6 +254,69 @@
             color: black;
             font-weight: bold;
         }
+
+        #newActiPopup {
+            width: 60px;             
+            height: 60px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0;            
+            font-size: 50px;
+            cursor: pointer;
+            background-color: #dac68798; 
+            color: #dbc067;             
+            border: 1px solid #dbc067;             
+            border-radius: 50%;       
+            display: flex;            
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+            transition: background-color 0.3s;
+            margin-top: 90px;
+        }
+
+        #newActiPopup:hover {
+            background-color: #ffc40078;
+        }
+
+        #newActiPopup:hover span {
+            transform: rotate(180deg);   /* Rotation de 180 degrés */
+            transition: transform 0.7s ease; /* Transition pour une rotation en douceur */
+        }
+
+        .popup {
+            display: none; 
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); 
+            z-index: 1000;
+        }
+
+        .popup-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            cursor: pointer;
+        }
     </style>
 {% endblock %}
 
@@ -211,19 +325,53 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
 
+        $(document).ready(function() {
+            const newActiPopup = document.getElementById('newActiPopup');
+            const closePopupBtn = document.getElementById('closePopupBtn');
+            const popup = document.getElementById('popupNewActi');
+
+            $("#newActiPopup").click(function() {
+                popup.style.display = 'block';
+            });
+            $("#closePopupBtn").click(function() {
+                popup.style.display = 'none';
+            });
+            window.addEventListener('click', function (event) {
+                if (event.target === popup) {
+                    popup.style.display = 'none';
+                }
+            });        
+        });
+
         function showDesc(id, type) {
             fetch(`/get_activity_info/${id}/${type}`)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('acti-acti').textContent = data.acti;
-                    document.getElementById('acti-departure').textContent = 'Départ: ' + data.departure;
-                    document.getElementById('acti-arrival').textContent = 'Arrivé: ' + data.arrival;
-                    document.getElementById('acti-date').textContent = 'Date: ' + data.date + ' ' + data.hour;
-                    document.getElementById('acti-price').textContent = 'Prix: ' + data.price;
+                    if (data.departure) {
+                        document.getElementById('acti-departure').textContent = 'Départ: ' + data.departure;
+                    }
+                    if (data.arrival) {
+                        document.getElementById('acti-arrival').textContent = 'Arrivé: ' + data.arrival;
+                    }
+                    if (data.hour) {
+                        document.getElementById('acti-date').textContent = 'Date: ' + data.date + ' ' + data.hour;
+                    }
+                    else if (data.date) {
+                        document.getElementById('acti-date').textContent = 'Date: ' + data.date;
+                    }
+                    else if (data.start_date && data.end_date) {
+                        document.getElementById('acti-date').textContent = 'Date: ' + data.start_date + ' au ' + data.end_date;
+                    }
+                    document.getElementById('acti-price').textContent = 'Prix: ' + data.price + '€';
                     
-                    document.getElementById('acti-customer-name').textContent = data.name;
-                    document.getElementById('acti-customer-phone').textContent = data.phone;
-                    document.getElementById('acti-customer-email').textContent = data.email;
+                    document.getElementById('acti-customer-name').textContent = 'Nom: ' + data.name;
+                    if (data.phone) {
+                    document.getElementById('acti-customer-phone').textContent = 'Numéro: ' + data.phone;
+                    }
+                    if (data.email) {
+                    document.getElementById('acti-customer-email').textContent = 'Email: ' + data.email;
+                    }
 
                     // Afficher les infos et masquer la liste
                     document.getElementById('admin-activity-desc').classList.add('active');

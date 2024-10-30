@@ -168,10 +168,11 @@ def get_activity_info(request, acti_id, acti_type):
         data['hour'] = acti.hour 
     if acti_type == 'UTILITAIRE':
         acti = get_object_or_404(model_app.UtilityBooking, id=acti_id)
-        data['date'] = acti.start_date + ' au ' + acti.end_date,
+        data['start_date'] = acti.start_date
+        data['end_date'] = acti.end_date
     if acti_type == 'PHOTOMATON':
         acti = get_object_or_404(model_app.PhotomatonBooking, id=acti_id)
-        data['date'] = acti.date,
+        data['date'] = acti.date
          
     
     data['acti'] = acti.acti
