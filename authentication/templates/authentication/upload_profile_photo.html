@@ -2,4 +2,23 @@
 {% block content %}
     <div class="delete">
     </div>
+    <style>
+.upload-photo-form {
+    width: 350px;
+    margin: 30px auto;
+    padding: 20px;
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 0 20px #dbc067;
+}
+@media (max-width: 600px) {
+    .upload-photo-form {
+        width: 98vw;
+        padding: 10px;
+    }
+    .upload-photo-form label, .upload-photo-form input, .upload-photo-form button {
+        font-size: 1rem;
+    }
+}
+</style>
 {% endblock content %}

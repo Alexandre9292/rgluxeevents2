@@ -81,20 +81,27 @@
         .about-bloc {
             display: grid;
             grid-template-columns: 50% 50%;
+            gap: 20px;
         }
-
+        @media (max-width: 900px) {
+            .about-bloc {
+                grid-template-columns: 1fr;
+            }
+            .about-photo {
+                width: 90vw;
+                max-width: 350px;
+                height: auto;
+            }
+        }
         .about-photo {
             height: 500px;
+            width: 350px;
+            object-fit: cover;
         }
-
-        .about-bloc-left {
-            padding-top: 50px;
-        }
-
-        .about-bloc-right {
-            width: 200px;
-            margin-left: auto;
-            margin-right: auto;
+        @media (max-width: 700px) {
+            .about-content {
+                font-size: 15px;
+            }
         }
     </style>
 {% endblock %}

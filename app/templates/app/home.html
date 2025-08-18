@@ -3,7 +3,7 @@
 {% block content %}
    
     <div class="sub-header-home">
-        <video autoplay loop controls controlsList="nodownload" id="ban-video">
+        <video autoplay loop muted controlsList="nodownload" id="ban-video">
             <source src="{% static 'images/ban-video.mp4'%}" type="video/mp4">
             Votre navigateur ne supporte pas la lecture de vidéos HTML5.
         </video>
@@ -28,9 +28,99 @@
                             <form method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="form_type" value="driver_form">
-                                {{ driverForm.as_p }}                                
-                                <button type="submit">Calculer le prix</button>     
+                                
+                                <!-- Champs de base -->
+                                <div class="form-group">
+                                    <label for="{{ driverForm.departure.id_for_label }}">Lieu de départ</label>
+                                    {{ driverForm.departure }}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="{{ driverForm.arrival.id_for_label }}">Lieu d'arrivée</label>
+                                    {{ driverForm.arrival }}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="{{ driverForm.date.id_for_label }}">Date de départ</label>
+                                    {{ driverForm.date }}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="{{ driverForm.hour.id_for_label }}">Heure de départ</label>
+                                    {{ driverForm.hour }}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="{{ driverForm.passengers.id_for_label }}">Nombre de passagers</label>
+                                    {{ driverForm.passengers }}
+                                </div>
+                                
+                                <!-- Option aller-retour -->
+                                <div class="aller-retour-container">
+                                    {{ driverForm.aller_retour }}
+                                    <label for="{{ driverForm.aller_retour.id_for_label }}">Aller-retour</label>
+                                </div>
+                                
+                                <!-- Champs de retour (cachés par défaut) -->
+                                <div id="retour-fields" class="retour-fields">
+                                    <div class="form-group">
+                                        <label for="{{ driverForm.retour_date.id_for_label }}">Date de retour</label>
+                                        {{ driverForm.retour_date }}
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="{{ driverForm.retour_heure.id_for_label }}">Heure de retour</label>
+                                        {{ driverForm.retour_heure }}
+                                    </div>
+                                </div>
+                                
+                                <button type="submit" id="calculate-btn">Calculer le prix</button>     
                             </form>
+                            
+                            <!-- Carte interactive -->
+                            <div class="map-container">
+                                <h3>Visualisez votre trajet</h3>
+                                <div id="map" class="google-map"></div>
+                                <div class="route-info" id="route-info" style="display: none;">
+                                    <div class="route-details">
+                                        <span class="distance" id="distance"></span>
+                                        <span class="duration" id="duration"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Résultat du calcul de prix -->
+                            <div class="price-result" id="price-result" style="display: none;">
+                                <div class="price-header">
+                                    <h3>Prix calculé</h3>
+                                </div>
+                                <div class="price-details">
+                                    <div class="price-breakdown">
+                                        <div class="price-row">
+                                            <span class="label">Distance :</span>
+                                            <span class="value" id="display-distance"></span>
+                                        </div>
+                                        <div class="price-row">
+                                            <span class="label">Tarif par km :</span>
+                                            <span class="value" id="display-price-per-km"></span>
+                                        </div>
+                                        <div class="price-row">
+                                            <span class="label">Passagers :</span>
+                                            <span class="value" id="display-passengers"></span>
+                                        </div>
+                                        <div class="price-row total">
+                                            <span class="label">Prix total :</span>
+                                            <span class="value" id="display-total-price"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="price-actions">
+                                    <button type="button" class="btn-payment" onclick="proceedToPayment()">
+                                        <i class="fas fa-credit-card"></i>
+                                        <span>Accéder au paiement</span>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div id="tab-airport" class="mod-resa-block">
@@ -40,7 +130,32 @@
                             <form method="post">
                                 {% csrf_token %}
                                 <input type="hidden" name="form_type" value="airport_form">
-                                {{ airportForm.as_p }}
+                                
+                                <div class="form-group">
+                                    <label for="{{ airportForm.departure.id_for_label }}">Lieu de départ</label>
+                                    {{ airportForm.departure }}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="{{ airportForm.date.id_for_label }}">Date de transfert</label>
+                                    {{ airportForm.date }}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="{{ airportForm.hour.id_for_label }}">Heure de transfert</label>
+                                    {{ airportForm.hour }}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="{{ airportForm.passengers.id_for_label }}">Nombre de passagers</label>
+                                    {{ airportForm.passengers }}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="{{ airportForm.bagages.id_for_label }}">Nombre de bagages</label>
+                                    {{ airportForm.bagages }}
+                                </div>
+                                
                                 <button type="submit">Calculer le prix</button>     
                             </form>
                         </div>
@@ -112,11 +227,18 @@
 
 {% block css %}
     <style>
+        .sub-header-home {
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
         .home-bloc1 {
             display: grid;
             grid-template-columns: auto auto;
             padding: 10px;
             text-align: center;
+            gap: 20px;
         }
 
         .home-ban1 {
@@ -224,22 +346,31 @@
             position: relative;
             text-align: center;
             display: inline-block;
-            height: 700px;
+            height: 2000px;
             width: 500px;
             margin-left: auto;
             margin-right: auto;
-            border-radius: 10px;
-            background-color: #777;
-            -webkit-box-shadow: 0 0 200px #dbc067, 0 1px 2px rgba(0, 0, 0, 0.3);
-            box-shadow: 0 0 200px #dbc067, 0 1px 2px rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        
+        .module-reservation.expanded {
+            height: 1600px;
         }
 
         .reservation-title {
             width: 100%;
-            height: 150px;
-            background: linear-gradient(#dbc067, #ffeaa7);
-            border-bottom: 1px solid #333;
+            height: 180px;
+            background: linear-gradient(135deg, #dbc067 0%, #ffeaa7 100%);
+            border-bottom: 2px solid #dbc067;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
 
         .mod-resa-block {
@@ -259,18 +390,34 @@
         .reservation-body {
             position: absolute;
             width: 100%;
-            top: 170px;
+            top: 200px;
             left: 50%;
             transform: translate(-50%, 0);
+            padding: 0 20px;
+            height: auto;
+            overflow: visible;
+            transition: all 0.4s ease;
         }
+        
+
 
         .module-reservation h1 {
-            line-height: 50px;
-            font-size: 40px;
+            line-height: 1.1;
+            font-size: 32px;
             font-weight: bold;
             text-transform: uppercase;
-            color: #000;
+            color: #333;
             text-align: center;
+            margin: 0 0 8px 0;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .module-reservation h2 {
+            font-size: 15px;
+            color: #555;
+            margin: 0;
+            font-weight: normal;
+            line-height: 1.3;
         }
 
         .module-reservation p {
@@ -303,40 +450,51 @@
         .tab-nav {
             list-style: none;
             padding: 0;
-            margin-top: -52px;
+            margin-top: -62px;
             display: flex;
+            justify-content: center;
+            gap: 0;
         }
 
         .tab-header {
             position: relative;
-            line-height: 50px;
-            font-size: 20px;
+            line-height: 60px;
+            font-size: 18px;
             font-weight: bold;
-            color: #000;
-            background: linear-gradient(#dbc067, #ffeaa7);
-            
-            margin-left: -10px;
-
-            border-radius: 10px 10px 0 0;
-            border-top: solid 1px #111;
-            border-right: solid 1px #111;
-            border-left: solid 1px #111;
+            color: #333;
+            background: linear-gradient(135deg, #dbc067 0%, #ffeaa7 100%);
+            margin: 0;
+            border-radius: 15px 15px 0 0;
+            border: 2px solid #dbc067;
+            border-bottom: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            min-width: 120px;
         }
 
         .tab-nav a {
             text-decoration: none;
-            padding: 0 50px;
+            padding: 0 30px;
+            display: block;
+            transition: all 0.3s ease;
+            white-space: nowrap;
         }
 
         .tab-nav a:hover {
             cursor: pointer;
             text-shadow: 0 0 15px #dbc067,0 0 15px #dbc067,0 0 15px #dbc067;
+            transform: translateY(-2px);
         }
 
         /* Tab content styling */
         .tab-content {
-            height: 550px;
+            height: 640px;
             width: 100%;
+            transition: all 0.4s ease;
+        }
+        
+        .tab-content.expanded {
+            height: 920px;
         }
 
         .tab-content > div {
@@ -348,29 +506,286 @@
         }
 
         /* Formulaire */
-        .reservation-body input[type=text], .contact-form textarea {
+        .reservation-body input[type=text], 
+        .reservation-body input[type=time],
+        .reservation-body input[type=checkbox],
+        .reservation-body select,
+        .contact-form textarea {
             width: 100%; 
-            padding: 8px;
-            border: 1px solid #ccc; 
-            border-radius: 4px; 
+            padding: 12px;
+            border: 2px solid #e0e0e0; 
+            border-radius: 8px; 
             box-sizing: border-box; 
-            margin-top: 6px; 
+            margin-top: 8px; 
+            margin-bottom: 15px;
             resize: vertical; 
             text-align: left;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .reservation-body input[type=text]:focus,
+        .reservation-body input[type=time]:focus,
+        .reservation-body select:focus {
+            outline: none;
+            border-color: #dbc067;
+            box-shadow: 0 0 10px rgba(219, 192, 103, 0.3);
+        }
+        
+        .passengers-select,
+        .bagages-select {
+            background-color: white;
+            cursor: pointer;
+        }
+        
+        .passengers-select:focus,
+        .bagages-select:focus {
+            border-color: #dbc067;
+            box-shadow: 0 0 10px rgba(219, 192, 103, 0.3);
+        }
+        
+        /* Styles pour la carte */
+        .map-container {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .map-container h3 {
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        
+        .google-map {
+            width: 100%;
+            height: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .route-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            border-left: 4px solid #dbc067;
+        }
+        
+        .route-details {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+        
+        .distance, .duration {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .distance::before {
+            content: "📏";
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+        
+        .duration::before {
+            content: "⏱️";
+            font-size: 1.5em;
+            margin-bottom: 5px;
+        }
+        
+        /* Styles pour le résultat du calcul de prix */
+        .price-result {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            border: 2px solid #dbc067;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .price-header h3 {
+            color: #333;
+            margin: 0 0 20px 0;
+            text-align: center;
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+        
+        .price-details {
+            margin-bottom: 25px;
+        }
+        
+        .price-breakdown {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+        }
+        
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .price-row:last-child {
+            border-bottom: none;
+        }
+        
+        .price-row.total {
+            border-top: 2px solid #dbc067;
+            border-bottom: none;
+            padding-top: 15px;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .price-row .label {
+            color: #555;
+            font-weight: 500;
+        }
+        
+        .price-row .value {
+            color: #333;
+            font-weight: bold;
+        }
+        
+        .price-row.total .value {
+            color: #dbc067;
+            font-size: 1.2em;
+        }
+        
+        .price-actions {
+            text-align: center;
+        }
+        
+        .btn-payment {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, #dbc067 0%, #ffeaa7 100%);
+            color: #333;
+            text-decoration: none;
+            padding: 18px 35px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(219, 192, 103, 0.3);
+        }
+        
+        .btn-payment:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(219, 192, 103, 0.4);
+            color: #333;
+        }
+        
+        .btn-payment i {
+            font-size: 1.2em;
+        }
+        
+        .reservation-body input[type=checkbox] {
+            width: auto;
+            margin-right: 15px;
+            transform: scale(1.3);
+            cursor: pointer;
+        }
+        
+        .aller-retour-container:hover {
+            border-color: #dbc067;
+            box-shadow: 0 2px 10px rgba(219, 192, 103, 0.2);
+        }
+        
+        .retour-fields {
+            display: none;
+            background: #f8f9fa;
+            padding: 18px;
+            border-radius: 10px;
+            margin: 18px 0;
+            border: 2px solid #e9ecef;
+            border-left: 4px solid #dbc067;
+            position: relative;
+            z-index: 10;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.4s ease;
+        }
+        
+        .retour-fields.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .retour-fields .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .retour-fields .form-group:last-child {
+            margin-bottom: 0;
+        }
+        
+
+        
+        .aller-retour-container {
+            display: flex;
+            align-items: center;
+            margin: 18px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            border: 2px solid #dee2e6;
+            position: relative;
+            z-index: 5;
+            transition: all 0.4s ease;
+        }
+        
+        .aller-retour-container label {
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+            cursor: pointer;
         }
         
         .reservation-body button[type=submit] {
-            background-color: #dbc067;
-            color: white;
-            padding: 12px 20px;
+            background: linear-gradient(135deg, #dbc067 0%, #ffeaa7 100%);
+            color: #333;
+            padding: 15px 30px;
             border: none;
-            border-radius: 4px;
+            border-radius: 10px;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(219, 192, 103, 0.3);
+            width: 100%;
         }
         
         .reservation-body button[type=submit]:hover {
-            background-color: #d1af3e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(219, 192, 103, 0.4);
+        }
+        
+        .reservation-body button[type=submit]:active {
+            transform: translateY(0);
         }
 
         .reservation-body p {
@@ -378,9 +793,26 @@
         }
 
         .reservation-body form{
-            width: 80%;
+            width: 100%;
             margin-right: auto;
             margin-left: auto;
+        }
+        
+        .form-group {
+            margin-bottom: 18px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 6px;
+            font-size: 14px;
+            text-align: left;
+        }
+        
+        .form-group:last-child {
+            margin-bottom: 0;
         }
 
     </style>
@@ -394,6 +826,7 @@
         $(document).ready(function() {
             tabActive('tab-transport');
 
+            // Initialisation de Flatpickr pour les dates
             flatpickr(".flatpickr-date", {
                 dateFormat: "d/m/Y",    // Format combiné pour date et heure (dd/mm/yyyy hh:mm)
                 allowInput: true,     // Permet de saisir manuellement la date
@@ -412,9 +845,35 @@
                 allowInput: true,           // Permet la saisie manuelle
                 minuteIncrement: 1          // Incrément de minutes
             });
+            
+            // Gestion de l'option aller-retour
+            $('.aller-retour-checkbox').change(function() {
+                const retourFields = $('#retour-fields');
+                const moduleReservation = $('.module-reservation');
+                const tabContent = $('.tab-content');
+                
+                if (this.checked) {
+                    // Afficher les champs de retour
+                    retourFields.addClass('show');
+                    
+                    // Agrandir le module
+                    moduleReservation.addClass('expanded');
+                    tabContent.addClass('expanded');
+                } else {
+                    // Masquer les champs de retour
+                    retourFields.removeClass('show');
+                    
+                    // Réduire le module
+                    moduleReservation.removeClass('expanded');
+                    tabContent.removeClass('expanded');
+                }
+            });
+            
+            // Initialisation de la carte Google Maps
+            initMap();
         });
 
-       /* document.getElementById('ban-video').addEventListener('contextmenu', function(e) {
+        /* document.getElementById('ban-video').addEventListener('contextmenu', function(e) {
             e.preventDefault(); // Empêcher l'apparition du menu contextuel
         });*/
 
@@ -435,10 +894,12 @@
             const tabContent = document.querySelectorAll('.tab-nav > li');
             tabContent.forEach((element) => {
                 element.style.zIndex = 1;
+                element.style.transform = 'scale(1)';
+                element.style.boxShadow = '0 -2px 10px rgba(0,0,0,0.1)';
 
                 const links = element.querySelectorAll('a');
                 links.forEach(link => {
-                    link.style.padding = '0 50px'; 
+                    link.style.padding = '0 30px'; 
                 });
             });
 
@@ -446,12 +907,295 @@
             const headerElement = document.querySelector('.' + headerClass);
 
             headerElement.style.zIndex = 2;
+            headerElement.style.transform = 'scale(1.05)';
+            headerElement.style.boxShadow = '0 -4px 20px rgba(219, 192, 103, 0.3)';
             
             const links = headerElement.querySelectorAll('a');
             links.forEach(link => {
-                link.style.padding = '0 55px'; 
+                link.style.padding = '0 35px'; 
             });
         };
+        
+        // Variables globales pour la carte
+        let map;
+        let directionsService;
+        let directionsRenderer;
+        let departureAutocomplete;
+        let arrivalAutocomplete;
+        
+        // Initialisation de la carte
+        function initMap() {
+            // Centre de La Réunion
+            const reunionCenter = { lat: -21.115141, lng: 55.536384 };
+            
+            // Créer la carte
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 10,
+                center: reunionCenter,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                styles: [
+                    {
+                        featureType: 'poi',
+                        elementType: 'labels',
+                        stylers: [{ visibility: 'off' }]
+                    }
+                ]
+            });
+            
+            // Initialiser les services
+            directionsService = new google.maps.DirectionsService();
+            directionsRenderer = new google.maps.DirectionsRenderer({
+                suppressMarkers: true,
+                polylineOptions: {
+                    strokeColor: '#dbc067',
+                    strokeWeight: 4,
+                    strokeOpacity: 0.8
+                }
+            });
+            directionsRenderer.setMap(map);
+            
+            // Initialiser l'autocomplétion pour le départ
+            const departureInput = document.getElementById('{{ driverForm.departure.id_for_label }}');
+            if (departureInput) {
+                departureAutocomplete = new google.maps.places.Autocomplete(departureInput, {
+                    componentRestrictions: { country: 'RE' }, // Restreindre à La Réunion
+                    types: ['establishment', 'geocode']
+                });
+                
+                // Écouter les changements dans le champ
+                departureInput.addEventListener('change', checkAndCalculateRoute);
+                
+                // Écouter la sélection d'une suggestion
+                departureAutocomplete.addListener('place_changed', function() {
+                    const place = departureAutocomplete.getPlace();
+                    if (place.geometry) {
+                        departureInput.dataset.lat = place.geometry.location.lat();
+                        departureInput.dataset.lng = place.geometry.location.lng();
+                        checkAndCalculateRoute();
+                    }
+                });
+            }
+            
+            // Initialiser l'autocomplétion pour l'arrivée
+            const arrivalInput = document.getElementById('{{ driverForm.arrival.id_for_label }}');
+            if (arrivalInput) {
+                arrivalAutocomplete = new google.maps.places.Autocomplete(arrivalInput, {
+                    componentRestrictions: { country: 'RE' }, // Restreindre à La Réunion
+                    types: ['establishment', 'geocode']
+                });
+                
+                // Écouter les changements dans le champ
+                arrivalInput.addEventListener('change', checkAndCalculateRoute);
+                
+                // Écouter la sélection d'une suggestion
+                arrivalAutocomplete.addListener('place_changed', function() {
+                    const place = arrivalAutocomplete.getPlace();
+                    if (place.geometry) {
+                        arrivalInput.dataset.lat = place.geometry.location.lat();
+                        arrivalInput.dataset.lng = place.geometry.location.lng();
+                        checkAndCalculateRoute();
+                    }
+                });
+            }
+        }
+        
+        // Vérifier si les deux champs sont remplis et calculer l'itinéraire
+        function checkAndCalculateRoute() {
+            const departureInput = document.getElementById('{{ driverForm.departure.id_for_label }}');
+            const arrivalInput = document.getElementById('{{ driverForm.arrival.id_for_label }}');
+            
+            if (departureInput && arrivalInput && departureInput.dataset.lat && arrivalInput.dataset.lat) {
+                calculateRoute();
+            }
+        }
+        
+        // Calculer et afficher l'itinéraire
+        function calculateRoute() {
+            const departureInput = document.getElementById('{{ driverForm.departure.id_for_label }}');
+            const arrivalInput = document.getElementById('{{ driverForm.arrival.id_for_label }}');
+            
+            if (!departureInput || !arrivalInput) return;
+            
+            const origin = {
+                lat: parseFloat(departureInput.dataset.lat),
+                lng: parseFloat(departureInput.dataset.lng)
+            };
+            
+            const destination = {
+                lat: parseFloat(arrivalInput.dataset.lat),
+                lng: parseFloat(arrivalInput.dataset.lng)
+            };
+            
+            const request = {
+                origin: origin,
+                destination: destination,
+                travelMode: google.maps.TravelMode.DRIVING,
+                unitSystem: google.maps.UnitSystem.METRIC
+            };
+            
+            directionsService.route(request, function(result, status) {
+                if (status === 'OK') {
+                    directionsRenderer.setDirections(result);
+                    
+                    // Afficher les informations de l'itinéraire
+                    const route = result.routes[0];
+                    const leg = route.legs[0];
+                    
+                    const distanceElement = document.getElementById('distance');
+                    const durationElement = document.getElementById('duration');
+                    const routeInfoElement = document.getElementById('route-info');
+                    
+                    if (distanceElement && durationElement && routeInfoElement) {
+                        distanceElement.textContent = leg.distance.text;
+                        durationElement.textContent = leg.duration.text;
+                        routeInfoElement.style.display = 'block';
+                    }
+                    
+                    // Stocker la distance en kilomètres pour le calcul du prix
+                    const distanceKm = parseFloat(leg.distance.text.replace(' km', ''));
+                    window.calculatedDistance = distanceKm;
+                    
+                    // Ajuster la carte pour afficher tout l'itinéraire
+                    const bounds = new google.maps.LatLngBounds();
+                    bounds.extend(origin);
+                    bounds.extend(destination);
+                    map.fitBounds(bounds);
+                }
+            });
+        }
+        
+        // Calculer le prix selon la grille tarifaire
+        function calculatePrice() {
+            const distanceKm = window.calculatedDistance || 0;
+            const allerRetour = document.getElementById('{{ driverForm.aller_retour.id_for_label }}').checked;
+            
+            if (distanceKm === 0) {
+                alert('Veuillez d\'abord sélectionner des adresses de départ et d\'arrivée pour calculer le prix.');
+                return;
+            }
+            
+            // Calcul du prix selon la grille tarifaire
+            let pricePerKm;
+            if (distanceKm <= 50) {
+                pricePerKm = 2.25;
+            } else if (distanceKm <= 100) {
+                pricePerKm = 1.90;
+            } else {
+                pricePerKm = 1.50;
+            }
+            
+            // Prix de base basé sur la distance
+            let totalPrice = distanceKm * pricePerKm;
+            
+            // Ajuster le prix pour aller-retour
+            if (allerRetour) {
+                totalPrice *= 1.8;
+            }
+            
+            // Afficher le résultat du calcul
+            displayPriceResult(totalPrice);
+            
+            // Stocker la distance dans la session pour le backend
+            storeDistanceInSession(distanceKm);
+        }
+        
+        // Afficher le résultat du calcul de prix
+        function displayPriceResult(totalPrice) {
+            document.getElementById('display-total-price').textContent = totalPrice.toFixed(2) + ' €';
+            
+            // Afficher la section de prix
+            document.getElementById('price-result').style.display = 'block';
+            
+            // Masquer le bouton "Calculer le prix"
+            document.getElementById('calculate-btn').style.display = 'none';
+        }
+        
+        // Stocker la distance dans la session via AJAX
+        function storeDistanceInSession(distanceKm) {
+            fetch('/store-distance/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({
+                    distance: distanceKm
+                })
+            });
+        }
+        
+        // Procéder au paiement avec les données calculées
+        function proceedToPayment() {
+            const distanceKm = window.calculatedDistance || 0;
+            const passengers = parseInt(document.getElementById('{{ driverForm.passengers.id_for_label }}').value) || 1;
+            const allerRetour = document.getElementById('{{ driverForm.aller_retour.id_for_label }}').checked;
+            const departure = document.getElementById('{{ driverForm.departure.id_for_label }}').value;
+            const arrival = document.getElementById('{{ driverForm.arrival.id_for_label }}').value;
+            const date = document.getElementById('{{ driverForm.date.id_for_label }}').value;
+            const hour = document.getElementById('{{ driverForm.hour.id_for_label }}').value;
+            
+            if (!departure || !arrival || !date || !hour) {
+                alert('Veuillez remplir tous les champs obligatoires avant de procéder au paiement.');
+                return;
+            }
+            
+            // Calculer le prix final
+            let pricePerKm;
+            if (distanceKm <= 50) {
+                pricePerKm = 2.25;
+            } else if (distanceKm <= 100) {
+                pricePerKm = 1.90;
+            } else {
+                pricePerKm = 1.50;
+            }
+            
+            let totalPrice = distanceKm * pricePerKm;
+            if (passengers > 1) {
+                totalPrice += (passengers - 1) * 15.0;
+            }
+            if (allerRetour) {
+                totalPrice *= 1.8;
+            }
+            
+            // Stocker toutes les données de réservation en session
+            storeBookingData({
+                type: 'driver',
+                departure: departure,
+                arrival: arrival,
+                passengers: passengers,
+                distance_km: distanceKm,
+                price_per_km: pricePerKm,
+                date: date,
+                hour: hour,
+                aller_retour: allerRetour,
+                price: totalPrice.toFixed(2)
+            });
+        }
+        
+        // Stocker les données de réservation complètes en session
+        function storeBookingData(bookingData) {
+            fetch('/store-booking-data/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify(bookingData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Rediriger vers la page de paiement
+                    window.location.href = '{% url "payment" %}';
+                } else {
+                    alert('Erreur lors de la sauvegarde des données. Veuillez réessayer.');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                alert('Erreur lors de la sauvegarde des données. Veuillez réessayer.');
+            });
+        }
 
     </script>
 

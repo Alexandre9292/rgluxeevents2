@@ -139,8 +139,42 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = LOGIN_URL
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-EMAIL_FILE_PATH = str(BASE_DIR.joinpath('sent_emails'))
+# Configuration pour le système de paiement
+PAYMENT_SETTINGS = {
+    'PAYPAL_CLIENT_ID': 'your_paypal_client_id_here',
+    'PAYPAL_CLIENT_SECRET': 'your_paypal_client_secret_here',
+    'PAYPAL_MODE': 'sandbox',  # 'sandbox' pour les tests, 'live' pour la production
+    'CURRENCY': 'EUR',
+    'SUCCESS_URL': '/payment/success/',
+    'FAILURE_URL': '/payment/failed/',
+}
+
+# Configuration des emails
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # ou votre serveur SMTP
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'your_email@gmail.com'  # Votre email
+EMAIL_HOST_PASSWORD = 'your_app_password'  # Mot de passe d'application
+DEFAULT_FROM_EMAIL = 'RG Luxe Events <noreply@rgluxeevents.com>'
+
+# Configuration pour l'envoi d'emails de confirmation
+BOOKING_EMAILS = {
+    'ADMIN_EMAIL': 'alexandre.boucher92@gmail.com',  # Email du responsable
+    'COMPANY_NAME': 'RG Luxe Events',
+    'COMPANY_WEBSITE': 'https://rgluxeevents.com',
+}
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR.joinpath('media/')
+
+# Configuration pour Google Maps API
+GOOGLE_MAPS_API_KEY = 'AIzaSyCpYR4gr75AZB5wIVfS0d49G4-lTaSp4vY'  # Remplacez par votre vraie clé API
+
+# Configuration pour l'autocomplétion des adresses
+GOOGLE_MAPS_SETTINGS = {
+    'DEFAULT_COUNTRY': 'RE',  # Code pays pour La Réunion
+    'DEFAULT_LAT': -21.115141,  # Latitude du centre de La Réunion
+    'DEFAULT_LNG': 55.536384,   # Longitude du centre de La Réunion
+    'DEFAULT_ZOOM': 10,
+}

@@ -10,6 +10,9 @@
     <!-- Flatpickr JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpYR4gr75AZB5wIVfS0d49G4-lTaSp4vY&libraries=places"></script>
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/material_blue.css">
     <link rel="stylesheet" href="{% static 'app.css' %}">
     <link rel="stylesheet" href="{% static 'app_rd.css' %}">
@@ -26,20 +29,189 @@
         .icon-over-header {
             height: 15px;
         }
-
         .icon-media-over-header {
             height: 25px;
         }
-
         .text-over-header {
             font-size: 15px;
             padding-left: 15px;
+        }
+        @media (max-width: 900px) {
+            body {
+                margin: 0;
+                padding: 0;
+            }
+            .over-header {
+                display: none;
+            }
+            .header-logo {
+                width: 100vw;
+                text-align: center;
+                margin: 0;
+                padding: 10px 0 0 0;
+            }
+            .header-logo img.logo {
+                max-width: 180px;
+                height: auto;
+            }
+            .header-menu {
+                width: 100vw;
+                position: relative;
+                min-height: 0px;
+                background: none;
+                margin: 0;
+                padding: 0;
+            }
+            .menu-toggle {
+                display: block;
+                background: none;
+                border: none;
+                color: #dbc067;
+                font-size: 2.5rem;
+                position: fixed;
+                right: 18px;
+                top: 18px;
+                z-index: 1002;
+                cursor: pointer;
+                transition: color 0.2s;
+            }
+            .menu-toggle:focus, .menu-toggle:hover {
+                color: #dbc067;
+            }
+            .nav_menu {
+                display: none;
+            }
+            .mobile-slide-menu {
+                display: flex;
+                flex-direction: column;
+                position: fixed;
+                top: 0;
+                right: 0;
+                width: 100vw;
+                height: 100vh;
+                background: #111;
+                color: #dbc067;
+                z-index: 2000;
+                transform: translateX(100%);
+                transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+                padding: 30px 24px 24px 24px;
+                overflow-y: auto;
+            }
+            .mobile-slide-menu.show {
+                transform: translateX(0);
+            }
+            .mobile-slide-menu .slide-close {
+                position: absolute;
+                top: 18px;
+                right: 18px;
+                font-size: 2.5rem;
+                background: none;
+                border: none;
+                color: #dbc067;
+                cursor: pointer;
+                z-index: 2001;
+                transition: color 0.2s;
+            }
+            .mobile-slide-menu .slide-close:focus, .mobile-slide-menu .slide-close:hover {
+                color: #dbc067;
+            }
+            .mobile-slide-menu nav {
+                margin-top: 60px;
+            }
+            .mobile-slide-menu ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+            .mobile-slide-menu ul li a {
+                color: #dbc067 !important;
+                text-decoration: none;
+                font-weight: 500;
+                display: block;
+                padding: 8px 0;
+                transition: color 0.2s;
+            }
+            .mobile-slide-menu ul li a:hover {
+                color: #fff !important;
+            }
+            .mobile-slide-menu ul li:not(:last-child) {
+                border-bottom: 1px solid #dbc067;
+            }
+            .mobile-slide-menu li {
+                margin: 18px 0;
+                font-size: 1.3rem;
+                text-align: left;
+            }
+            .mobile-slide-menu .slide-over-header {
+                margin-top: 40px;
+                border-top: 1px solid #dbc06744;
+                padding-top: 24px;
+            }
+            .mobile-slide-menu .slide-over-header .text-over-header {
+                font-size: 1.1rem;
+                padding-left: 8px;
+            }
+            .mobile-slide-menu .slide-over-header img {
+                margin-right: 8px;
+                vertical-align: middle;
+            }
+            .mobile-slide-menu .slide-over-header .icon-media-over-header {
+                height: 30px;
+            }
+            footer, .sub_footer {
+                display: none !important;
+            }
+        }
+        @media (min-width: 901px) {
+            .menu-toggle, .mobile-slide-menu { display: none; }
         }
     </style>
 </head>
 
 <body>
+    <div class="mobile-slide-menu" id="mobileSlideMenu">
+        <button class="slide-close" id="slideCloseBtn">&times;</button>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Accueil</a></li>
+                <li><a href="{% url 'services' %}">Services</a></li>
+                <li><a href="{% url 'utilitaire' %}">Utilitaire</a></li>
+                <li><a href="{% url 'photomaton' %}">Photomaton</a></li>
+                <li><a href="{% url 'about' %}">about</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+                {% if user.is_authenticated %}
+                    <li>
+                        {% if user.role == 'CUSTOMER' %}
+                            <a href="{% url 'customer' %}">Mon compte</a>
+                        {% else %}
+                            <a href="{% url 'admin-calendar' %}">Admin</a>
+                        {% endif %}
+                        - <a href="{% url 'logout' %}">Se déconnecter</a>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{% url 'login' %}">Se connecter</a> - <a href="{% url 'new_user' %}">Créer un compte</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+        <div class="slide-over-header">
+            <ul class="nav_link">
+                <li>
+                    <p><img class="icon-over-header" src="{% static 'images/iconPhone.png'%}" alt="Phone"><span class="text-over-header">0693 40 00 15</span></p>
+                </li>
+                <li>
+                    <p><img class="icon-over-header" src="{% static 'images/iconMail.png'%}" alt="Mail"><span class="text-over-header">rg.luxeevents@gmail.com</span></p>
+                </li>
+                <li>
+                    <a href="https://www.facebook.com/profile.php?id=100095259547213" target="_blank"><img class="icon-media-over-header" src="{% static 'images/iconFb.png'%}" alt="Facebook"></a>
+                    <a href="https://www.instagram.com/rg.luxeevents/" target="_blank"><img class="icon-media-over-header" src="{% static 'images/iconInsta.png'%}" alt="instagram"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
     <header>
+        <!-- over-header reste pour desktop -->
         <div class="over-header">
             <div class="bloc-over-header">
                 <nav class="link" role="navigation">
@@ -154,6 +326,40 @@
             <p>Copyright 2023 RGLuxeEvents - <a href="{% url 'mention' %}">Mentions Légales</a></p>
         </div>
     </footer>
+    <script>
+        // Responsive menu burger + slide
+        document.addEventListener('DOMContentLoaded', function() {
+            // Vérifie et ajoute dynamiquement le bouton burger si absent
+            var headerMenu = document.querySelector('.header-menu');
+            var toggle = document.querySelector('.menu-toggle');
+            if (!toggle && headerMenu) {
+                toggle = document.createElement('button');
+                toggle.className = 'menu-toggle';
+                toggle.type = 'button';
+                toggle.setAttribute('aria-label', 'Ouvrir le menu');
+                toggle.innerHTML = '\u2630'; // ☰
+                headerMenu.insertBefore(toggle, headerMenu.firstChild);
+            }
+            var slideMenu = document.getElementById('mobileSlideMenu');
+            var closeBtn = document.getElementById('slideCloseBtn');
+            if(toggle && slideMenu) {
+                toggle.addEventListener('click', function() {
+                    slideMenu.classList.add('show');
+                });
+            }
+            if(closeBtn && slideMenu) {
+                closeBtn.addEventListener('click', function() {
+                    slideMenu.classList.remove('show');
+                });
+            }
+            // Fermer le menu si on clique en dehors
+            slideMenu.addEventListener('click', function(e) {
+                if(e.target === slideMenu) {
+                    slideMenu.classList.remove('show');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

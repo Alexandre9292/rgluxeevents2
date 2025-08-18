@@ -1,0 +1,262 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="body-content">
+    <div class="booking-summary-container">
+        <div class="summary-header">
+            <h1>Récapitulatif de votre réservation</h1>
+            <p>Vérifiez les informations avant de procéder au paiement</p>
+        </div>
+        
+        <div class="summary-content">
+            <div class="summary-details">
+                <h2>Détails de la réservation</h2>
+                
+                {% if booking_data.type == 'driver' %}
+                    <div class="detail-row">
+                        <span class="label">Type de service :</span>
+                        <span class="value">Transport avec chauffeur</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Lieu de départ :</span>
+                        <span class="value">{{ booking_data.departure }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Lieu d'arrivée :</span>
+                        <span class="value">{{ booking_data.arrival }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Distance :</span>
+                        <span class="value">{{ booking_data.distance_km|floatformat:1 }} km</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Tarif par km :</span>
+                        <span class="value">{{ booking_data.price_per_km|floatformat:2 }} €/km</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Nombre de passagers :</span>
+                        <span class="value">{{ booking_data.passengers }} passager{% if booking_data.passengers > 1 %}s{% endif %}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Aller-retour :</span>
+                        <span class="value">{% if booking_data.aller_retour %}Oui{% else %}Non{% endif %}</span>
+                    </div>
+                    {% if booking_data.aller_retour and booking_data.retour_date and booking_data.retour_heure %}
+                    <div class="detail-row">
+                        <span class="label">Date de retour :</span>
+                        <span class="value">{{ booking_data.retour_date }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Heure de retour :</span>
+                        <span class="value">{{ booking_data.retour_heure }}</span>
+                    </div>
+                    {% endif %}
+                {% elif booking_data.type == 'airport' %}
+                    <div class="detail-row">
+                        <span class="label">Type de service :</span>
+                        <span class="value">Transfert aéroport</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Lieu de départ :</span>
+                        <span class="value">{{ booking_data.departure }}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Nombre de passagers :</span>
+                        <span class="value">{{ booking_data.passengers }} passager{% if booking_data.passengers > 1 %}s{% endif %}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="label">Nombre de bagages :</span>
+                        <span class="value">{{ booking_data.bagages }} bagage{% if booking_data.bagages > 1 %}s{% endif %}</span>
+                    </div>
+                {% endif %}
+                
+                <div class="detail-row">
+                    <span class="label">Date :</span>
+                    <span class="value">{{ booking_data.date }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Heure :</span>
+                    <span class="value">{{ booking_data.hour }}</span>
+                </div>
+            </div>
+            
+            <div class="summary-price">
+                <h2>Prix total</h2>
+                <div class="price-amount">
+                    <span class="currency">€</span>
+                    <span class="amount">{{ booking_data.price }}</span>
+                </div>
+                <p class="price-note">Prix TTC incluant tous les frais</p>
+            </div>
+        </div>
+        
+        <div class="summary-actions">
+            <a href="{% url 'home' %}" class="btn btn-secondary">Modifier la réservation</a>
+            <a href="{% url 'payment' %}" class="btn btn-primary">Procéder au paiement</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block css %}
+<style>
+    .booking-summary-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 40px;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    .summary-header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #dbc067;
+    }
+    
+    .summary-header h1 {
+        color: #333;
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        font-family: Rockwell Extra Bold;
+    }
+    
+    .summary-header p {
+        color: #666;
+        font-size: 1.2em;
+    }
+    
+    .summary-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 40px;
+        margin-bottom: 40px;
+    }
+    
+    .summary-details h2,
+    .summary-price h2 {
+        color: #333;
+        font-size: 1.8em;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .detail-row:last-child {
+        border-bottom: none;
+    }
+    
+    .label {
+        font-weight: bold;
+        color: #555;
+        font-size: 1.1em;
+    }
+    
+    .value {
+        color: #333;
+        font-size: 1.1em;
+        text-align: right;
+    }
+    
+    .summary-price {
+        text-align: center;
+        background: linear-gradient(135deg, #dbc067 0%, #ffeaa7 100%);
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .price-amount {
+        margin: 20px 0;
+    }
+    
+    .currency {
+        font-size: 2em;
+        color: #333;
+        font-weight: bold;
+    }
+    
+    .amount {
+        font-size: 4em;
+        color: #333;
+        font-weight: bold;
+        font-family: Rockwell Extra Bold;
+    }
+    
+    .price-note {
+        color: #666;
+        font-style: italic;
+        margin-top: 10px;
+    }
+    
+    .summary-actions {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 40px;
+    }
+    
+    .btn {
+        padding: 15px 30px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        font-size: 1.1em;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .btn-primary {
+        background: linear-gradient(135deg, #dbc067 0%, #ffeaa7 100%);
+        color: #333;
+        box-shadow: 0 4px 15px rgba(219, 192, 103, 0.3);
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(219, 192, 103, 0.4);
+    }
+    
+    .btn-secondary {
+        background: #f8f9fa;
+        color: #666;
+        border: 2px solid #ddd;
+    }
+    
+    .btn-secondary:hover {
+        background: #e9ecef;
+        border-color: #adb5bd;
+    }
+    
+    @media (max-width: 768px) {
+        .summary-content {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+        
+        .summary-actions {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .btn {
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+        }
+    }
+</style>
+{% endblock %} 

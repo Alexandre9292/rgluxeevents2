@@ -58,20 +58,27 @@
             box-shadow: 0 0 200px #dbc067, 0 1px 2px rgba(0, 0, 0, 0.3);
             overflow: hidden;
         }
-
+        @media (max-width: 700px) {
+            .module-reservation {
+                width: 98vw;
+                height: auto;
+                min-width: 0;
+            }
+            .reservation-title h1 {
+                font-size: 1.2rem;
+            }
+        }
         .reservation-title {
             width: 100%;
             height: 150px;
             background: linear-gradient(#dbc067, #ffeaa7);
             border-bottom: 1px solid #333;
         }
-
         .mod-resa-block {
             display: inline-block;
             height: 100%;
             width: 100%
         }
-
         .module-background {
             height: 100%;
             margin-left: auto;
@@ -79,7 +86,6 @@
             width: 100%;
             opacity: 0.4;
         }
-
         .reservation-body {
             position: absolute;
             width: 100%;
@@ -87,7 +93,13 @@
             left: 50%;
             transform: translate(-50%, 0);
         }
-
+        @media (max-width: 700px) {
+            .reservation-body {
+                position: static;
+                transform: none;
+                width: 98vw;
+            }
+        }
         .module-reservation h1 {
             line-height: 50px;
             font-size: 40px;
@@ -96,34 +108,27 @@
             color: #000;
             text-align: center;
         }
-
         .module-reservation p {
             margin: 20px 0 0;
         }
-
         .module-reservation p:first-child {
             margin-top: 0;
         }
-
         .module-reservation input[type=text],
         .module-reservation input[type=password] {
             width: 278px;
         }
-
         .module-reservation p.submit {
             text-align: center;
         }
-
         :-moz-placeholder {
             color: #c9c9c9 !important;
             font-size: 13px;
         }
-
         ::-webkit-input-placeholder {
             color: #ccc;
             font-size: 13px;
         }
-
         /* Formulaire */
         .reservation-body input[type=text], .contact-form textarea {
             width: 100%; 
@@ -135,7 +140,6 @@
             resize: vertical; 
             text-align: left;
         }
-
         .reservation-body button[type=submit] {
             background-color: #dbc067;
             color: white;
@@ -145,21 +149,22 @@
             cursor: pointer;
             margin-top: 20px;
         }
-
         .reservation-body button[type=submit]:hover {
             background-color: #d1af3e;
         }
-
         .reservation-body p {
             text-align: left;
         }
-
         .reservation-body form{
             width: 80%;
             margin-right: auto;
             margin-left: auto;
         }
-
+        @media (max-width: 700px) {
+            .reservation-body form {
+                width: 98vw;
+            }
+        }
     </style>
 {% endblock %}
 

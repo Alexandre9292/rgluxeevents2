@@ -39,3 +39,34 @@
     </div>
 
 {% endblock %}
+
+<style>
+    .service-in-bloc {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        color: #ddd;
+        gap: 20px;
+    }
+    @media (max-width: 900px) {
+        .service-in-bloc {
+            display: block;
+        }
+        .service-in-bloc-left {
+            width: 100%;
+            padding: 0;
+        }
+        .service-in-bloc-right {
+            display: none;
+        }
+    }
+    .service-in-photo {
+        height: 700px;
+        width: 500px;
+        object-fit: cover;
+    }
+    @media (max-width: 700px) {
+        .service-in-content {
+            font-size: 15px;
+        }
+    }
+</style>

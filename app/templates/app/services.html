@@ -52,6 +52,20 @@
         grid-template-columns: auto auto;
         padding: 10px;
         text-align: center;
+        gap: 20px;
+    }
+    @media (max-width: 900px) {
+        .services-content {
+            grid-template-columns: 1fr;
+        }
+        .services-bloc, .services-bloc img {
+            width: 90vw;
+            max-width: 350px;
+            height: auto;
+        }
+        .services-name h2 {
+            font-size: 1.2rem;
+        }
     }
 
     .services-bloc {

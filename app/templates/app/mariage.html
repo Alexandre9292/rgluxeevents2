@@ -70,6 +70,7 @@
         grid-template-columns: auto auto auto;
         padding: 10px;
         text-align: center;
+        gap: 20px;
     }
 
     .mariage-formule-bloc {
@@ -84,27 +85,89 @@
         height: 300px;
         background-color: #dbc067;
         overflow: hidden;
+    }
 
-        a {
-            display: inline-block;
-        }
-
-        img {
-            height: 250px;
-            width: 100%;
-        }
+    .mariage-formule-bloc img {
+        height: 250px;
+        width: 100%;
+        object-fit: cover;
     }
 
     .mariage-formule-titre {
-        font-size: 25px;
+        font-size: clamp(16px, 2.2vw, 20px);
         font-weight: bold;
     }
 
     .mariage-formule-prix {
-        font-size: 15px;
+        font-size: clamp(11px, 1.2vw, 13px);
         font-style: italic;
         color: #eee;
         text-shadow: 0 0 20px black, 0 0 20px black, 0 0 20px black;
+    }
+
+    /* Responsive design */
+    @media (max-width: 1400px) {
+        .mariage-formule {
+            grid-template-columns: 1fr 1fr;
+        }
+        .mariage-formule-bloc {
+            width: 95%;
+            height: 250px;
+        }
+        .mariage-formule-bloc img {
+            height: 180px;
+        }
+        .mariage-formule-titre {
+            font-size: 20px;
+        }
+        .mariage-formule-prix {
+            font-size: 13px;
+        }
+    }
+    @media (max-width: 900px) {
+        .mariage-formule {
+            grid-template-columns: 1fr;
+        }
+        .mariage-formule-bloc {
+            width: 98%;
+            height: 200px;
+        }
+        .mariage-formule-bloc img {
+            height: 120px;
+        }
+
+        .service-in-bloc {
+            display: block;
+        }
+        .service-in-bloc-left {
+            width: 100%;
+            padding: 0;
+        }
+        .service-in-bloc-right {
+            display: none;
+        }
+
+        .mariage-formule-titre {
+            font-size: 16px;
+        }
+        .mariage-formule-prix {
+            font-size: 11px;
+        }
+
+        .service-in-content {
+            font-size: 15px;
+            padding: 8px;
+            line-height: 1.4;
+        }
+        .service-in-content h1 {
+            font-size: 1.2rem;
+        }
+        .service-in-content h2 {
+            font-size: 1rem;
+        }
+        .service-in-content p {
+            font-size: 0.98rem;
+        }
     }
 </style>
 {% endblock %}

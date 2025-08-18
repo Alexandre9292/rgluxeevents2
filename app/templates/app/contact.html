@@ -44,6 +44,17 @@
         .contact-content {
             padding-top: 60px;
             display: flex;
+            gap: 20px;
+        }
+        @media (max-width: 900px) {
+            .contact-content {
+                flex-direction: column;
+                align-items: center;
+            }
+            .contact-bloc {
+                width: 95vw;
+                max-width: 400px;
+            }
         }
 
         .contact-bloc {
@@ -57,6 +68,11 @@
             font-size: 30px;
             color: #dbc067;
             text-align: center;
+        }
+        @media (max-width: 700px) {
+            .contact-bloc h2 {
+                font-size: 20px;
+            }
         }
 
         .contact-bloc h3 {
