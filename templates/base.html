@@ -169,47 +169,6 @@
 </head>
 
 <body>
-    <div class="mobile-slide-menu" id="mobileSlideMenu">
-        <button class="slide-close" id="slideCloseBtn">&times;</button>
-        <nav>
-            <ul>
-                <li><a href="{% url 'home' %}">Accueil</a></li>
-                <li><a href="{% url 'services' %}">Services</a></li>
-                <li><a href="{% url 'utilitaire' %}">Utilitaire</a></li>
-                <li><a href="{% url 'photomaton' %}">Photomaton</a></li>
-                <li><a href="{% url 'about' %}">about</a></li>
-                <li><a href="{% url 'contact' %}">Contact</a></li>
-                {% if user.is_authenticated %}
-                    <li>
-                        {% if user.role == 'CUSTOMER' %}
-                            <a href="{% url 'customer' %}">Mon compte</a>
-                        {% else %}
-                            <a href="{% url 'admin-calendar' %}">Admin</a>
-                        {% endif %}
-                        - <a href="{% url 'logout' %}">Se déconnecter</a>
-                    </li>
-                {% else %}
-                    <li>
-                        <a href="{% url 'login' %}">Se connecter</a> - <a href="{% url 'new_user' %}">Créer un compte</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </nav>
-        <div class="slide-over-header">
-            <ul class="nav_link">
-                <li>
-                    <p><img class="icon-over-header" src="{% static 'images/iconPhone.png'%}" alt="Phone"><span class="text-over-header">0693 40 00 15</span></p>
-                </li>
-                <li>
-                    <p><img class="icon-over-header" src="{% static 'images/iconMail.png'%}" alt="Mail"><span class="text-over-header">rg.luxeevents@gmail.com</span></p>
-                </li>
-                <li>
-                    <a href="https://www.facebook.com/profile.php?id=100095259547213" target="_blank"><img class="icon-media-over-header" src="{% static 'images/iconFb.png'%}" alt="Facebook"></a>
-                    <a href="https://www.instagram.com/rg.luxeevents/" target="_blank"><img class="icon-media-over-header" src="{% static 'images/iconInsta.png'%}" alt="instagram"></a>
-                </li>
-            </ul>
-        </div>
-    </div>
     <header>
         <!-- over-header reste pour desktop -->
         <div class="over-header">
@@ -255,43 +214,6 @@
                 </nav>
             </div>
         </div>
-        <div class="content-header">
-            <div class="header-logo">
-                <a href="{% url 'home' %}" style="text-decoration: none;">
-                    <img class="logo" src="{% static 'images/logo.jpg'%}">
-                </a>
-            </div>
-            <div class="header-menu">
-                <nav class="menu" role="navigation">
-                    <ul class="nav_menu">
-                        <li>
-                            <a href="{% url 'home' %}">Accueil</a>
-                        </li>
-                        <li class="menu-deroulant">
-                            <a href="{% url 'services' %}">Services &ensp;</a>
-                            <ul class="sous-menu">
-                                <li><a href="{% url 'aeroport' %}">Transport aéroports</a></li>
-                                <li><a href="{% url 'mariage' %}">Mariage</a></li>
-                                <li><a href="{% url 'transport' %}">Transport sur l'île</a></li>
-                                <li><a href="{% url 'tourisme' %}">Excursion touristique</a></li>
-                            </ul>
-                        </li>
-                        <li>
-                            <a href="{% url 'utilitaire' %}">Utilitaire</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'photomaton' %}">Photomaton</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'about' %}">about</a>
-                        </li>
-                        <li>
-                            <a href="{% url 'contact' %}">Contact</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
     </header>
     <div class="main">
         {% block content %}{% endblock content %}
@@ -313,7 +235,10 @@
                 <h3>Services</h3>
                 <ul class="services-list">
                     <li><a href="{% url 'home' %}">Accueil</a></li>
-                    <li><a href="{% url 'services' %}">Services</a></li>
+                    <li><a href="{% url 'transport' %}">Transport</a></li>
+                    <li><a href="{% url 'photobooth' %}">Photobooth</a></li>
+                    <li><a href="{% url 'drone' %}">Drone</a></li>
+                    <li><a href="{% url 'about' %}">À propos</a></li>
                     <li><a href="{% url 'contact' %}">Contact</a></li>
                 </ul>
             </div>
@@ -327,38 +252,7 @@
         </div>
     </footer>
     <script>
-        // Responsive menu burger + slide
-        document.addEventListener('DOMContentLoaded', function() {
-            // Vérifie et ajoute dynamiquement le bouton burger si absent
-            var headerMenu = document.querySelector('.header-menu');
-            var toggle = document.querySelector('.menu-toggle');
-            if (!toggle && headerMenu) {
-                toggle = document.createElement('button');
-                toggle.className = 'menu-toggle';
-                toggle.type = 'button';
-                toggle.setAttribute('aria-label', 'Ouvrir le menu');
-                toggle.innerHTML = '\u2630'; // ☰
-                headerMenu.insertBefore(toggle, headerMenu.firstChild);
-            }
-            var slideMenu = document.getElementById('mobileSlideMenu');
-            var closeBtn = document.getElementById('slideCloseBtn');
-            if(toggle && slideMenu) {
-                toggle.addEventListener('click', function() {
-                    slideMenu.classList.add('show');
-                });
-            }
-            if(closeBtn && slideMenu) {
-                closeBtn.addEventListener('click', function() {
-                    slideMenu.classList.remove('show');
-                });
-            }
-            // Fermer le menu si on clique en dehors
-            slideMenu.addEventListener('click', function(e) {
-                if(e.target === slideMenu) {
-                    slideMenu.classList.remove('show');
-                }
-            });
-        });
+        
     </script>
 </body>
 

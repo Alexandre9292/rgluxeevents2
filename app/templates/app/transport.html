@@ -1,71 +1,683 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block title %}RG Luxe Events - Transport{% endblock %}
+
 {% block content %}
-
-    <div class="sub-header">
-        <img class="ban" src="{% static 'images/aeroport.jpg'%}">
-        <h1>NOS SERVICES - TRANSPORT</h1>
-    </div>
-
-    <div class="body-content">
-        <div class="service-in-content">
-            <h1 style="text-transform: uppercase;">Transport sur l'île</h1>
-            <h2>Pour vos transports ou voyages sur tout l'île</h2>
-            </br>
-            <div class="service-in-bloc">
-                <div class="service-in-bloc-left">
-                    <p>Chez <span style="color: #dbc067;">RG.LUXEEVENTS</span>, nous sommes fiers de vous offrir un service de transport complet et fiable sur toute l'île de La Réunion.</p>
-                    <br><br>
-                    <p>Que ce soit pour vos déplacements domicile-travail, pour célébrer des occasions spéciales ou pour explorer les merveilles de l'île, nous sommes là pour répondre à tous vos besoins de transport.</p>
-                    <br><br>
-                    <p>Nous vous offrons une gamme de services de transport flexibles pour répondre à tous vos besoins. Que vous ayez besoin d'un trajet unique ou d'une solution de transport régulière, nous sommes là pour vous aider.</p>
-                    <br><br>
-                    <p>Votre confort et votre sécurité sont notre priorité absolue. Nos véhicules sont modernes, bien entretenus et équipés pour vous offrir une expérience de transport agréable et sécurisée, quel que soit votre itinéraire.</p>
-                    <br><br>
-                    <p>Nos chauffeurs sont des professionnels expérimentés, courtois et fiables. Ils connaissent parfaitement l'île de La Réunion et sont là pour vous offrir un service de qualité supérieure à chaque trajet.</p>
-                </div>
-                <div class="service-in-bloc-right">
-                    <img class="service-in-photo" src="{% static 'images/tourisme.jpg'%}" alt="aeroport">
+<!-- Banner principal avec le design de l'image -->
+<div class="hero-banner">
+    <div class="banner-content">
+        <div class="banner-left">
+            <div class="transport-panel">
+                <div class="transport-image">
+                    <img src="{% static 'images/voiture-porsche.jpg' %}" alt="Transport de luxe">
+                    <div class="transport-overlay">
+                        <div class="luxury-car">
+                            <img src="{% static 'images/voiture-amg.jpg' %}" alt="Voiture de luxe">
+                        </div>
+                        <div class="private-jet">
+                            <img src="{% static 'images/aeroport.jpg' %}" alt="Jet privé">
+                        </div>
+                    </div>
                 </div>
             </div>
-            <br><br>
-            <p>Que ce soit pour vos déplacements quotidiens, pour célébrer des occasions spéciales ou pour explorer les trésors de l'île de La Réunion, faites confiance à <span style="color: #dbc067;">RG.LUXEEVENTS</span> pour vous offrir un service de transport fiable et professionnel à chaque étape du chemin.</p>  
-            <br><br>
-            <p>Contactez-nous dès aujourd'hui pour réserver votre transport ou pour obtenir de plus amples informations sur nos services de transport sur l'île de La Réunion.</p>
         </div>
         
-        <a href="{% url 'home' %}#module-resa" class="button-resa">Réserver</a> 
+        <div class="banner-center">
+            <div class="logo-container">
+                <div class="main-logo">
+                    <h1>RG Luxe Events</h1>
+                </div>
+            </div>
+            <div class="drone-panel">
+                <div class="drone-image">
+                    <img src="{% static 'images/service-aeroport.jpg' %}" alt="Services drone">
+                </div>
+            </div>
+        </div>
+        
+        <div class="banner-right">
+            <div class="photobooth-panel">
+                <div class="photobooth-image">
+                    <img src="{% static 'images/service-mariage.jpg' %}" alt="Photobooth">
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
-{% endblock %}
+<!-- Image bannière haute -->
+<div class="ban-haut">
+    <img src="{% static 'images/ban_haut.jpg' %}" alt="Bannière RG Luxe Events">
+</div>
 
-<style>
-    .service-in-bloc {
-        display: grid;
-        grid-template-columns: 50% 50%;
-        color: #ddd;
-        gap: 20px;
-    }
-    @media (max-width: 900px) {
-        .service-in-bloc {
-            display: block;
+<!-- Section principale -->
+<section class="transport-section">
+    <div class="container">
+        <div class="transport-content">
+            <!-- Formulaire de réservation -->
+            <div class="booking-form-container">
+                <h2>Réservation</h2>
+                
+                <!-- Onglets -->
+                <div class="tabs">
+                    <button class="tab-button active" data-tab="transport">Transport</button>
+                    <button class="tab-button" data-tab="aeroport">Aéroport</button>
+                </div>
+                
+                <!-- Onglet Transport -->
+                <div class="tab-content active" id="transport-tab">
+                    <form method="post" class="booking-form" id="transport-form">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="id_departure">Lieu de départ</label>
+                                <input type="text" id="id_departure" name="departure" class="places-autocomplete" placeholder="Entrez votre adresse de départ" required>
+                                <input type="hidden" id="departure_lat" name="departure_lat">
+                                <input type="hidden" id="departure_lng" name="departure_lng">
+                            </div>
+                            <div class="form-group">
+                                <label for="id_arrival">Lieu d'arrivée</label>
+                                <input type="text" id="id_arrival" name="arrival" class="places-autocomplete" placeholder="Entrez votre adresse d'arrivée" required>
+                                <input type="hidden" id="arrival_lat" name="arrival_lat">
+                                <input type="hidden" id="arrival_lng" name="arrival_lng">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                {{ transport_form.departure_date.label_tag }}
+                                {{ transport_form.departure_date }}
+                            </div>
+                            <div class="form-group">
+                                {{ transport_form.departure_time.label_tag }}
+                                {{ transport_form.departure_time }}
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                {{ transport_form.passengers.label_tag }}
+                                {{ transport_form.passengers }}
+                            </div>
+                            <div class="form-group">
+                                <label class="checkbox-label">
+                                    {{ transport_form.return_trip }}
+                                    <span>Aller-retour</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="return-fields" id="return-fields" style="display: none;">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    {{ transport_form.return_date.label_tag }}
+                                    {{ transport_form.return_date }}
+                                </div>
+                                <div class="form-group">
+                                    {{ transport_form.return_time.label_tag }}
+                                    {{ transport_form.return_time }}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Affichage de la distance et du prix estimé -->
+                        <div class="route-info" id="route-info" style="display: none;">
+                            <div class="info-row">
+                                <div class="info-item">
+                                    <span class="info-label">Distance :</span>
+                                    <span class="info-value" id="distance-value">0 km</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Prix estimé :</span>
+                                    <span class="info-value" id="price-value">0€</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" name="transport_submit" class="btn btn-primary">Calculer le prix</button>
+                    </form>
+                </div>
+                
+                <!-- Onglet Aéroport -->
+                <div class="tab-content" id="aeroport-tab">
+                    <form method="post" class="booking-form" id="aeroport-form">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group">
+                                {{ aeroport_form.service_type.label_tag }}
+                                {{ aeroport_form.service_type }}
+                            </div>
+                        </div>
+                        
+                        <!-- Champ aéroport fixe -->
+                        <div class="form-group">
+                            <label id="airport-label">Aéroport</label>
+                            <input type="text" id="airport_address" name="airport_address" value="Aéroport Roland Garros, Saint-Marie, La Réunion" readonly class="airport-field">
+                        </div>
+                        
+                        <!-- Champ d'adresse dynamique selon le type de service -->
+                        <div class="form-group" id="aeroport-address-field" style="display: none;">
+                            <label for="aeroport_address" id="aeroport-address-label">Adresse</label>
+                            <input type="text" id="aeroport_address" name="aeroport_address" class="places-autocomplete" placeholder="Entrez votre adresse" required>
+                            <input type="hidden" id="aeroport_address_lat" name="aeroport_address_lat">
+                            <input type="hidden" id="aeroport_address_lng" name="aeroport_address_lng">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                {{ aeroport_form.departure_date.label_tag }}
+                                {{ aeroport_form.departure_date }}
+                            </div>
+                            <div class="form-group">
+                                {{ aeroport_form.departure_time.label_tag }}
+                                {{ aeroport_form.departure_time }}
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                {{ aeroport_form.passengers.label_tag }}
+                                {{ aeroport_form.passengers }}
+                            </div>
+                            <div class="form-group">
+                                {{ aeroport_form.luggage.label_tag }}
+                                {{ aeroport_form.luggage }}
+                            </div>
+                        </div>
+                        
+                        <!-- Affichage du prix estimé pour l'aéroport -->
+                        <div class="route-info" id="aeroport-route-info" style="display: none;">
+                            <div class="info-row">
+                                <div class="info-item">
+                                    <span class="info-label">Distance :</span>
+                                    <span class="info-value" id="aeroport-distance-value">0 km</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Prix estimé :</span>
+                                    <span class="info-value" id="aeroport-price-value">0€</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" name="aeroport_submit" class="btn btn-primary">Calculer le prix</button>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Carte Google Maps -->
+            <div class="map-container">
+                <div id="map"></div>
+                <div class="map-info">
+                    <h3>Votre trajet</h3>
+                    <div id="map-route-info">
+                        <p>Saisissez vos informations pour voir l'itinéraire</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Informations sur les tarifs -->
+<section class="pricing-section">
+    <div class="container">
+        <h2>Nos tarifs</h2>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3>Transport privé</h3>
+                <ul>
+                    <li>≤ 50 km : 2,25€/km</li>
+                    <li>50-100 km : 1,90€/km</li>
+                    <li>> 100 km : 1,50€/km</li>
+                </ul>
+            </div>
+            <div class="pricing-card">
+                <h3>Service aéroport</h3>
+                <ul>
+                    <li>≤ 30 km : 2,00€/km</li>
+                    <li>> 30 km : 1,50€/km</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// Variables globales
+let map, directionsService, directionsRenderer;
+let departureMarker, arrivalMarker;
+let currentRoute = null;
+
+// Initialisation de la carte Google Maps
+function initMap() {
+    // Centre de la carte sur La Réunion
+    const reunionCenter = { lat: -21.1151, lng: 55.5364 };
+    
+    // Initialisation de la carte
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: reunionCenter,
+        zoom: 10,
+        styles: [
+            {
+                featureType: "poi",
+                elementType: "labels",
+                stylers: [{ visibility: "off" }]
+            }
+        ]
+    });
+    
+    // Services de directions
+    directionsService = new google.maps.DirectionsService();
+    directionsRenderer = new google.maps.DirectionsRenderer({
+        suppressMarkers: true,
+        polylineOptions: {
+            strokeColor: '#dbc067',
+            strokeWeight: 4
         }
-        .service-in-bloc-left {
-            width: 100%;
-            padding: 0;
+    });
+    directionsRenderer.setMap(map);
+    
+    // Marqueur pour l'aéroport Roland Garros
+    const airportMarker = new google.maps.Marker({
+        position: { lat: -20.890089, lng: 55.516448 },
+        map: map,
+        title: 'Aéroport Roland Garros',
+        icon: {
+            url: 'https://maps.google.com/mapfiles/ms/icons/airport.png',
+            scaledSize: new google.maps.Size(32, 32)
         }
-        .service-in-bloc-right {
-            display: none;
+    });
+    
+    // Initialisation de l'autocomplétion
+    initAutocomplete();
+}
+
+// Initialisation de l'autocomplétion Google Places
+function initAutocomplete() {
+    const departureInput = document.getElementById('id_departure');
+    const arrivalInput = document.getElementById('id_arrival');
+    const aeroportAddressInput = document.getElementById('aeroport_address');
+    
+    // Autocomplétion pour le départ
+    const departureAutocomplete = new google.maps.places.Autocomplete(departureInput, {
+        componentRestrictions: { country: 're' }, // Restriction à La Réunion
+        types: ['geocode', 'establishment']
+    });
+    
+    // Autocomplétion pour l'arrivée
+    const arrivalAutocomplete = new google.maps.places.Autocomplete(arrivalInput, {
+        componentRestrictions: { country: 're' }, // Restriction à La Réunion
+        types: ['geocode', 'establishment']
+    });
+    
+    // Autocomplétion pour l'adresse aéroport
+    const aeroportAddressAutocomplete = new google.maps.places.Autocomplete(aeroportAddressInput, {
+        componentRestrictions: { country: 're' }, // Restriction à La Réunion
+        types: ['geocode', 'establishment']
+    });
+    
+    // Événement de sélection pour le départ
+    departureAutocomplete.addListener('place_changed', function() {
+        const place = departureAutocomplete.getPlace();
+        if (place.geometry) {
+            document.getElementById('departure_lat').value = place.geometry.location.lat();
+            document.getElementById('departure_lng').value = place.geometry.location.lng();
+            
+            // Mettre à jour le marqueur de départ
+            if (departureMarker) departureMarker.setMap(null);
+            departureMarker = new google.maps.Marker({
+                position: place.geometry.location,
+                map: map,
+                title: 'Départ',
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 8,
+                    fillColor: '#28a745',
+                    fillOpacity: 1,
+                    strokeColor: '#ffffff',
+                    strokeWeight: 2
+                }
+            });
+            
+            // Calculer l'itinéraire si l'arrivée est aussi définie
+            if (document.getElementById('arrival_lat').value && document.getElementById('arrival_lng').value) {
+                calculateRoute();
+            }
         }
-    }
-    .service-in-photo {
-        height: 700px;
-        width: 500px;
-        object-fit: cover;
-    }
-    @media (max-width: 700px) {
-        .service-in-content {
-            font-size: 15px;
+    });
+    
+    // Événement de sélection pour l'arrivée
+    arrivalAutocomplete.addListener('place_changed', function() {
+        const place = arrivalAutocomplete.getPlace();
+        if (place.geometry) {
+            document.getElementById('arrival_lat').value = place.geometry.location.lat();
+            document.getElementById('arrival_lng').value = place.geometry.location.lng();
+            
+            // Mettre à jour le marqueur d'arrivée
+            if (arrivalMarker) arrivalMarker.setMap(null);
+            arrivalMarker = new google.maps.Marker({
+                position: place.geometry.location,
+                map: map,
+                title: 'Arrivée',
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale: 8,
+                    fillColor: '#dc3545',
+                    fillOpacity: 1,
+                    strokeColor: '#ffffff',
+                    strokeWeight: 2
+                }
+            });
+            
+            // Calculer l'itinéraire si le départ est aussi défini
+            if (document.getElementById('departure_lat').value && document.getElementById('departure_lng').value) {
+                calculateRoute();
+            }
         }
+    });
+    
+    // Événement de sélection pour l'adresse aéroport
+    aeroportAddressAutocomplete.addListener('place_changed', function() {
+        const place = aeroportAddressAutocomplete.getPlace();
+        if (place.geometry) {
+            document.getElementById('aeroport_address_lat').value = place.geometry.location.lat();
+            document.getElementById('aeroport_address_lng').value = place.geometry.location.lng();
+            
+            // Calculer l'itinéraire aéroport
+            calculateAeroportRoute();
+        }
+    });
+}
+
+// Calcul de l'itinéraire
+function calculateRoute() {
+    const departureLat = parseFloat(document.getElementById('departure_lat').value);
+    const departureLng = parseFloat(document.getElementById('departure_lng').value);
+    const arrivalLat = parseFloat(document.getElementById('arrival_lat').value);
+    const arrivalLng = parseFloat(document.getElementById('arrival_lng').value);
+    
+    if (!departureLat || !departureLng || !arrivalLat || !arrivalLng) return;
+    
+    const request = {
+        origin: { lat: departureLat, lng: departureLng },
+        destination: { lat: arrivalLat, lng: arrivalLng },
+        travelMode: google.maps.TravelMode.DRIVING,
+        unitSystem: google.maps.UnitSystem.METRIC
+    };
+    
+    directionsService.route(request, function(result, status) {
+        if (status === 'OK') {
+            directionsRenderer.setDirections(result);
+            currentRoute = result;
+            
+            // Calculer la distance
+            const distance = result.routes[0].legs[0].distance.value / 1000; // Conversion en km
+            
+            // Calculer le prix selon le type de service
+            const activeTab = document.querySelector('.tab-button.active').getAttribute('data-tab');
+            let price = 0;
+            
+            if (activeTab === 'transport') {
+                if (distance <= 50) {
+                    price = distance * 2.25;
+                } else if (distance <= 100) {
+                    price = distance * 1.90;
+                } else {
+                    price = distance * 1.50;
+                }
+                
+                // Afficher les informations
+                document.getElementById('distance-value').textContent = distance.toFixed(1) + ' km';
+                document.getElementById('price-value').textContent = price.toFixed(2) + '€';
+                document.getElementById('route-info').style.display = 'block';
+                
+            } else if (activeTab === 'aeroport') {
+                if (distance <= 30) {
+                    price = distance * 2.00;
+                } else {
+                    price = distance * 1.50;
+                }
+                
+                // Afficher les informations
+                document.getElementById('aeroport-distance-value').textContent = distance.toFixed(1) + ' km';
+                document.getElementById('aeroport-price-value').textContent = price.toFixed(2) + '€';
+                document.getElementById('aeroport-route-info').style.display = 'block';
+            }
+            
+            // Mettre à jour les informations de la carte
+            updateMapInfo(distance, price);
+            
+            // Ajuster la vue de la carte pour inclure tout l'itinéraire
+            const bounds = new google.maps.LatLngBounds();
+            bounds.extend(request.origin);
+            bounds.extend(request.destination);
+            map.fitBounds(bounds);
+        }
+    });
+}
+
+// Calcul de l'itinéraire aéroport
+function calculateAeroportRoute() {
+    const serviceType = document.getElementById('id_service_type').value;
+    const aeroportAddressLat = parseFloat(document.getElementById('aeroport_address_lat').value);
+    const aeroportAddressLng = parseFloat(document.getElementById('aeroport_address_lng').value);
+    
+    if (!aeroportAddressLat || !aeroportAddressLng) return;
+    
+    // Coordonnées de l'aéroport Roland Garros
+    const airportLat = -20.890089;
+    const airportLng = 55.516448;
+    
+    let origin, destination;
+    
+    if (serviceType === 'venir') {
+        // Venir me chercher : de l'aéroport vers l'adresse client
+        origin = { lat: airportLat, lng: airportLng };
+        destination = { lat: aeroportAddressLat, lng: aeroportAddressLng };
+    } else if (serviceType === 'deposer') {
+        // Me déposer : de l'adresse client vers l'aéroport
+        origin = { lat: aeroportAddressLat, lng: aeroportAddressLng };
+        destination = { lat: airportLat, lng: airportLng };
     }
-</style>
+    
+    if (origin && destination) {
+        const request = {
+            origin: origin,
+            destination: destination,
+            travelMode: google.maps.TravelMode.DRIVING,
+            unitSystem: google.maps.UnitSystem.METRIC
+        };
+        
+        directionsService.route(request, function(result, status) {
+            if (status === 'OK') {
+                directionsRenderer.setDirections(result);
+                currentRoute = result;
+                
+                // Calculer la distance
+                const distance = result.routes[0].legs[0].distance.value / 1000; // Conversion en km
+                
+                // Calculer le prix selon la grille tarifaire aéroport
+                let price = 0;
+                if (distance <= 30) {
+                    price = distance * 2.00;
+                } else {
+                    price = distance * 1.50;
+                }
+                
+                // Afficher les informations
+                document.getElementById('aeroport-distance-value').textContent = distance.toFixed(1) + ' km';
+                document.getElementById('aeroport-price-value').textContent = price.toFixed(2) + '€';
+                document.getElementById('aeroport-route-info').style.display = 'block';
+                
+                // Mettre à jour les informations de la carte
+                updateMapInfo(distance, price);
+                
+                // Ajuster la vue de la carte pour inclure tout l'itinéraire
+                const bounds = new google.maps.LatLngBounds();
+                bounds.extend(origin);
+                bounds.extend(destination);
+                map.fitBounds(bounds);
+                
+                // Mettre à jour les marqueurs
+                updateAeroportMarkers(origin, destination);
+            }
+        });
+    }
+}
+
+// Mise à jour des marqueurs pour l'aéroport
+function updateAeroportMarkers(origin, destination) {
+    // Supprimer les anciens marqueurs
+    if (departureMarker) departureMarker.setMap(null);
+    if (arrivalMarker) arrivalMarker.setMap(null);
+    
+    // Marqueur de départ
+    departureMarker = new google.maps.Marker({
+        position: origin,
+        map: map,
+        title: 'Départ',
+        icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 8,
+            fillColor: '#28a745',
+            fillOpacity: 1,
+            strokeColor: '#ffffff',
+            strokeWeight: 2
+        }
+    });
+    
+    // Marqueur d'arrivée
+    arrivalMarker = new google.maps.Marker({
+        position: destination,
+        map: map,
+        title: 'Arrivée',
+        icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale: 8,
+            fillColor: '#dc3545',
+            fillOpacity: 1,
+            strokeColor: '#ffffff',
+            strokeWeight: 2
+        }
+    });
+}
+
+// Mise à jour des informations de la carte
+function updateMapInfo(distance, price) {
+    const mapInfo = document.getElementById('map-route-info');
+    mapInfo.innerHTML = `
+        <div class="route-details">
+            <p><strong>Distance :</strong> ${distance.toFixed(1)} km</p>
+            <p><strong>Prix estimé :</strong> ${price.toFixed(2)}€</p>
+        </div>
+    `;
+}
+
+// Gestion des onglets
+document.addEventListener('DOMContentLoaded', function() {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const tabName = button.getAttribute('data-tab');
+            
+            // Retirer la classe active de tous les onglets
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Ajouter la classe active à l'onglet cliqué
+            button.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Recalculer l'itinéraire si nécessaire
+            if (currentRoute) {
+                calculateRoute();
+            }
+        });
+    });
+    
+    // Gestion des champs de retour
+    const returnCheckbox = document.getElementById('id_return_trip');
+    const returnFields = document.getElementById('return-fields');
+    
+    if (returnCheckbox) {
+        returnCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                returnFields.style.display = 'block';
+            } else {
+                returnFields.style.display = 'none';
+            }
+        });
+    }
+    
+    // Gestion du changement de type de service pour l'aéroport
+    const serviceTypeSelect = document.getElementById('id_service_type');
+    if (serviceTypeSelect) {
+        serviceTypeSelect.addEventListener('change', function() {
+            const addressField = document.getElementById('aeroport-address-field');
+            const aeroportAddressInput = document.getElementById('aeroport_address');
+            const aeroportAddressLat = document.getElementById('aeroport_address_lat');
+            const aeroportAddressLng = document.getElementById('aeroport_address_lng');
+            const aeroportAddressLabel = document.getElementById('aeroport-address-label');
+            const airportLabel = document.getElementById('airport-label');
+            
+            // Réinitialiser les champs
+            aeroportAddressInput.value = '';
+            aeroportAddressLat.value = '';
+            aeroportAddressLng.value = '';
+            
+            // Masquer les informations de route
+            document.getElementById('aeroport-route-info').style.display = 'none';
+            
+            if (this.value === 'venir') {
+                // Venir me chercher : de l'aéroport vers l'adresse client
+                document.getElementById('id_arrival').value = 'Aéroport Roland Garros, La Réunion';
+                document.getElementById('arrival_lat').value = '-20.890089';
+                document.getElementById('arrival_lng').value = '55.516448';
+                
+                // Mettre à jour les labels
+                airportLabel.textContent = 'Lieu de départ';
+                aeroportAddressLabel.textContent = 'Adresse d\'arrivée';
+                aeroportAddressInput.placeholder = 'Entrez votre adresse d\'arrivée';
+                
+                addressField.style.display = 'block'; // Afficher le champ d'adresse
+                
+            } else if (this.value === 'deposer') {
+                // Me déposer : de l'adresse client vers l'aéroport
+                document.getElementById('id_departure').value = 'Aéroport Roland Garros, La Réunion';
+                document.getElementById('departure_lat').value = '-20.890089';
+                document.getElementById('departure_lng').value = '55.516448';
+                
+                // Mettre à jour les labels
+                airportLabel.textContent = 'Lieu d\'arrivée';
+                aeroportAddressLabel.textContent = 'Adresse de départ';
+                aeroportAddressInput.placeholder = 'Entrez votre adresse de départ';
+                
+                addressField.style.display = 'block'; // Afficher le champ d'adresse
+                
+            } else {
+                // Pas de service sélectionné
+                airportLabel.textContent = 'Aéroport';
+                addressField.style.display = 'none'; // Masquer le champ d'adresse
+            }
+            
+            // Effacer la carte si un itinéraire était affiché
+            if (currentRoute) {
+                directionsRenderer.setDirections({routes: []});
+                currentRoute = null;
+                if (departureMarker) departureMarker.setMap(null);
+                if (arrivalMarker) arrivalMarker.setMap(null);
+            }
+        });
+        serviceTypeSelect.dispatchEvent(new Event('change'));
+    }
+});
+</script>
+
+<!-- Chargement de l'API Google Maps avec Places -->
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpYR4gr75AZB5wIVfS0d49G4-lTaSp4vY&libraries=places&callback=initMap">
+</script>
+{% endblock %} 

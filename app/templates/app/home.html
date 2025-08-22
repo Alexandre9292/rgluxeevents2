@@ -1,1202 +1,151 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block title %}RG Luxe Events - Accueil{% endblock %}
+
 {% block content %}
-   
-    <div class="sub-header-home">
-        <video autoplay loop muted controlsList="nodownload" id="ban-video">
-            <source src="{% static 'images/ban-video.mp4'%}" type="video/mp4">
-            Votre navigateur ne supporte pas la lecture de vidéos HTML5.
-        </video>
-    </div>
-
-    <div class="body-content">
-        <div id="module-resa" class="home-bloc1">
-            <div class="module-reservation">
-                <div class="reservation-title">
-                    <h1>Réservation</h1>
-                    <h2>Calculez le prix de votre trajet</h2>
-                </div>
-                <ul class="tab-nav">
-                    <li class="tab-header transport"><a onClick="changeTab('tab-transport')">Transport</a></li>
-                    <li class="tab-header airport"><a onClick="changeTab('tab-airport')">Aéroport</a></li>
-                </ul>
-                <div class="tab-content">
-                    <div id="tab-transport" class="mod-resa-block active">
-                        <img class="module-background" src="{% static 'images/tourisme.jpg'%}">
-                        <div class="reservation-body">
-                            
-                            <form method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="form_type" value="driver_form">
-                                
-                                <!-- Champs de base -->
-                                <div class="form-group">
-                                    <label for="{{ driverForm.departure.id_for_label }}">Lieu de départ</label>
-                                    {{ driverForm.departure }}
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="{{ driverForm.arrival.id_for_label }}">Lieu d'arrivée</label>
-                                    {{ driverForm.arrival }}
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="{{ driverForm.date.id_for_label }}">Date de départ</label>
-                                    {{ driverForm.date }}
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="{{ driverForm.hour.id_for_label }}">Heure de départ</label>
-                                    {{ driverForm.hour }}
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="{{ driverForm.passengers.id_for_label }}">Nombre de passagers</label>
-                                    {{ driverForm.passengers }}
-                                </div>
-                                
-                                <!-- Option aller-retour -->
-                                <div class="aller-retour-container">
-                                    {{ driverForm.aller_retour }}
-                                    <label for="{{ driverForm.aller_retour.id_for_label }}">Aller-retour</label>
-                                </div>
-                                
-                                <!-- Champs de retour (cachés par défaut) -->
-                                <div id="retour-fields" class="retour-fields">
-                                    <div class="form-group">
-                                        <label for="{{ driverForm.retour_date.id_for_label }}">Date de retour</label>
-                                        {{ driverForm.retour_date }}
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label for="{{ driverForm.retour_heure.id_for_label }}">Heure de retour</label>
-                                        {{ driverForm.retour_heure }}
-                                    </div>
-                                </div>
-                                
-                                <button type="submit" id="calculate-btn">Calculer le prix</button>     
-                            </form>
-                            
-                            <!-- Carte interactive -->
-                            <div class="map-container">
-                                <h3>Visualisez votre trajet</h3>
-                                <div id="map" class="google-map"></div>
-                                <div class="route-info" id="route-info" style="display: none;">
-                                    <div class="route-details">
-                                        <span class="distance" id="distance"></span>
-                                        <span class="duration" id="duration"></span>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Résultat du calcul de prix -->
-                            <div class="price-result" id="price-result" style="display: none;">
-                                <div class="price-header">
-                                    <h3>Prix calculé</h3>
-                                </div>
-                                <div class="price-details">
-                                    <div class="price-breakdown">
-                                        <div class="price-row">
-                                            <span class="label">Distance :</span>
-                                            <span class="value" id="display-distance"></span>
-                                        </div>
-                                        <div class="price-row">
-                                            <span class="label">Tarif par km :</span>
-                                            <span class="value" id="display-price-per-km"></span>
-                                        </div>
-                                        <div class="price-row">
-                                            <span class="label">Passagers :</span>
-                                            <span class="value" id="display-passengers"></span>
-                                        </div>
-                                        <div class="price-row total">
-                                            <span class="label">Prix total :</span>
-                                            <span class="value" id="display-total-price"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="price-actions">
-                                    <button type="button" class="btn-payment" onclick="proceedToPayment()">
-                                        <i class="fas fa-credit-card"></i>
-                                        <span>Accéder au paiement</span>
-                                    </button>
-                                </div>
-                            </div>
+<!-- Banner principal avec le design de l'image -->
+<div class="hero-banner" style="display: none;">
+    <div class="banner-content">
+        <div class="banner-left">
+            <div class="transport-panel">
+                <div class="transport-image">
+                    <img src="{% static 'images/voiture-porsche.jpg' %}" alt="Transport de luxe">
+                    <div class="transport-overlay">
+                        <div class="luxury-car">
+                            <img src="{% static 'images/voiture-amg.jpg' %}" alt="Voiture de luxe">
                         </div>
-                    </div>
-                    <div id="tab-airport" class="mod-resa-block">
-                        <img class="module-background" src="{% static 'images/aeroport.jpg'%}">
-                        <div class="reservation-body">
-                            
-                            <form method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="form_type" value="airport_form">
-                                
-                                <div class="form-group">
-                                    <label for="{{ airportForm.departure.id_for_label }}">Lieu de départ</label>
-                                    {{ airportForm.departure }}
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="{{ airportForm.date.id_for_label }}">Date de transfert</label>
-                                    {{ airportForm.date }}
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="{{ airportForm.hour.id_for_label }}">Heure de transfert</label>
-                                    {{ airportForm.hour }}
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="{{ airportForm.passengers.id_for_label }}">Nombre de passagers</label>
-                                    {{ airportForm.passengers }}
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="{{ airportForm.bagages.id_for_label }}">Nombre de bagages</label>
-                                    {{ airportForm.bagages }}
-                                </div>
-                                
-                                <button type="submit">Calculer le prix</button>     
-                            </form>
+                        <div class="private-jet">
+                            <img src="{% static 'images/aeroport.jpg' %}" alt="Jet privé">
                         </div>
                     </div>
                 </div>
-                
-            </div>
-            <div class="text-presa-home">
-
             </div>
         </div>
-    </div>
-    <div class="home-ban1">
-        <img class="home-ban" src="{% static 'images/ban-contact.jpg'%}">
-        <h1>Le prestige, le Luxe et le Confort <br><br>RG.LUXEEVENTS est à votre disposition pour tous vos événements</h1>
-    </div>
-    <div class="body-content">
-        <div class="home-bloc2">
-            <div class="home-bullea">
-                <img src="{% static 'images/aeroport.jpg'%}">
-                <p>Transfert <br>aéroport</p>
-            </div>
-            <div class="home-bulleb">
-                <img src="{% static 'images/mariage.jpg'%}">
-                <p>Mariage</p>
-            </div>
-            <div class="home-bullea">
-                <img src="{% static 'images/tourisme.jpg'%}">
-                <p>Déplacements <br> professionels</p>
-            </div>
-        </div>
-    </div>
-    <div class="home-ban1">
-        <img class="home-ban" src="{% static 'images/ban-about.jpg'%}">
-        <h1>Plongez dans l'univers du luxe et de l'élégance <br><br>pour célébrer le mariage de vos rêves</h1>
-    </div>
-    <div class="body-content">
-        <div class="home-bloc3">
-            <div class="home-bloc3-bloc">
-                <div class="home-bloc3-bloc-left">
-                    <img class="home-bloc3-photo" src="{% static 'images/tourisme.jpg'%}" alt="about2">
+        
+        <div class="banner-center">
+            <div class="logo-container">
+                <div class="main-logo">
+                    <h1>RG Luxe Events</h1>
                 </div>
-                <div class="home-bloc3-bloc-right">
-                    <div class="home-bloc3-bloc-text">
-                        <p>Nous vous proposons des prestations pour tous types de clients, notamment les particuliers, les touristes, les hommes d'affaires, les entreprises, les célébrités, ... </p>
-                        <p>Notre priorité est de proposer à nos clients, un service de prestige, de luxe et de confort. </p>
+            </div>
+            <div class="drone-panel">
+                <div class="drone-image">
+                    <img src="{% static 'images/service-aeroport.jpg' %}" alt="Services drone">
+                </div>
+            </div>
+        </div>
+        
+        <div class="banner-right">
+            <div class="photobooth-panel">
+                <div class="photobooth-image">
+                    <img src="{% static 'images/service-mariage.jpg' %}" alt="Photobooth">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ban-haut">
+    <img src="{% static 'images/ban_haut.jpg' %}" alt="Bannière RG Luxe Events">
+</div>
+
+<!-- Section des services avec les trois bulles -->
+<section class="services-section" style="display: none;">
+    <div class="container">
+        <div class="services-grid">
+            <!-- Bulle Transport -->
+            <div class="service-bubble2 transport-bubble">
+                <a href="{% url 'transport' %}">
+                    <div class="bubble-image2">
+                        <img src="{% static 'images/voiture-classeC.jpg' %}" alt="Transport de luxe">
                     </div>
-                </div>
+                    <h3>Transport</h3>
+                </a>
             </div>
-            </br>
-            <div class="home-bloc3-bloc">
-                <div class="home-bloc3-bloc-left">
-                    <div class="home-bloc3-bloc-text">
-                        <p>RG Luxe Events est une entreprise de transport de personnes et notament dans la location de véhicules haut gamme avec chauffeur privé.</p>
-                        <p>Notre priorité est de proposer à nos clients, un service de prestige, de luxe et de confort. </p>
+            
+            <!-- Bulle Photobooth -->
+            <div class="service-bubble2 photobooth-bubble">
+                <a href="{% url 'photobooth' %}">
+                    <div class="bubble-image2">
+                        <img src="{% static 'images/service-mariage2.jpg' %}" alt="Photobooth">
                     </div>
-                </div>
-                <div class="home-bloc3-bloc-right">
-                    <img class="home-bloc3-photo" src="{% static 'images/mariage.jpg'%}" alt="about1">
-                </div>
+                    <h3>Photobooth</h3>
+                </a>
             </div>
-            </br>
+            
+            <!-- Bulle Drone -->
+            <div class="service-bubble2 drone-bubble">
+                <a href="{% url 'drone' %}">
+                    <div class="bubble-image2">
+                        <img src="{% static 'images/drone.jpg' %}" alt="Services drone">
+                    </div>
+                    <h3>Drone</h3>
+                </a>
+            </div>
         </div>
     </div>
+</section>
 
+<!-- Section des services avec les trois bulles -->
+<section class="services-section">
+    <div class="container">
+        <div class="services-grid">
+            <!-- Bulle Transport -->
+            <div class="service-bubble transport-bubble">
+                <div class="bubble-content">
+                    <div class="bubble-image">
+                        <img src="{% static 'images/voiture-classeC.jpg' %}" alt="Transport de luxe">
+                    </div>
+                    <h3>Transport</h3>
+                    <p>Service de transport premium avec chauffeur privé</p>
+                    <a href="{% url 'transport' %}" class="service-link">Découvrir</a>
+                </div>
+            </div>
+            
+            <!-- Bulle Photobooth -->
+            <div class="service-bubble photobooth-bubble">
+                <div class="bubble-content">
+                    <div class="bubble-image">
+                        <img src="{% static 'images/service-mariage2.jpg' %}" alt="Photobooth">
+                    </div>
+                    <h3>Photobooth</h3>
+                    <p>Photobooth professionnel pour vos événements</p>
+                    <a href="{% url 'photobooth' %}" class="service-link">Découvrir</a>
+                </div>
+            </div>
+            
+            <!-- Bulle Drone -->
+            <div class="service-bubble drone-bubble">
+                <div class="bubble-content">
+                    <div class="bubble-image">
+                        <img src="{% static 'images/drone.jpg' %}" alt="Services drone">
+                    </div>
+                    <h3>Drone</h3>
+                    <p>Captation aérienne et vidéographie professionnelle</p>
+                    <a href="{% url 'drone' %}" class="service-link">Découvrir</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
-
+<!-- Section de présentation -->
+<section class="presentation-section">
+    <div class="container">
+        <div class="presentation-content">
+            <h2>Bienvenue chez RG Luxe Events</h2>
+            <p>Votre partenaire de confiance pour tous vos événements d'exception. Nous proposons des services premium de transport, photobooth et captation aérienne pour rendre vos moments inoubliables.</p>
+            <div class="cta-buttons">
+                <a href="{% url 'contact' %}" class="btn btn-primary">Nous contacter</a>
+                <a href="{% url 'about' %}" class="btn btn-secondary">En savoir plus</a>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
 
 {% block css %}
-    <style>
-        .sub-header-home {
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .home-bloc1 {
-            display: grid;
-            grid-template-columns: auto auto;
-            padding: 10px;
-            text-align: center;
-            gap: 20px;
-        }
-
-        .home-ban1 {
-            display: flex;
-            padding-bottom: 20px;
-            position: relative;
-            text-align: center;
-            width: 100%;
-            height: 300px;
-            border-top: solid 1px #111;
-            border-bottom: solid 1px #111;
-            background-color: #aaa;
-            box-shadow: 0px 4px 4px #dbc067;
-            margin-bottom: 50px;
-        }
-
-        .home-ban {
-            height: 300px;
-            position: relative;
-            margin-left: auto;
-            margin-right: auto;
-            width: 100%;
-            opacity: 0.6;
-        }
-
-        .home-ban1 h1 {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-
-            color: #111;
-            text-shadow: 0 0 15px #dbc067,0 0 15px #dbc067,0 0 15px #dbc067;
-            font-size: 40px;
-            font-family: Rockwell Extra Bold;
-        }
-
-        .home-bloc2 {
-            display: grid;
-            grid-template-columns: auto auto auto;
-            padding: 10px;
-            text-align: center;
-            margin-top: 200px;
-        }
-
-        .home-bullea img {
-            height: 400px;
-            width: 400px;
-            margin-left: auto;
-            margin-right: auto;
-            border-radius: 50%;
-            background-color: #555;
-            border: solid 2px white;
-        }
-        .home-bulleb img {
-            height: 400px;
-            width: 400px;
-            margin-left: auto;
-            margin-right: auto;
-            border-radius: 50%;
-            background-color: #555;
-            margin-top: 100px;
-            border: solid 2px white;
-        }
-
-        .home-bullea p, .home-bulleb p{
-            font-size: 30px;
-            text-transform: uppercase;
-            font-weight: bold;
-            color: #dbc067;
-        }
-
-        .home-bloc3-bloc {
-            display: grid;
-            grid-template-columns: 50% 50%;
-        }
-
-        .home-bloc3-photo {
-            height: 700px;
-            width: 100%;
-        }
-
-        .home-bloc3-bloc-left {
-            width: 80%;
-            margin-left: 20%;
-        }
-
-        .home-bloc3-bloc-right {
-            width: 80%;
-            margin-right: 20%;
-        }
-
-        .home-bloc3-bloc-text {
-            color: white;
-            font-size: 20px;
-            margin-left: 10%;
-            margin-right: 10%;
-            padding-top: 80px;
-        }
-
-
-        /* ////////// MODULE RESA ////////// */
-
-        .module-reservation {
-            position: relative;
-            text-align: center;
-            display: inline-block;
-            height: 2000px;
-            width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            border-radius: 15px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            overflow: hidden;
-            transition: all 0.4s ease;
-        }
-        
-        .module-reservation.expanded {
-            height: 1600px;
-        }
-
-        .reservation-title {
-            width: 100%;
-            height: 180px;
-            background: linear-gradient(135deg, #dbc067 0%, #ffeaa7 100%);
-            border-bottom: 2px solid #dbc067;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .mod-resa-block {
-            display: inline-block;
-            height: 100%;
-            width: 100%
-        }
-
-        .module-background {
-            height: 100%;
-            margin-left: auto;
-            margin-right: auto;
-            width: 100%;
-            opacity: 0.4;
-        }
-
-        .reservation-body {
-            position: absolute;
-            width: 100%;
-            top: 200px;
-            left: 50%;
-            transform: translate(-50%, 0);
-            padding: 0 20px;
-            height: auto;
-            overflow: visible;
-            transition: all 0.4s ease;
-        }
-        
-
-
-        .module-reservation h1 {
-            line-height: 1.1;
-            font-size: 32px;
-            font-weight: bold;
-            text-transform: uppercase;
-            color: #333;
-            text-align: center;
-            margin: 0 0 8px 0;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .module-reservation h2 {
-            font-size: 15px;
-            color: #555;
-            margin: 0;
-            font-weight: normal;
-            line-height: 1.3;
-        }
-
-        .module-reservation p {
-            margin: 20px 0 0;
-        }
-
-        .module-reservation p:first-child {
-            margin-top: 0;
-        }
-
-        .module-reservation input[type=text],
-        .module-reservation input[type=password] {
-            width: 278px;
-        }
-
-        .module-reservation p.submit {
-            text-align: center;
-        }
-
-        :-moz-placeholder {
-            color: #c9c9c9 !important;
-            font-size: 13px;
-        }
-
-        ::-webkit-input-placeholder {
-            color: #ccc;
-            font-size: 13px;
-        }
-
-        .tab-nav {
-            list-style: none;
-            padding: 0;
-            margin-top: -62px;
-            display: flex;
-            justify-content: center;
-            gap: 0;
-        }
-
-        .tab-header {
-            position: relative;
-            line-height: 60px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-            background: linear-gradient(135deg, #dbc067 0%, #ffeaa7 100%);
-            margin: 0;
-            border-radius: 15px 15px 0 0;
-            border: 2px solid #dbc067;
-            border-bottom: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            min-width: 120px;
-        }
-
-        .tab-nav a {
-            text-decoration: none;
-            padding: 0 30px;
-            display: block;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .tab-nav a:hover {
-            cursor: pointer;
-            text-shadow: 0 0 15px #dbc067,0 0 15px #dbc067,0 0 15px #dbc067;
-            transform: translateY(-2px);
-        }
-
-        /* Tab content styling */
-        .tab-content {
-            height: 640px;
-            width: 100%;
-            transition: all 0.4s ease;
-        }
-        
-        .tab-content.expanded {
-            height: 920px;
-        }
-
-        .tab-content > div {
-            display: none;
-        }
-
-        .tab-content > div.active {
-            display: block;
-        }
-
-        /* Formulaire */
-        .reservation-body input[type=text], 
-        .reservation-body input[type=time],
-        .reservation-body input[type=checkbox],
-        .reservation-body select,
-        .contact-form textarea {
-            width: 100%; 
-            padding: 12px;
-            border: 2px solid #e0e0e0; 
-            border-radius: 8px; 
-            box-sizing: border-box; 
-            margin-top: 8px; 
-            margin-bottom: 15px;
-            resize: vertical; 
-            text-align: left;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            background: white;
-        }
-        
-        .reservation-body input[type=text]:focus,
-        .reservation-body input[type=time]:focus,
-        .reservation-body select:focus {
-            outline: none;
-            border-color: #dbc067;
-            box-shadow: 0 0 10px rgba(219, 192, 103, 0.3);
-        }
-        
-        .passengers-select,
-        .bagages-select {
-            background-color: white;
-            cursor: pointer;
-        }
-        
-        .passengers-select:focus,
-        .bagages-select:focus {
-            border-color: #dbc067;
-            box-shadow: 0 0 10px rgba(219, 192, 103, 0.3);
-        }
-        
-        /* Styles pour la carte */
-        .map-container {
-            margin-top: 30px;
-            padding: 20px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .map-container h3 {
-            color: #333;
-            margin-bottom: 15px;
-            text-align: center;
-            font-size: 1.2em;
-        }
-        
-        .google-map {
-            width: 100%;
-            height: 300px;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 2px solid #e0e0e0;
-        }
-        
-        .route-info {
-            margin-top: 15px;
-            padding: 15px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 10px;
-            border-left: 4px solid #dbc067;
-        }
-        
-        .route-details {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-        }
-        
-        .distance, .duration {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #333;
-            font-weight: bold;
-        }
-        
-        .distance::before {
-            content: "📏";
-            font-size: 1.5em;
-            margin-bottom: 5px;
-        }
-        
-        .duration::before {
-            content: "⏱️";
-            font-size: 1.5em;
-            margin-bottom: 5px;
-        }
-        
-        /* Styles pour le résultat du calcul de prix */
-        .price-result {
-            margin-top: 30px;
-            padding: 25px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 15px;
-            border: 2px solid #dbc067;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .price-header h3 {
-            color: #333;
-            margin: 0 0 20px 0;
-            text-align: center;
-            font-size: 1.4em;
-            font-weight: bold;
-        }
-        
-        .price-details {
-            margin-bottom: 25px;
-        }
-        
-        .price-breakdown {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #dee2e6;
-        }
-        
-        .price-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .price-row:last-child {
-            border-bottom: none;
-        }
-        
-        .price-row.total {
-            border-top: 2px solid #dbc067;
-            border-bottom: none;
-            padding-top: 15px;
-            margin-top: 10px;
-            font-weight: bold;
-            font-size: 1.1em;
-        }
-        
-        .price-row .label {
-            color: #555;
-            font-weight: 500;
-        }
-        
-        .price-row .value {
-            color: #333;
-            font-weight: bold;
-        }
-        
-        .price-row.total .value {
-            color: #dbc067;
-            font-size: 1.2em;
-        }
-        
-        .price-actions {
-            text-align: center;
-        }
-        
-        .btn-payment {
-            display: inline-flex;
-            align-items: center;
-            gap: 12px;
-            background: linear-gradient(135deg, #dbc067 0%, #ffeaa7 100%);
-            color: #333;
-            text-decoration: none;
-            padding: 18px 35px;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 20px rgba(219, 192, 103, 0.3);
-        }
-        
-        .btn-payment:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(219, 192, 103, 0.4);
-            color: #333;
-        }
-        
-        .btn-payment i {
-            font-size: 1.2em;
-        }
-        
-        .reservation-body input[type=checkbox] {
-            width: auto;
-            margin-right: 15px;
-            transform: scale(1.3);
-            cursor: pointer;
-        }
-        
-        .aller-retour-container:hover {
-            border-color: #dbc067;
-            box-shadow: 0 2px 10px rgba(219, 192, 103, 0.2);
-        }
-        
-        .retour-fields {
-            display: none;
-            background: #f8f9fa;
-            padding: 18px;
-            border-radius: 10px;
-            margin: 18px 0;
-            border: 2px solid #e9ecef;
-            border-left: 4px solid #dbc067;
-            position: relative;
-            z-index: 10;
-            opacity: 0;
-            transform: translateY(-10px);
-            transition: all 0.4s ease;
-        }
-        
-        .retour-fields.show {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-        
-        .retour-fields .form-group {
-            margin-bottom: 15px;
-        }
-        
-        .retour-fields .form-group:last-child {
-            margin-bottom: 0;
-        }
-        
-
-        
-        .aller-retour-container {
-            display: flex;
-            align-items: center;
-            margin: 18px 0;
-            padding: 15px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 12px;
-            border: 2px solid #dee2e6;
-            position: relative;
-            z-index: 5;
-            transition: all 0.4s ease;
-        }
-        
-        .aller-retour-container label {
-            font-weight: bold;
-            color: #333;
-            margin: 0;
-            cursor: pointer;
-        }
-        
-        .reservation-body button[type=submit] {
-            background: linear-gradient(135deg, #dbc067 0%, #ffeaa7 100%);
-            color: #333;
-            padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 25px;
-            font-size: 16px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(219, 192, 103, 0.3);
-            width: 100%;
-        }
-        
-        .reservation-body button[type=submit]:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(219, 192, 103, 0.4);
-        }
-        
-        .reservation-body button[type=submit]:active {
-            transform: translateY(0);
-        }
-
-        .reservation-body p {
-            text-align: left;
-        }
-
-        .reservation-body form{
-            width: 100%;
-            margin-right: auto;
-            margin-left: auto;
-        }
-        
-        .form-group {
-            margin-bottom: 18px;
-        }
-        
-        .form-group label {
-            display: block;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 6px;
-            font-size: 14px;
-            text-align: left;
-        }
-        
-        .form-group:last-child {
-            margin-bottom: 0;
-        }
-
-    </style>
-{% endblock %}
-
-{% block js %}
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-
-        $(document).ready(function() {
-            tabActive('tab-transport');
-
-            // Initialisation de Flatpickr pour les dates
-            flatpickr(".flatpickr-date", {
-                dateFormat: "d/m/Y",    // Format combiné pour date et heure (dd/mm/yyyy hh:mm)
-                allowInput: true,     // Permet de saisir manuellement la date
-                altInput: true,       // Affiche un champ alternatif pour la saisie
-                altFormat: "d/m/Y",  // Format de la date dans l'affichage alternatif
-                minDate: "today",  // Empêche la sélection de dates avant aujourd'hui
-                maxDate: "31.12.2100"
-            });
-
-            // Initialisation de Flatpickr pour le champ heure
-            flatpickr(".flatpickr-time", {
-                enableTime: true,           // Activer la sélection de l'heure
-                noCalendar: true,           // Désactive la partie calendrier
-                dateFormat: "H:i",          // Format de l'heure : hh:mm
-                time_24hr: true,            // Utiliser un format 24h
-                allowInput: true,           // Permet la saisie manuelle
-                minuteIncrement: 1          // Incrément de minutes
-            });
-            
-            // Gestion de l'option aller-retour
-            $('.aller-retour-checkbox').change(function() {
-                const retourFields = $('#retour-fields');
-                const moduleReservation = $('.module-reservation');
-                const tabContent = $('.tab-content');
-                
-                if (this.checked) {
-                    // Afficher les champs de retour
-                    retourFields.addClass('show');
-                    
-                    // Agrandir le module
-                    moduleReservation.addClass('expanded');
-                    tabContent.addClass('expanded');
-                } else {
-                    // Masquer les champs de retour
-                    retourFields.removeClass('show');
-                    
-                    // Réduire le module
-                    moduleReservation.removeClass('expanded');
-                    tabContent.removeClass('expanded');
-                }
-            });
-            
-            // Initialisation de la carte Google Maps
-            initMap();
-        });
-
-        /* document.getElementById('ban-video').addEventListener('contextmenu', function(e) {
-            e.preventDefault(); // Empêcher l'apparition du menu contextuel
-        });*/
-
-        function changeTab(tab) {            
-            const tabContent = document.querySelectorAll('.tab-content > div');
-            
-            tabContent.forEach((element) => {
-                element.classList.remove('active');
-            });
-
-            const tabContentElement = document.getElementById(tab);
-            tabContentElement.classList.add('active');
-
-            tabActive(tab);
-        };
-
-        function tabActive(tab) {
-            const tabContent = document.querySelectorAll('.tab-nav > li');
-            tabContent.forEach((element) => {
-                element.style.zIndex = 1;
-                element.style.transform = 'scale(1)';
-                element.style.boxShadow = '0 -2px 10px rgba(0,0,0,0.1)';
-
-                const links = element.querySelectorAll('a');
-                links.forEach(link => {
-                    link.style.padding = '0 30px'; 
-                });
-            });
-
-            const headerClass = tab.split('-')[1];
-            const headerElement = document.querySelector('.' + headerClass);
-
-            headerElement.style.zIndex = 2;
-            headerElement.style.transform = 'scale(1.05)';
-            headerElement.style.boxShadow = '0 -4px 20px rgba(219, 192, 103, 0.3)';
-            
-            const links = headerElement.querySelectorAll('a');
-            links.forEach(link => {
-                link.style.padding = '0 35px'; 
-            });
-        };
-        
-        // Variables globales pour la carte
-        let map;
-        let directionsService;
-        let directionsRenderer;
-        let departureAutocomplete;
-        let arrivalAutocomplete;
-        
-        // Initialisation de la carte
-        function initMap() {
-            // Centre de La Réunion
-            const reunionCenter = { lat: -21.115141, lng: 55.536384 };
-            
-            // Créer la carte
-            map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 10,
-                center: reunionCenter,
-                mapTypeId: google.maps.MapTypeId.ROADMAP,
-                styles: [
-                    {
-                        featureType: 'poi',
-                        elementType: 'labels',
-                        stylers: [{ visibility: 'off' }]
-                    }
-                ]
-            });
-            
-            // Initialiser les services
-            directionsService = new google.maps.DirectionsService();
-            directionsRenderer = new google.maps.DirectionsRenderer({
-                suppressMarkers: true,
-                polylineOptions: {
-                    strokeColor: '#dbc067',
-                    strokeWeight: 4,
-                    strokeOpacity: 0.8
-                }
-            });
-            directionsRenderer.setMap(map);
-            
-            // Initialiser l'autocomplétion pour le départ
-            const departureInput = document.getElementById('{{ driverForm.departure.id_for_label }}');
-            if (departureInput) {
-                departureAutocomplete = new google.maps.places.Autocomplete(departureInput, {
-                    componentRestrictions: { country: 'RE' }, // Restreindre à La Réunion
-                    types: ['establishment', 'geocode']
-                });
-                
-                // Écouter les changements dans le champ
-                departureInput.addEventListener('change', checkAndCalculateRoute);
-                
-                // Écouter la sélection d'une suggestion
-                departureAutocomplete.addListener('place_changed', function() {
-                    const place = departureAutocomplete.getPlace();
-                    if (place.geometry) {
-                        departureInput.dataset.lat = place.geometry.location.lat();
-                        departureInput.dataset.lng = place.geometry.location.lng();
-                        checkAndCalculateRoute();
-                    }
-                });
-            }
-            
-            // Initialiser l'autocomplétion pour l'arrivée
-            const arrivalInput = document.getElementById('{{ driverForm.arrival.id_for_label }}');
-            if (arrivalInput) {
-                arrivalAutocomplete = new google.maps.places.Autocomplete(arrivalInput, {
-                    componentRestrictions: { country: 'RE' }, // Restreindre à La Réunion
-                    types: ['establishment', 'geocode']
-                });
-                
-                // Écouter les changements dans le champ
-                arrivalInput.addEventListener('change', checkAndCalculateRoute);
-                
-                // Écouter la sélection d'une suggestion
-                arrivalAutocomplete.addListener('place_changed', function() {
-                    const place = arrivalAutocomplete.getPlace();
-                    if (place.geometry) {
-                        arrivalInput.dataset.lat = place.geometry.location.lat();
-                        arrivalInput.dataset.lng = place.geometry.location.lng();
-                        checkAndCalculateRoute();
-                    }
-                });
-            }
-        }
-        
-        // Vérifier si les deux champs sont remplis et calculer l'itinéraire
-        function checkAndCalculateRoute() {
-            const departureInput = document.getElementById('{{ driverForm.departure.id_for_label }}');
-            const arrivalInput = document.getElementById('{{ driverForm.arrival.id_for_label }}');
-            
-            if (departureInput && arrivalInput && departureInput.dataset.lat && arrivalInput.dataset.lat) {
-                calculateRoute();
-            }
-        }
-        
-        // Calculer et afficher l'itinéraire
-        function calculateRoute() {
-            const departureInput = document.getElementById('{{ driverForm.departure.id_for_label }}');
-            const arrivalInput = document.getElementById('{{ driverForm.arrival.id_for_label }}');
-            
-            if (!departureInput || !arrivalInput) return;
-            
-            const origin = {
-                lat: parseFloat(departureInput.dataset.lat),
-                lng: parseFloat(departureInput.dataset.lng)
-            };
-            
-            const destination = {
-                lat: parseFloat(arrivalInput.dataset.lat),
-                lng: parseFloat(arrivalInput.dataset.lng)
-            };
-            
-            const request = {
-                origin: origin,
-                destination: destination,
-                travelMode: google.maps.TravelMode.DRIVING,
-                unitSystem: google.maps.UnitSystem.METRIC
-            };
-            
-            directionsService.route(request, function(result, status) {
-                if (status === 'OK') {
-                    directionsRenderer.setDirections(result);
-                    
-                    // Afficher les informations de l'itinéraire
-                    const route = result.routes[0];
-                    const leg = route.legs[0];
-                    
-                    const distanceElement = document.getElementById('distance');
-                    const durationElement = document.getElementById('duration');
-                    const routeInfoElement = document.getElementById('route-info');
-                    
-                    if (distanceElement && durationElement && routeInfoElement) {
-                        distanceElement.textContent = leg.distance.text;
-                        durationElement.textContent = leg.duration.text;
-                        routeInfoElement.style.display = 'block';
-                    }
-                    
-                    // Stocker la distance en kilomètres pour le calcul du prix
-                    const distanceKm = parseFloat(leg.distance.text.replace(' km', ''));
-                    window.calculatedDistance = distanceKm;
-                    
-                    // Ajuster la carte pour afficher tout l'itinéraire
-                    const bounds = new google.maps.LatLngBounds();
-                    bounds.extend(origin);
-                    bounds.extend(destination);
-                    map.fitBounds(bounds);
-                }
-            });
-        }
-        
-        // Calculer le prix selon la grille tarifaire
-        function calculatePrice() {
-            const distanceKm = window.calculatedDistance || 0;
-            const allerRetour = document.getElementById('{{ driverForm.aller_retour.id_for_label }}').checked;
-            
-            if (distanceKm === 0) {
-                alert('Veuillez d\'abord sélectionner des adresses de départ et d\'arrivée pour calculer le prix.');
-                return;
-            }
-            
-            // Calcul du prix selon la grille tarifaire
-            let pricePerKm;
-            if (distanceKm <= 50) {
-                pricePerKm = 2.25;
-            } else if (distanceKm <= 100) {
-                pricePerKm = 1.90;
-            } else {
-                pricePerKm = 1.50;
-            }
-            
-            // Prix de base basé sur la distance
-            let totalPrice = distanceKm * pricePerKm;
-            
-            // Ajuster le prix pour aller-retour
-            if (allerRetour) {
-                totalPrice *= 1.8;
-            }
-            
-            // Afficher le résultat du calcul
-            displayPriceResult(totalPrice);
-            
-            // Stocker la distance dans la session pour le backend
-            storeDistanceInSession(distanceKm);
-        }
-        
-        // Afficher le résultat du calcul de prix
-        function displayPriceResult(totalPrice) {
-            document.getElementById('display-total-price').textContent = totalPrice.toFixed(2) + ' €';
-            
-            // Afficher la section de prix
-            document.getElementById('price-result').style.display = 'block';
-            
-            // Masquer le bouton "Calculer le prix"
-            document.getElementById('calculate-btn').style.display = 'none';
-        }
-        
-        // Stocker la distance dans la session via AJAX
-        function storeDistanceInSession(distanceKm) {
-            fetch('/store-distance/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-                },
-                body: JSON.stringify({
-                    distance: distanceKm
-                })
-            });
-        }
-        
-        // Procéder au paiement avec les données calculées
-        function proceedToPayment() {
-            const distanceKm = window.calculatedDistance || 0;
-            const passengers = parseInt(document.getElementById('{{ driverForm.passengers.id_for_label }}').value) || 1;
-            const allerRetour = document.getElementById('{{ driverForm.aller_retour.id_for_label }}').checked;
-            const departure = document.getElementById('{{ driverForm.departure.id_for_label }}').value;
-            const arrival = document.getElementById('{{ driverForm.arrival.id_for_label }}').value;
-            const date = document.getElementById('{{ driverForm.date.id_for_label }}').value;
-            const hour = document.getElementById('{{ driverForm.hour.id_for_label }}').value;
-            
-            if (!departure || !arrival || !date || !hour) {
-                alert('Veuillez remplir tous les champs obligatoires avant de procéder au paiement.');
-                return;
-            }
-            
-            // Calculer le prix final
-            let pricePerKm;
-            if (distanceKm <= 50) {
-                pricePerKm = 2.25;
-            } else if (distanceKm <= 100) {
-                pricePerKm = 1.90;
-            } else {
-                pricePerKm = 1.50;
-            }
-            
-            let totalPrice = distanceKm * pricePerKm;
-            if (passengers > 1) {
-                totalPrice += (passengers - 1) * 15.0;
-            }
-            if (allerRetour) {
-                totalPrice *= 1.8;
-            }
-            
-            // Stocker toutes les données de réservation en session
-            storeBookingData({
-                type: 'driver',
-                departure: departure,
-                arrival: arrival,
-                passengers: passengers,
-                distance_km: distanceKm,
-                price_per_km: pricePerKm,
-                date: date,
-                hour: hour,
-                aller_retour: allerRetour,
-                price: totalPrice.toFixed(2)
-            });
-        }
-        
-        // Stocker les données de réservation complètes en session
-        function storeBookingData(bookingData) {
-            fetch('/store-booking-data/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-                },
-                body: JSON.stringify(bookingData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    // Rediriger vers la page de paiement
-                    window.location.href = '{% url "payment" %}';
-                } else {
-                    alert('Erreur lors de la sauvegarde des données. Veuillez réessayer.');
-                }
-            })
-            .catch(error => {
-                console.error('Erreur:', error);
-                alert('Erreur lors de la sauvegarde des données. Veuillez réessayer.');
-            });
-        }
-
-    </script>
-
+<style>
+</style>
 {% endblock %}

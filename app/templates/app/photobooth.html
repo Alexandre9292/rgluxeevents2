@@ -1,0 +1,254 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}RG Luxe Events - Photobooth{% endblock %}
+
+{% block content %}
+<!-- Banner principal avec le design de l'image -->
+<div class="hero-banner">
+    <div class="banner-content">
+        <div class="banner-left">
+            <div class="transport-panel">
+                <div class="transport-image">
+                    <img src="{% static 'images/voiture-porsche.jpg' %}" alt="Transport de luxe">
+                    <div class="transport-overlay">
+                        <div class="luxury-car">
+                            <img src="{% static 'images/voiture-amg.jpg' %}" alt="Voiture de luxe">
+                        </div>
+                        <div class="private-jet">
+                            <img src="{% static 'images/aeroport.jpg' %}" alt="Jet privé">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="banner-center">
+            <div class="logo-container">
+                <div class="main-logo">
+                    <h1>RG Luxe Events</h1>
+                </div>
+            </div>
+            <div class="drone-panel">
+                <div class="drone-image">
+                    <img src="{% static 'images/service-aeroport.jpg' %}" alt="Services drone">
+                </div>
+            </div>
+        </div>
+        
+        <div class="banner-right">
+            <div class="photobooth-panel">
+                <div class="photobooth-image">
+                    <img src="{% static 'images/service-mariage.jpg' %}" alt="Photobooth">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Image bannière haute -->
+<div class="ban-haut">
+    <img src="{% static 'images/ban_haut.jpg' %}" alt="Bannière RG Luxe Events">
+</div>
+
+<!-- Section principale -->
+<section class="photobooth-section">
+    <div class="container">
+        <div class="photobooth-content">
+            <!-- Formulaire de réservation -->
+            <div class="booking-form-container">
+                <h2>Réservation Photobooth</h2>
+                
+                <form method="post" class="booking-form" id="photobooth-form">
+                    {% csrf_token %}
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            {{ form.first_name.label_tag }}
+                            {{ form.first_name }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.last_name.label_tag }}
+                            {{ form.last_name }}
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        {{ form.address.label_tag }}
+                        {{ form.address }}
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            {{ form.email.label_tag }}
+                            {{ form.email }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.phone.label_tag }}
+                            {{ form.phone }}
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        {{ form.service_type.label_tag }}
+                        {{ form.service_type }}
+                    </div>
+                    
+                    <div class="form-row" id="hours-fields" style="display: none;">
+                        <div class="form-group">
+                            {{ form.hours.label_tag }}
+                            {{ form.hours }}
+                        </div>
+                    </div>
+                    
+                    <div class="form-row" id="days-fields" style="display: none;">
+                        <div class="form-group">
+                            {{ form.days.label_tag }}
+                            {{ form.days }}
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            {{ form.event_date.label_tag }}
+                            {{ form.event_date }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.event_time.label_tag }}
+                            {{ form.event_time }}
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            {{ form.location.label_tag }}
+                            {{ form.location }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.event_type.label_tag }}
+                            {{ form.event_type }}
+                        </div>
+                    </div>
+                    
+                    <!-- Affichage du prix -->
+                    <div class="price-display">
+                        <div class="price-label">Prix estimé :</div>
+                        <div class="price-value" id="price-value">0€</div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Envoyer la demande</button>
+                </form>
+            </div>
+            
+            <!-- Présentation du service -->
+            <div class="service-presentation">
+                <h3>Photobooth Professionnel</h3>
+                <p>Notre photobooth de luxe vous accompagne pour immortaliser tous vos moments spéciaux. Équipé de la dernière technologie, il garantit des photos de qualité professionnelle.</p>
+                
+                <div class="service-features">
+                    <div class="feature">
+                        <i class="feature-icon">📸</i>
+                        <h4>Haute qualité</h4>
+                        <p>Photos haute résolution avec impression instantanée</p>
+                    </div>
+                    
+                    <div class="feature">
+                        <i class="feature-icon">🎭</i>
+                        <h4>Accessoires inclus</h4>
+                        <p>Costumes, chapeaux et accessoires amusants</p>
+                    </div>
+                    
+                    <div class="feature">
+                        <i class="feature-icon">💾</i>
+                        <h4>Partage numérique</h4>
+                        <p>Photos disponibles en ligne pour partage</p>
+                    </div>
+                </div>
+                
+                <div class="pricing-info">
+                    <h4>Nos tarifs</h4>
+                    <ul>
+                        <li><strong>À la journée :</strong> 400€/jour</li>
+                        <li><strong>À l'heure :</strong> 85€/heure (minimum 2h)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Messages de succès/erreur -->
+{% if messages %}
+<div class="messages-container">
+    {% for message in messages %}
+    <div class="message {% if message.tags %}message-{{ message.tags }}{% endif %}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const serviceTypeSelect = document.getElementById('id_service_type');
+    const hoursFields = document.getElementById('hours-fields');
+    const daysFields = document.getElementById('days-fields');
+    const priceValue = document.getElementById('price-value');
+    
+    // Gestion de l'affichage des champs selon le type de service
+    function updateFields() {
+        const selectedValue = serviceTypeSelect.value;
+        
+        if (selectedValue === 'heure') {
+            hoursFields.style.display = 'flex';
+            daysFields.style.display = 'none';
+        } else if (selectedValue === 'journee') {
+            hoursFields.style.display = 'none';
+            daysFields.style.display = 'flex';
+        } else {
+            hoursFields.style.display = 'none';
+            daysFields.style.display = 'none';
+        }
+        
+        calculatePrice();
+    }
+    
+    // Calcul du prix
+    function calculatePrice() {
+        const selectedValue = serviceTypeSelect.value;
+        let price = 0;
+        
+        if (selectedValue === 'heure') {
+            const hours = parseInt(document.getElementById('id_hours').value) || 0;
+            if (hours >= 2) {
+                price = hours * 85;
+            }
+        } else if (selectedValue === 'journee') {
+            const days = parseInt(document.getElementById('id_days').value) || 0;
+            if (days >= 1) {
+                price = days * 400;
+            }
+        }
+        
+        priceValue.textContent = price + '€';
+    }
+    
+    // Événements
+    serviceTypeSelect.addEventListener('change', updateFields);
+    
+    const hoursInput = document.getElementById('id_hours');
+    const daysInput = document.getElementById('id_days');
+    
+    if (hoursInput) {
+        hoursInput.addEventListener('input', calculatePrice);
+    }
+    
+    if (daysInput) {
+        daysInput.addEventListener('input', calculatePrice);
+    }
+    
+    // Initialisation
+    updateFields();
+});
+</script>
+{% endblock %} 

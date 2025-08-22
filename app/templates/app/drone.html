@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}RG Luxe Events - Drone{% endblock %}
+
+{% block content %}
+<!-- Banner principal avec le design de l'image -->
+<div class="hero-banner">
+    <div class="banner-content">
+        <div class="banner-left">
+            <div class="transport-panel">
+                <div class="transport-image">
+                    <img src="{% static 'images/voiture-porsche.jpg' %}" alt="Transport de luxe">
+                    <div class="transport-overlay">
+                        <div class="luxury-car">
+                            <img src="{% static 'images/voiture-amg.jpg' %}" alt="Voiture de luxe">
+                        </div>
+                        <div class="private-jet">
+                            <img src="{% static 'images/aeroport.jpg' %}" alt="Jet privé">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="banner-center">
+            <div class="logo-container">
+                <div class="main-logo">
+                    <h1>RG Luxe Events</h1>
+                </div>
+            </div>
+            <div class="drone-panel">
+                <div class="drone-image">
+                    <img src="{% static 'images/service-aeroport.jpg' %}" alt="Services drone">
+                </div>
+            </div>
+        </div>
+        
+        <div class="banner-right">
+            <div class="photobooth-panel">
+                <div class="photobooth-image">
+                    <img src="{% static 'images/service-mariage.jpg' %}" alt="Photobooth">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Image bannière haute -->
+<div class="ban-haut">
+    <img src="{% static 'images/ban_haut.jpg' %}" alt="Bannière RG Luxe Events">
+</div>
+
+<!-- Section principale -->
+<section class="drone-section">
+    <div class="container">
+        <div class="drone-content">
+            <!-- Formulaire de réservation -->
+            <div class="booking-form-container">
+                <h2>Réservation Drone</h2>
+                
+                <form method="post" class="booking-form" id="drone-form">
+                    {% csrf_token %}
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            {{ form.first_name.label_tag }}
+                            {{ form.first_name }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.last_name.label_tag }}
+                            {{ form.last_name }}
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            {{ form.email.label_tag }}
+                            {{ form.email }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.phone.label_tag }}
+                            {{ form.phone }}
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        {{ form.date.label_tag }}
+                        {{ form.date }}
+                    </div>
+                    
+                    <div class="form-group">
+                        {{ form.description.label_tag }}
+                        {{ form.description }}
+                        <small class="form-help">Décrivez en détail votre projet et vos besoins spécifiques</small>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Envoyer la demande</button>
+                </form>
+            </div>
+            
+            <!-- Présentation du service -->
+            <div class="service-presentation">
+                <h3>Services Drone Professionnels</h3>
+                <p>Notre équipe de pilotes certifiés vous accompagne pour tous vos projets de captation aérienne. Nous utilisons du matériel de pointe pour garantir des images et vidéos de qualité exceptionnelle.</p>
+                
+                <div class="service-features">
+                    <div class="feature">
+                        <i class="feature-icon">🎥</i>
+                        <h4>Vidéographie aérienne</h4>
+                        <p>Captation vidéo en 4K avec stabilisation gyroscopique</p>
+                    </div>
+                    
+                    <div class="feature">
+                        <i class="feature-icon">📸</i>
+                        <h4>Photographie aérienne</h4>
+                        <p>Photos haute résolution avec angles de vue uniques</p>
+                    </div>
+                    
+                    <div class="feature">
+                        <i class="feature-icon">🏗️</i>
+                        <h4>Inspection technique</h4>
+                        <p>Contrôle et inspection de structures en hauteur</p>
+                    </div>
+                    
+                    <div class="feature">
+                        <i class="feature-icon">🎬</i>
+                        <h4>Production audiovisuelle</h4>
+                        <p>Création de contenus pour films, publicités et événements</p>
+                    </div>
+                </div>
+                
+                <div class="applications">
+                    <h4>Applications</h4>
+                    <ul>
+                        <li>Mariages et événements privés</li>
+                        <li>Promotion immobilière</li>
+                        <li>Documentaires et reportages</li>
+                        <li>Inspection industrielle</li>
+                        <li>Surveillance et sécurité</li>
+                        <li>Cartographie et topographie</li>
+                    </ul>
+                </div>
+                
+                <div class="equipment-info">
+                    <h4>Notre équipement</h4>
+                    <ul>
+                        <li>Drones DJI professionnels</li>
+                        <li>Caméras 4K avec stabilisation</li>
+                        <li>Objectifs interchangeables</li>
+                        <li>Systèmes de transmission longue portée</li>
+                        <li>Batteries haute capacité</li>
+                    </ul>
+                </div>
+                
+                <div class="certification-info">
+                    <h4>Certifications et sécurité</h4>
+                    <p>Tous nos pilotes sont certifiés DGAC et respectent strictement les réglementations en vigueur. Nous disposons de toutes les autorisations nécessaires pour voler en zones urbaines et sensibles.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Messages de succès/erreur -->
+{% if messages %}
+<div class="messages-container">
+    {% for message in messages %}
+    <div class="message {% if message.tags %}message-{{ message.tags }}{% endif %}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %} 

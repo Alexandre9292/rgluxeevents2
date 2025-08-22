@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}RG Luxe Events - Récapitulatif Transport{% endblock %}
+
+{% block content %}
+<!-- Banner principal avec le design de l'image -->
+<div class="hero-banner">
+    <div class="banner-content">
+        <div class="banner-left">
+            <div class="transport-panel">
+                <div class="transport-image">
+                    <img src="{% static 'images/voiture-porsche.jpg' %}" alt="Transport de luxe">
+                    <div class="transport-overlay">
+                        <div class="luxury-car">
+                            <img src="{% static 'images/voiture-amg.jpg' %}" alt="Voiture de luxe">
+                        </div>
+                        <div class="private-jet">
+                            <img src="{% static 'images/aeroport.jpg' %}" alt="Jet privé">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="banner-center">
+            <div class="logo-container">
+                <div class="main-logo">
+                    <h1>RG Luxe Events</h1>
+                </div>
+            </div>
+            <div class="drone-panel">
+                <div class="drone-image">
+                    <img src="{% static 'images/service-aeroport.jpg' %}" alt="Services drone">
+                </div>
+            </div>
+        </div>
+        
+        <div class="banner-right">
+            <div class="photobooth-panel">
+                <div class="photobooth-image">
+                    <img src="{% static 'images/service-mariage.jpg' %}" alt="Photobooth">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Image bannière haute -->
+<div class="ban-haut">
+    <img src="{% static 'images/ban_haut.jpg' %}" alt="Bannière RG Luxe Events">
+</div>
+
+<!-- Section récapitulative -->
+<section class="summary-section">
+    <div class="container">
+        <div class="summary-content">
+            <h2>Récapitulatif de votre réservation</h2>
+            
+            <div class="summary-card">
+                <div class="summary-header">
+                    <h3>Détails de la réservation</h3>
+                    <span class="booking-id">#{{ booking.id }}</span>
+                </div>
+                
+                <div class="summary-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Type de service :</div>
+                        <div class="detail-value">
+                            {% if booking.transport_type == 'transport' %}
+                                Transport privé
+                            {% else %}
+                                Service aéroport
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">Départ :</div>
+                        <div class="detail-value">{{ booking.departure }}</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">Arrivée :</div>
+                        <div class="detail-value">{{ booking.arrival }}</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">Date de départ :</div>
+                        <div class="detail-value">{{ booking.departure_date|date:"d/m/Y" }}</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">Heure de départ :</div>
+                        <div class="detail-value">{{ booking.departure_time|time:"H:i" }}</div>
+                    </div>
+                    
+                    {% if booking.return_trip %}
+                    <div class="detail-row">
+                        <div class="detail-label">Date de retour :</div>
+                        <div class="detail-value">{{ booking.return_date|date:"d/m/Y" }}</div>
+                    </div>
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">Heure de retour :</div>
+                        <div class="detail-value">{{ booking.return_time|time:"H:i" }}</div>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="detail-row">
+                        <div class="detail-label">Nombre de passagers :</div>
+                        <div class="detail-value">{{ booking.passengers }}</div>
+                    </div>
+                    
+                    {% if booking.luggage %}
+                    <div class="detail-row">
+                        <div class="detail-label">Nombre de bagages :</div>
+                        <div class="detail-value">{{ booking.luggage }}</div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if booking.service_type %}
+                    <div class="detail-row">
+                        <div class="detail-label">Type de service :</div>
+                        <div class="detail-value">
+                            {% if booking.service_type == 'venir' %}
+                                Venir me chercher
+                            {% else %}
+                                Me déposer
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="price-section">
+                    <div class="price-label">Prix total :</div>
+                    <div class="price-value">{{ booking.price }}€</div>
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="{% url 'transport' %}" class="btn btn-secondary">Modifier</a>
+                    <button class="btn btn-primary" onclick="proceedToPayment()">Procéder au paiement</button>
+                </div>
+            </div>
+            
+            <!-- Informations importantes -->
+            <div class="important-info">
+                <h4>Informations importantes</h4>
+                <ul>
+                    <li>Votre réservation sera confirmée sous 24h</li>
+                    <li>Le chauffeur vous contactera 1h avant le départ</li>
+                    <li>Présentez-vous 10 minutes avant l'heure prévue</li>
+                    <li>Annulation possible jusqu'à 24h avant le départ</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+function proceedToPayment() {
+    // Ici vous pouvez rediriger vers votre système de paiement PayPal
+    // ou afficher un modal de paiement
+    alert('Redirection vers le système de paiement...');
+}
+</script>
+{% endblock %} 

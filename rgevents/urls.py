@@ -25,6 +25,7 @@ import app.views
 import authentication.views
 
 urlpatterns = [
+    path('', app.views.home, name='home'),
     path('admin/', admin.site.urls),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='authentication/password_reset_done.html'), name='password_reset_done'),
     path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="authentication/password_reset_confirm.html"), name='password_reset_confirm'),
@@ -49,26 +50,16 @@ urlpatterns = [
     path('administration/utilisateurs', authentication.views.admin_page_users, name='admin-users'),
     path('get_activity_info/<int:acti_id>/<str:acti_type>', authentication.views.get_activity_info, name='get_activity_info'),
 
-    path('', app.views.home, name='home'),
     path('mentions-legales/', authentication.views.mentions_legales, name='mention'),
     
-    # Nouvelles URLs pour le système de réservation et paiement
-    path('booking/summary/', app.views.booking_summary, name='booking_summary'),
-    path('payment/', app.views.payment, name='payment'),
-    path('payment/success/<int:order_id>/', app.views.payment_success, name='payment_success'),
-    path('payment/failed/<int:order_id>/', app.views.payment_failed, name='payment_failed'),
-    path('store-distance/', app.views.store_distance, name='store_distance'),
-    path('store-booking-data/', app.views.store_booking_data, name='store_booking_data'),
-    
-    path('services/', app.views.services, name='services'),
-    path('services/aeroport/', app.views.aeroport, name='aeroport'),
-    path('services/transport/', app.views.transport, name='transport'),
-    path('services/mariage/', app.views.mariage, name='mariage'),
-    path('services/tourisme/', app.views.tourisme, name='tourisme'),
-    path('utilitaire/', app.views.utilitaire, name='utilitaire'),
-    path('photomaton/', app.views.photomaton, name='photomaton'),
     path('about/', app.views.about, name='about'),
     path('contact/', app.views.contact, name='contact'),
+    
+    # Nouvelles pages de services
+    path('transport/', app.views.transport, name='transport'),
+    path('transport/summary/<int:booking_id>/', app.views.transport_summary, name='transport_summary'),
+    path('photobooth/', app.views.photobooth, name='photobooth'),
+    path('drone/', app.views.drone, name='drone'),
 ]
 
 if settings.DEBUG:
