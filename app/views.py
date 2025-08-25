@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render, get_object_or_404
 from django.core.mail import send_mail, BadHeaderError
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, Http404
 from django.contrib import messages
 from django.utils import timezone
 from django.urls import reverse
@@ -299,4 +299,30 @@ def drone(request):
         form = forms.DroneForm()
     
     return render(request, 'app/drone.html', {'form': form})
+
+def handler404(request, exception=None):
+    """
+    Vue personnalisée pour gérer les erreurs 404
+    """
+    response = render(request, '404.html')
+    response.status_code = 404
+    return response
+
+def test_404(request):
+    """
+    Vue de test pour vérifier la page 404
+    """
+    return handler404(request, None)
+
+def page_404(request):
+    """
+    Vue 404 accessible directement pour les tests
+    """
+    return render(request, '404.html', status=404)
+
+def trigger_404(request):
+    """
+    Vue qui génère une vraie erreur 404 pour tester le middleware
+    """
+    raise Http404("Cette page n'existe pas - test du middleware 404")
 

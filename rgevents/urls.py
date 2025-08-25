@@ -20,9 +20,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth.views import (PasswordChangeView, PasswordChangeDoneView)
 from django.contrib.auth import views as auth_views
+from django.views.defaults import page_not_found
 
 import app.views
 import authentication.views
+
+# Configuration pour la page 404 personnalisée
+handler404 = 'app.views.handler404'
 
 urlpatterns = [
     path('', app.views.home, name='home'),
@@ -60,6 +64,15 @@ urlpatterns = [
     path('transport/summary/<int:booking_id>/', app.views.transport_summary, name='transport_summary'),
     path('photobooth/', app.views.photobooth, name='photobooth'),
     path('drone/', app.views.drone, name='drone'),
+    
+    # URL de test pour la page 404 (à supprimer en production)
+    path('test-404/', app.views.test_404, name='test_404'),
+    
+    # URL directe pour tester la page 404
+    path('404/', app.views.page_404, name='page_404'),
+    
+    # URL pour tester le middleware 404
+    path('trigger-404/', app.views.trigger_404, name='trigger_404'),
 ]
 
 if settings.DEBUG:

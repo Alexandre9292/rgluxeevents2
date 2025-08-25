@@ -1,141 +1,118 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block title %}RG Luxe Events - Contact{% endblock %}
+
 {% block content %}
-
-<div class="sub-header">        
-    <img class="ban" src="{% static 'images/ban-contact.jpg'%}">
-    <h1>CONTACT</h1>
-</div>
-
-<div class="body-content">
-    <div class="contact-content">
-        <div class="contact-bloc contact-information">
-            <h2>INFORMATION</h2>
-            <h3>Numéro de téléphone</h3>
-            <p>(+262) 0693 40 00 15</p>
-            <h3>E-mail</h3>
-            <p>rg.luxeevents@gmail.com</p>
-            <h3>Adresse</h3>
-            <p>97440 Saint André</p>
+<!-- Banner principal avec le design de l'image -->
+<div class="hero-banner" style="display: none;">
+    <div class="banner-content">
+        <div class="banner-left">
+            <div class="transport-panel">
+                <div class="transport-image">
+                    <img src="{% static 'images/voiture-porsche.jpg' %}" alt="Transport de luxe">
+                    <div class="transport-overlay">
+                        <div class="luxury-car">
+                            <img src="{% static 'images/voiture-amg.jpg' %}" alt="Voiture de luxe">
+                        </div>
+                        <div class="private-jet">
+                            <img src="{% static 'images/aeroport.jpg' %}" alt="Jet privé">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         
-        <div id="contact-form" class="contact-bloc contact-form">
+        <div class="banner-center">
+            <div class="logo-container">
+                <div class="main-logo">
+                    <h1>RG Luxe Events</h1>
+                </div>
+            </div>
+            <div class="drone-panel">
+                <div class="drone-image">
+                    <img src="{% static 'images/service-aeroport.jpg' %}" alt="Services drone">
+                </div>
+            </div>
+        </div>
         
-            <h2>Contactez nous si vous avez une question</h2>
-            <p>
-                Veuillez écrire vos nom, prénom, adresse mail et un message.
-                Un de nos membres sera heureux de vous contacter directement et de répondre dés que possible.
-            </p>
-            <div class="contact-form-p">
-                <form method="post">
-                    {% csrf_token %}
-                    {{form.as_p}}
-                    <button type="submit">Envoyer</button>
-                </form>
+        <div class="banner-right">
+            <div class="photobooth-panel">
+                <div class="photobooth-image">
+                    <img src="{% static 'images/service-mariage.jpg' %}" alt="Photobooth">
+                </div>
             </div>
         </div>
     </div>
 </div>
-{% endblock content %}
 
-{% block css %}
-    <style>
+<!-- Image bannière haute -->
+<div class="ban-haut">
+    <img src="{% static 'images/ban_haut.jpg' %}" alt="Bannière RG Luxe Events">
+</div>
 
-        .contact-content {
-            padding-top: 60px;
-            display: flex;
-            gap: 20px;
-        }
-        @media (max-width: 900px) {
-            .contact-content {
-                flex-direction: column;
-                align-items: center;
-            }
-            .contact-bloc {
-                width: 95vw;
-                max-width: 400px;
-            }
-        }
-
-        .contact-bloc {
-            flex: 1;
-            padding: 1em;
-        }
-
-        .contact-bloc h2 {
-            font-family: 'Poppins', sans-serif, 'arial';
-            font-weight: 600;
-            font-size: 30px;
-            color: #dbc067;
-            text-align: center;
-        }
-        @media (max-width: 700px) {
-            .contact-bloc h2 {
-                font-size: 20px;
-            }
-        }
-
-        .contact-bloc h3 {
-            font-family: 'Roboto', sans-serif, 'arial';
-            font-weight: 400;
-            font-size: 25px;
-            color: #ddd;
-            line-height: 1.5;
-            text-align: center;
-            padding-top: 80px;
-        }
-
-        .contact-bloc p {
-            font-family: 'Roboto', sans-serif, 'arial';
-            font-weight: 400;
-            font-size: 20px;
-            color: #9b9b9b;
-            line-height: 1.5;
-            text-align: center;
-        }
-
-        .contact-form input[type=text],
-        .contact-form input[type=email],
-        .contact-form textarea {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #dbc067;
-            border-radius: 4px;
-            box-sizing: border-box;
-            margin-top: 6px;
-            margin-bottom: 16px;
-            resize: vertical;
-            text-align: left;
-            background-color: #000;
-            color: #ddd;
-        }
-
-        .contact-form input[type=text]:focus-visible,
-        .contact-form input[type=email]:focus-visible,
-        .contact-form textarea:focus-visible {
-            outline: none;
-            box-shadow: 0 0 15px #dbc067;
-        }
-
-        .contact-form button[type=submit] {
-            background-color: #dbc067;
-            color: #111;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .contact-form button[type=submit]:hover {
-            background-color: #dbc067;
-        }
-
-        .contact-form-p p {
-            text-align: left;
-        }
-
-        .contact-form-p {
-            padding-top: 60px;
-        }
-    </style>
+<!-- Section Contact -->
+<section class="contact-section">
+    <div class="container">
+        <div class="contact-content">
+            <!-- Informations de contact -->
+            <div class="contact-info">
+                <h2>Nos Coordonnées</h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-icon">📞</div>
+                        <h3>Téléphone</h3>
+                        <p>(+262) 0693 40 00 15</p>
+                        <p>(+262) 0692 62 70 08</p>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">✉️</div>
+                        <h3>E-mail</h3>
+                        <p>rg.luxeevents@gmail.com</p>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">📍</div>
+                        <h3>Adresse</h3>
+                        <p>97440 Saint André, La Réunion</p>
+                    </div>
+                </div>
+                
+                <div class="social-links">
+                    <h3>Suivez-nous</h3>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com/profile.php?id=100095259547213" target="_blank" class="social-icon">
+                            <img src="{% static 'images/iconFb.png' %}" alt="Facebook">
+                        </a>
+                        <a href="https://www.instagram.com/rg.luxeevents/" target="_blank" class="social-icon">
+                            <img src="{% static 'images/iconInsta.png' %}" alt="Instagram">
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Formulaire de contact -->
+            <div class="contact-form-container">
+                <h2>Contactez-nous</h2>
+                <p>Veuillez écrire vos nom, prénom, adresse mail et un message. Un de nos membres sera heureux de vous contacter directement et de répondre dès que possible.</p>
+                
+                <form method="post" class="contact-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ form.name.label_tag }}
+                        {{ form.name }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.email_address.label_tag }}
+                        {{ form.email_address }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.message.label_tag }}
+                        {{ form.message }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Envoyer le message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}

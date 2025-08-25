@@ -131,7 +131,7 @@
                     </div>
                     
                     <!-- Affichage du prix -->
-                    <div class="price-display">
+                    <div class="price-display" id="price-display" style="display: none;">
                         <div class="price-label">Prix estimé :</div>
                         <div class="price-value" id="price-value">0€</div>
                     </div>
@@ -142,34 +142,73 @@
             
             <!-- Présentation du service -->
             <div class="service-presentation">
-                <h3>Photobooth Professionnel</h3>
-                <p>Notre photobooth de luxe vous accompagne pour immortaliser tous vos moments spéciaux. Équipé de la dernière technologie, il garantit des photos de qualité professionnelle.</p>
-                
+                <h3>Location Photobooth</h3>
+                <p>Créez l'éffet “WOUAH” à votre événement !</p>
+                <p>Avec notre PHOTOBOOTH, offrez à vos invités des poses déjantées, des fous rires, des clichés à
+                    imprimer ou à partager sur les réseaux sociaux ...</p>
+                <p>Mariage, anniversaire, baby-shower, soirée privée, ou divers événements</p>
+                <br>
+                <p style="font-weight: bold;">Inclus dans toutes les formules :</p>
+                <ul>
+                    <li>tirage photo illimité avec impression instantanée en format 10x15cm ou 15x10cm</li>
+                    <li>envoi photo par e-mail</li>
+                    <li>personnalisation de l'écran de la machine</li>
+                    <li>personnalisation du cadre photo aux couleurs de votre événement</li>
+                    <li>galerie photo en ligne</li>
+                    <li>accessoires de déguisements ( lunettes, chapeaux, masques,...)</li>
+                    <li>livraison, installation et récupération de la machine</li>
+                    <li>service assistance</li>
+                </ul>
+
                 <div class="service-features">
                     <div class="feature">
                         <i class="feature-icon">📸</i>
                         <h4>Haute qualité</h4>
-                        <p>Photos haute résolution avec impression instantanée</p>
-                    </div>
-                    
-                    <div class="feature">
-                        <i class="feature-icon">🎭</i>
-                        <h4>Accessoires inclus</h4>
-                        <p>Costumes, chapeaux et accessoires amusants</p>
+                        <p>Tirage photo illimité avec impression instantanée en format 10x15cm ou 15x10cm</p>
+                        <p>Personnalisation de l'écran de la machine</p>
+                        <p>Personnalisation du cadre photo aux couleurs de votre événement</p>
                     </div>
                     
                     <div class="feature">
                         <i class="feature-icon">💾</i>
                         <h4>Partage numérique</h4>
-                        <p>Photos disponibles en ligne pour partage</p>
+                        <p>Galerie photo en ligne</p>
+                        <p>Envoi photo par e-mail</p>
+                    </div>
+                    
+                    <div class="feature">
+                        <i class="feature-icon">🎭</i>
+                        <h4>Accessoires inclus</h4>
+                        <p>Accessoires de déguisements ( lunettes, chapeaux, masques,...)</p>
+                    </div>
+                    
+                    <div class="feature">
+                        <i class="feature-icon">🚛</i>
+                        <h4>Service assistance</h4>
+                        <p>livraison, installation et récupération de la machine</p>
                     </div>
                 </div>
                 
+                
                 <div class="pricing-info">
-                    <h4>Nos tarifs</h4>
+                    <h4>Tarifs particuliers</h4>
+                    <p>Choisissez la formule qui vous convient :</p>
                     <ul>
-                        <li><strong>À la journée :</strong> 400€/jour</li>
-                        <li><strong>À l'heure :</strong> 85€/heure (minimum 2h)</li>
+                        <li><strong>À la journée/soirée :</strong> secteur Est à 395,00€ et secteur Nord / Ouest / Sud à
+                            450,00€<br><span style="font-style: italic;">profitez-en du début à la fin de votre événement, sans limite !</span></li>
+                        <li><strong>À l'heure :</strong> 79,90€/heure (minimum 2h)
+                            <br><span style="font-style: italic;">idéal pour un événement court ou un moment clé de votre soirée.</span></li>
+                    </ul>
+                </div>
+                <div class="pricing-info">
+                    <h4>Tarifs professionnels</h4>
+                    <p>Solutions adaptées à vos besoins :</p>
+                    <ul>
+                        <li><strong>Location longue durée :</strong> 400,00€ / jour ( durée de 10h00) - tarif dégressif selon le nombre
+                            de jour<br><span style="font-style: italic;">Pour une utilisation sur plusieurs jours ou semaines (foires, animations permanentes,
+                                campagnes marketing).</span></li>
+                        <li><strong>Location à l’événement :</strong> 80€/heure ou 490,00€ ( durée de 7h00)
+                            <br><span style="font-style: italic;">Pour vos salons, séminaires, inaugurations ou opérations commerciales.</span></li>
                     </ul>
                 </div>
             </div>
@@ -231,6 +270,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         priceValue.textContent = price + '€';
+        
+        // Afficher/masquer la zone de prix selon la valeur
+        const priceDisplay = document.getElementById('price-display');
+        if (price > 0) {
+            priceDisplay.style.display = 'flex';
+        } else {
+            priceDisplay.style.display = 'none';
+        }
     }
     
     // Événements

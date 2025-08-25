@@ -1,73 +1,131 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block title %}RG Luxe Events - À propos de nous{% endblock %}
+
 {% block content %}
-
-    <div class="sub-header">        
-        <img class="ban" src="{% static 'images/ban-about.jpg'%}">
-        <h1>A PROPOS DE NOUS</h1>
+<!-- Banner principal avec le design de l'image -->
+<div class="hero-banner" style="display: none;">
+    <div class="banner-content">
+        <div class="banner-left">
+            <div class="transport-panel">
+                <div class="transport-image">
+                    <img src="{% static 'images/voiture-porsche.jpg' %}" alt="Transport de luxe">
+                    <div class="transport-overlay">
+                        <div class="luxury-car">
+                            <img src="{% static 'images/voiture-amg.jpg' %}" alt="Voiture de luxe">
+                        </div>
+                        <div class="private-jet">
+                            <img src="{% static 'images/aeroport.jpg' %}" alt="Jet privé">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="banner-center">
+            <div class="logo-container">
+                <div class="main-logo">
+                    <h1>RG Luxe Events</h1>
+                </div>
+            </div>
+            <div class="drone-panel">
+                <div class="drone-image">
+                    <img src="{% static 'images/service-aeroport.jpg' %}" alt="Services drone">
+                </div>
+            </div>
+        </div>
+        
+        <div class="banner-right">
+            <div class="photobooth-panel">
+                <div class="photobooth-image">
+                    <img src="{% static 'images/service-mariage.jpg' %}" alt="Photobooth">
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 
-    <!-- <div class="about-content">
-        <h1>RG LUXE EVENTS</h1>
-        <h2 style="text-transform: uppercase;">Votге сhаuffeur VТС au départ de toute la Réunion</h2>
-        </br>
-        <div class="about-bloc">
-            <div class="about-bloc-left">
-                <p>RG Luxe Events est une entreprise de transport de personnes et notament dans la location de véhicules haut gamme avec chauffeur privé.</p>
-                <p>Notre priorité est de proposer à nos clients, un service de prestige, de luxe et de confort. </p></div>
-            <div class="about-bloc-right">
-                <img class="about-photo" src="{% static 'images/mariage.jpg'%}" alt="about1">
-            </div>
-        </div>
-        </br>
-        <div class="about-bloc">
-            <div class="about-bloc-left">
-                <img class="about-photo" src="{% static 'images/tourisme.jpg'%}" alt="about2">
-            </div>
-            <div class="about-bloc-right">
-                <p>Nous vous proposons des prestations pour tous types de clients, notamment les particuliers, les touristes, les hommes d'affaires, les entreprises, les célébrités, ... </p>
-                <p>Notre priorité est de proposer à nos clients, un service de prestige, de luxe et de confort. </p></div>
-        </div>
-        </br>
-        <div class="about-bloc">
-            <div class="about-bloc-left">
-                <p>Pour satisfaire, toutes vos exigences, offrez-vous le luxe d'avoir un chauffeur privé avec RG Luxe Events disposition pour vos :</p>
-                <p>- Mariages,</br>- Déplacements privés et professionnels,</br>- Transferts aéroports,</br>- Congrés, Séminaires et rendez-vous d'affaires,
-                    </br>- Sorties nocturnes ( discothèques, restaurants,...),</br>- Excursions touristiques</p></div>
-            <div class="about-bloc-right">
-                <img class="about-photo" src="{% static 'images/aeroport.jpg'%}" alt="about3">
-            </div>
-        </div>
-        </br>
-    </div> -->
+<!-- Image bannière haute -->
+<div class="ban-haut">
+    <img src="{% static 'images/ban_haut.jpg' %}" alt="Bannière RG Luxe Events">
+</div>
 
-    <div class="body-content">
-        <div class="about-content">
+<!-- Section À propos -->
+<section class="about-section">
+    <div class="container">
+        <div class="about-header">
             <h1>RG LUXE EVENTS</h1>
-            <h2 style="text-transform: uppercase;">Votге сhаuffeur VТС au départ de toute la Réunion</h2>
-            </br>
-            <div class="about-bloc">
-                <div class="about-bloc-left">
-                    <p>RG Luxe Events est une entreprise de transport de personnes et notament dans la location de véhicules haut gamme avec chauffeur privé.</p>
-                    <p>Notre priorité est de proposer à nos clients, un service de prestige, de luxe et de confort. </p>
-                    <br><br>
-                    <p>Nous vous proposons des prestations pour tous types de clients, notamment les particuliers, les touristes, les hommes d'affaires, les entreprises, les célébrités, ... </p>
-                    <br><br>
-                    <p>Pour satisfaire, toutes vos exigences, offrez-vous le luxe d'avoir un chauffeur privé avec RG Luxe Events disposition pour vos :</p>
-                    <p>- Mariages,</br>- Déplacements privés et professionnels,</br>- Transferts aéroports,</br>- Congrés, Séminaires et rendez-vous d'affaires,
-                        </br>- Sorties nocturnes ( discothèques, restaurants,...),</br>- Excursions touristiques</p>
+            <h2>Votre partenaire premium pour tous vos événements à La Réunion</h2>
+        </div>
+        
+        <div class="about-content">
+            <div class="about-intro">
+                <p>RG Luxe Events est une entreprise spécialisée dans trois domaines d'excellence : le transport de luxe avec chauffeur privé, la location de photobooth professionnel et les services de captation aérienne par drone.</p>
+                <p>Notre mission est de vous offrir des prestations de qualité premium, alliant luxe, professionnalisme et innovation pour tous vos événements.</p>
+            </div>
+            
+            <div class="about-grid">
+                <div class="about-card">
+                    <div class="about-image">
+                        <img src="{% static 'images/mariage.jpg' %}" alt="Service mariage">
+                    </div>
+                    <div class="about-text">
+                        <h3>Transport de Luxe</h3>
+                        <p>Notre service de transport premium comprend des véhicules haut de gamme avec chauffeur privé professionnel. Nous proposons des prestations pour tous types de clients : particuliers, touristes, hommes d'affaires, entreprises et célébrités.</p>
+                        <p>Nos chauffeurs sont tous titulaires du permis de conduire depuis plus de 10 ans et de la carte professionnelle de VTC délivrée par la préfecture, garantissant sécurité et professionnalisme.</p>
+                    </div>
                 </div>
-                <div class="about-bloc-right">
-                    <img class="about-photo" src="{% static 'images/mariage.jpg'%}" alt="about1">
+                
+                <div class="about-card reverse">
+                    <div class="about-image">
+                        <img src="{% static 'images/tourisme.jpg' %}" alt="Service tourisme">
+                    </div>
+                    <div class="about-text">
+                        <h3>Photobooth Professionnel</h3>
+                        <p>Notre service photobooth apporte une touche d'originalité et de divertissement à vos événements. Nous proposons des formules flexibles : à la journée ou à l'heure, avec un minimum de 2 heures pour les prestations horaires.</p>
+                        <p>Notre équipement professionnel inclut des accessoires de déguisement variés et un service complet d'installation, d'assistance et de récupération sur site.</p>
+                    </div>
+                </div>
+                
+                <div class="about-card">
+                    <div class="about-image">
+                        <img src="{% static 'images/aeroport.jpg' %}" alt="Service aéroport">
+                    </div>
+                    <div class="about-text">
+                        <h3>Services Drone</h3>
+                        <p>Notre expertise en captation aérienne vous permet de sublimer vos projets avec des vues spectaculaires et des angles uniques. Que ce soit pour un événement, une célébration ou un projet commercial, nos pilotes qualifiés vous garantissent des prises de vue professionnelles et créatives.</p>
+                        <p>Nous utilisons des équipements de dernière génération pour des résultats d'exception.</p>
+                    </div>
                 </div>
             </div>
-            <br><br>
-            <p>Les chauffeurs professionnels de RG Luxe Events sont toutes titulaires du permis de conduire plus 
-                que 10ans et de la carte professionel de VTC délivrée par la préfecture ainsi la capacité de transport 
-                de personne </p>
         </div>
     </div>
+</section>
 
+<!-- Section Valeurs -->
+<section class="values-section">
+    <div class="container">
+        <h2>Nos Valeurs</h2>
+        <div class="values-grid">
+            <div class="value-card">
+                <div class="value-icon">⭐</div>
+                <h3>Excellence</h3>
+                <p>Un service de qualité premium dans nos trois domaines d'expertise</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">🤝</div>
+                <h3>Confiance</h3>
+                <p>Des professionnels expérimentés et qualifiés pour tous nos services</p>
+            </div>
+            <div class="value-card">
+                <div class="value-icon">💎</div>
+                <h3>Luxe</h3>
+                <p>Des prestations haut de gamme pour des événements d'exception</p>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
 
 {% block css %}

@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Page non trouvée - RG Luxe Events{% endblock %}
+
+{% block content %}
+<!-- Banner principal avec le design de l'image -->
+<div class="hero-banner" style="display: none;">
+    <div class="banner-content">
+        <div class="banner-left">
+            <div class="transport-panel">
+                <div class="transport-image">
+                    <img src="{% static 'images/voiture-porsche.jpg' %}" alt="Transport de luxe">
+                    <div class="transport-overlay">
+                        <div class="luxury-car">
+                            <img src="{% static 'images/voiture-amg.jpg' %}" alt="Voiture de luxe">
+                        </div>
+                        <div class="private-jet">
+                            <img src="{% static 'images/aeroport.jpg' %}" alt="Jet privé">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="banner-center">
+            <div class="logo-container">
+                <div class="main-logo">
+                    <h1>RG Luxe Events</h1>
+                </div>
+            </div>
+            <div class="drone-panel">
+                <div class="drone-image">
+                    <img src="{% static 'images/service-aeroport.jpg' %}" alt="Services drone">
+                </div>
+            </div>
+        </div>
+        
+        <div class="banner-right">
+            <div class="photobooth-panel">
+                <div class="photobooth-image">
+                    <img src="{% static 'images/service-mariage.jpg' %}" alt="Photobooth">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Image bannière haute -->
+<div class="ban-haut">
+    <img src="{% static 'images/ban_haut.jpg' %}" alt="Bannière RG Luxe Events">
+</div>
+
+<!-- Section 404 -->
+<section class="error-404-section">
+    <div class="container">
+        <div class="error-content">
+            <div class="error-icon">
+                <span>🚫</span>
+            </div>
+            
+            <h1>Page non trouvée</h1>
+            <h2>Erreur 404</h2>
+            
+            <p class="error-message">
+                Oups ! Il semble que la page que vous recherchez une page qui n'existe pas ou ait été déplacée.
+            </p>
+            
+            <p class="error-description">
+                La page que vous essayez d'atteindre n'est pas disponible. Cela peut être dû à :
+            </p>
+            
+            <div class="error-reasons">
+                <ul>
+                    <li>Une erreur dans l'URL saisie</li>
+                    <li>Une page qui a été supprimée ou renommée</li>
+                    <li>Un lien qui n'est plus valide</li>
+                    <li>Une page qui n'a jamais existé</li>
+                </ul>
+            </div>
+            
+            <div class="error-actions">
+                <a href="{% url 'home' %}" class="btn btn-primary">
+                    <span>🏠</span> Retour à l'accueil
+                </a>
+                
+                <div class="quick-links">
+                    <h3>Pages populaires :</h3>
+                    <div class="links-grid">
+                        <a href="{% url 'transport' %}" class="quick-link">
+                            <span>🚗</span> Transport
+                        </a>
+                        <a href="{% url 'photobooth' %}" class="quick-link">
+                            <span>📸</span> Photobooth
+                        </a>
+                        <a href="{% url 'drone' %}" class="quick-link">
+                            <span>🛸</span> Drone
+                        </a>
+                        <a href="{% url 'about' %}" class="quick-link">
+                            <span>ℹ️</span> À propos
+                        </a>
+                        <a href="{% url 'contact' %}" class="quick-link">
+                            <span>📞</span> Contact
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="error-help">
+                <p>
+                    <strong>Besoin d'aide ?</strong> 
+                    <a href="{% url 'contact' %}">Contactez-nous</a> et nous vous aiderons à trouver ce que vous cherchez.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
