@@ -4,42 +4,45 @@
 {% block title %}RG Luxe Events - Transport{% endblock %}
 
 {% block content %}
-<!-- Banner principal avec le design de l'image -->
-<div class="hero-banner" style="display: none;">
+<!-- Banner principal avec l'image back_ban.jpg étirée sur toute la largeur -->
+<div class="hero-banner">
+    <div class="banner-background">
+        <img src="{% static 'images/back_ban.jpg' %}" alt="Bannière RG Luxe Events">
+    </div>
+    
     <div class="banner-content">
         <div class="banner-left">
             <div class="transport-panel">
-                <div class="transport-image">
-                    <img src="{% static 'images/voiture-porsche.jpg' %}" alt="Transport de luxe">
-                    <div class="transport-overlay">
-                        <div class="luxury-car">
-                            <img src="{% static 'images/voiture-amg.jpg' %}" alt="Voiture de luxe">
-                        </div>
-                        <div class="private-jet">
-                            <img src="{% static 'images/aeroport.jpg' %}" alt="Jet privé">
-                        </div>
-                    </div>
+                <div class="transport-image diamond1">
+                    <a href="{% url 'transport' %}">
+                        <img src="{% static 'images/transport_ban.png' %}" alt="Transport de luxe">
+                    </a>
                 </div>
             </div>
         </div>
-        
+
         <div class="banner-center">
-            <div class="logo-container">
-                <div class="main-logo">
-                    <h1>RG Luxe Events</h1>
-                </div>
-            </div>
             <div class="drone-panel">
-                <div class="drone-image">
-                    <img src="{% static 'images/service-aeroport.jpg' %}" alt="Services drone">
+                <div class="drone-image diamond2">                    
+                    <a href="{% url 'drone' %}">
+                        <img src="{% static 'images/drone_ban.png' %}" alt="Services drone">
+                    </a>
+                </div>
+                <!-- Logo déplacé en dehors du conteneur avec overflow: hidden -->
+                <div class="logo-overlay">
+                    <a href="{% url 'home' %}">
+                        <img src="{% static 'images/logo_ban.jpg' %}" alt="Logo RG Luxe Events" id="drone-image">
+                    </a>
                 </div>
             </div>
         </div>
-        
+
         <div class="banner-right">
             <div class="photobooth-panel">
-                <div class="photobooth-image">
-                    <img src="{% static 'images/service-mariage.jpg' %}" alt="Photobooth">
+                <div class="photobooth-image diamond1">                  
+                    <a href="{% url 'photobooth' %}">
+                        <img src="{% static 'images/photobooth_ban.png' %}" alt="Photobooth">
+                    </a>
                 </div>
             </div>
         </div>
@@ -47,7 +50,7 @@
 </div>
 
 <!-- Image bannière haute -->
-<div class="ban-haut">
+<div class="ban-haut" style="display: none;">
     <img src="{% static 'images/ban_haut.jpg' %}" alt="Bannière RG Luxe Events">
 </div>
 
@@ -227,7 +230,7 @@
             <p class="service-intro">Un événement à venir ? Mariage, soirée privée, sortie entre amis ou escapade de dernière minute ?</p>
             <p class="service-description">Offrez-vous la tranquilité avec notre service de transport VTC haut de gamme.</p>
             
-            <div class="service-features">
+            <div class="service-features-transport">
                 <div class="feature-list">
                     <h3>Nos Services</h3>
                     <ul>
@@ -308,6 +311,138 @@ function initAutocomplete() {
     const departureInput = document.getElementById('id_departure');
     const arrivalInput = document.getElementById('id_arrival');
     const aeroportAddressInput = document.getElementById('aeroport_address');
+    
+    // Bloquer les dates antérieures à aujourd'hui
+    const departureDateInput = document.getElementById('id_departure_date');
+    const returnDateInput = document.getElementById('id_return_date');
+    const aeroportDateInput = document.getElementById('id_departure_date');
+    
+    if (departureDateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        departureDateInput.setAttribute('min', today);
+        
+        departureDateInput.addEventListener('change', function() {
+            const selectedDate = new Date(this.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (selectedDate < today) {
+                alert('Veuillez sélectionner une date future.');
+                this.value = '';
+            }
+        });
+    }
+    
+    if (returnDateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        returnDateInput.setAttribute('min', today);
+        
+        returnDateInput.addEventListener('change', function() {
+            const selectedDate = new Date(this.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (selectedDate < today) {
+                alert('Veuillez sélectionner une date future.');
+                this.value = '';
+            }
+        });
+    }
+    
+    if (aeroportDateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        aeroportDateInput.setAttribute('min', today);
+        
+        aeroportDateInput.addEventListener('change', function() {
+            const selectedDate = new Date(this.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (selectedDate < today) {
+                alert('Veuillez sélectionner une date future.');
+                this.value = '';
+            }
+        });
+    }
+    
+    // Validation des champs nombre de passagers et bagages
+    const transportPassengersInput = document.getElementById('transport_passengers');
+    const aeroportPassengersInput = document.getElementById('aeroport_passengers');
+    const aeroportLuggageInput = document.getElementById('aeroport_luggage');
+    
+    // Validation pour le formulaire transport
+    if (transportPassengersInput) {
+        transportPassengersInput.addEventListener('input', function() {
+            let value = parseInt(this.value) || 0;
+            if (value > 4) {
+                this.value = 4;
+                this.title = 'Nombre maximum de passagers : 4';
+            } else if (value < 1) {
+                this.value = 1;
+                this.title = 'Nombre minimum de passagers : 1';
+            } else {
+                this.title = '';
+            }
+        });
+        
+        transportPassengersInput.addEventListener('blur', function() {
+            let value = parseInt(this.value) || 0;
+            if (value < 1) {
+                this.value = 1;
+            } else if (value > 4) {
+                this.value = 4;
+            }
+        });
+    }
+    
+    // Validation pour le formulaire aéroport
+    if (aeroportPassengersInput) {
+        aeroportPassengersInput.addEventListener('input', function() {
+            let value = parseInt(this.value) || 0;
+            if (value > 4) {
+                this.value = 4;
+                this.title = 'Nombre maximum de passagers : 4';
+            } else if (value < 1) {
+                this.value = 1;
+                this.title = 'Nombre minimum de passagers : 1';
+            } else {
+                this.title = '';
+            }
+        });
+        
+        aeroportPassengersInput.addEventListener('blur', function() {
+            let value = parseInt(this.value) || 0;
+            if (value < 1) {
+                this.value = 1;
+            } else if (value > 4) {
+                this.value = 4;
+            }
+        });
+    }
+    
+    if (aeroportLuggageInput) {
+        aeroportLuggageInput.addEventListener('input', function() {
+            let value = parseInt(this.value) || 0;
+            if (value > 3) {
+                this.value = 3;
+                this.title = 'Nombre maximum de bagages : 3';
+            } else if (value < 1) {
+                this.value = 1;
+                this.title = 'Nombre minimum de bagages : 1';
+            } else {
+                this.title = '';
+            }
+        });
+        
+        aeroportLuggageInput.addEventListener('blur', function() {
+            let value = parseInt(this.value) || 0;
+            if (value < 1) {
+                this.value = 1;
+            } else if (value > 3) {
+                this.value = 3;
+            }
+        });
+    }
     
     // Autocomplétion pour le départ
     const departureAutocomplete = new google.maps.places.Autocomplete(departureInput, {
@@ -605,6 +740,9 @@ document.addEventListener('DOMContentLoaded', function() {
             if (currentRoute) {
                 calculateRoute();
             }
+            
+            // Ajuster la hauteur de la carte après le changement d'onglet
+            setTimeout(adjustMapHeight, 100);
         });
     });
     
@@ -616,11 +754,34 @@ document.addEventListener('DOMContentLoaded', function() {
         returnCheckbox.addEventListener('change', function() {
             if (this.checked) {
                 returnFields.style.display = 'block';
+                // Ajuster la hauteur de la carte pour qu'elle corresponde au formulaire étendu
+                adjustMapHeight();
             } else {
                 returnFields.style.display = 'none';
+                // Ajuster la hauteur de la carte pour qu'elle corresponde au formulaire réduit
+                adjustMapHeight();
             }
         });
     }
+    
+    // Fonction pour ajuster la hauteur de la carte
+    function adjustMapHeight() {
+        const formContainer = document.querySelector('.booking-form-container');
+        const mapContainer = document.querySelector('.map-container');
+        
+        if (formContainer && mapContainer) {
+            const formHeight = formContainer.offsetHeight;
+            mapContainer.style.height = formHeight + 'px';
+        }
+    }
+    
+    // Ajuster la hauteur initiale de la carte
+    setTimeout(adjustMapHeight, 100);
+    
+    // Ajuster la hauteur lors du redimensionnement de la fenêtre
+    window.addEventListener('resize', function() {
+        setTimeout(adjustMapHeight, 100);
+    });
     
     // Gestion du changement de type de service pour l'aéroport
     const serviceTypeSelect = document.getElementById('id_service_type');
@@ -642,11 +803,6 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('aeroport-route-info').style.display = 'none';
             
             if (this.value === 'venir') {
-                // Venir me chercher : de l'aéroport vers l'adresse client
-                document.getElementById('id_arrival').value = 'Aéroport Roland Garros, La Réunion';
-                document.getElementById('arrival_lat').value = '-20.890089';
-                document.getElementById('arrival_lng').value = '55.516448';
-                
                 // Mettre à jour les labels
                 airportLabel.textContent = 'Lieu de départ';
                 aeroportAddressLabel.textContent = 'Adresse d\'arrivée';
@@ -655,11 +811,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 addressField.style.display = 'block'; // Afficher le champ d'adresse
                 
             } else if (this.value === 'deposer') {
-                // Me déposer : de l'adresse client vers l'aéroport
-                document.getElementById('id_departure').value = 'Aéroport Roland Garros, La Réunion';
-                document.getElementById('departure_lat').value = '-20.890089';
-                document.getElementById('departure_lng').value = '55.516448';
-                
                 // Mettre à jour les labels
                 airportLabel.textContent = 'Lieu d\'arrivée';
                 aeroportAddressLabel.textContent = 'Adresse de départ';

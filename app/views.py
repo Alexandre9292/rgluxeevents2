@@ -194,31 +194,24 @@ def photobooth(request):
     if request.method == 'POST':
         form = forms.PhotoboothForm(request.POST)
         if form.is_valid():
-            # Calculer le prix
+            # Récupérer la valeur du champ location depuis request.POST
+            location = request.POST.get('location', '')
+            
+            # Calculer le prix selon la logique du JavaScript
             service_type = form.cleaned_data['service_type']
+            price = 0
+            
             if service_type == 'journee':
                 days = form.cleaned_data['days']
-                price = days * 400
+                # Tarifs différenciés selon la localisation
+                east_communes = ['Saint-André', 'Bras-Panon', 'Saint-Benoît', 'Sainte-Rose', 'Sainte-Suzanne', 'Sainte-Marie', 'Salazie']
+                if location in east_communes:
+                    price = days * 395
+                else:
+                    price = days * 450
             else:
                 hours = form.cleaned_data['hours']
-                price = hours * 85
-            
-            # Sauvegarder la réservation
-            booking = models.PhotoboothBooking.objects.create(
-                first_name=form.cleaned_data['first_name'],
-                last_name=form.cleaned_data['last_name'],
-                address=form.cleaned_data['address'],
-                email=form.cleaned_data['email'],
-                phone=form.cleaned_data['phone'],
-                service_type=service_type,
-                hours=form.cleaned_data['hours'],
-                days=form.cleaned_data['days'],
-                event_date=form.cleaned_data['event_date'],
-                event_time=form.cleaned_data['event_time'],
-                location=form.cleaned_data['location'],
-                event_type=form.cleaned_data['event_type'],
-                price=price
-            )
+                price = hours * 79.90
             
             # Envoyer l'email
             subject = "RG Luxe Events - Demande Photobooth"
@@ -226,24 +219,26 @@ def photobooth(request):
             Merci pour votre demande, nous vous contacterons sous 24h pour confirmer votre réservation.
             
             Détails de votre demande :
-            Nom : {form.cleaned_data['first_name']} {form.cleaned_data['last_name']}
-            Adresse : {form.cleaned_data['address']}
-            Email : {form.cleaned_data['email']}
-            Téléphone : {form.cleaned_data['phone']}
             Type de service : {form.cleaned_data['service_type']}
             Date : {form.cleaned_data['event_date']}
             Heure : {form.cleaned_data['event_time']}
-            Lieu : {form.cleaned_data['location']}
+            Lieu : {location}
             Type d'événement : {form.cleaned_data['event_type']}
-            Prix : {price}€
             """
+            
+            if service_type == 'journee':
+                message += f"Nombre de jours : {form.cleaned_data['days']}\n"
+            else:
+                message += f"Nombre d'heures : {form.cleaned_data['hours']}\n"
+            
+            message += f"Prix calculé : {price}€\n"
             
             try:
                 send_mail(
                     subject, 
                     message, 
                     'rg.luxeevents@gmail.com', 
-                    [form.cleaned_data['email'], 'rg.luxeevents@gmail.com']
+                    ['rg.luxeevents@gmail.com']
                 )
                 messages.success(request, 'Votre demande a été envoyée avec succès !')
             except BadHeaderError:
@@ -300,6 +295,44 @@ def drone(request):
     
     return render(request, 'app/drone.html', {'form': form})
 
+def photobooth_validation(request):
+    """
+    Vue pour la validation de commande photobooth
+    """
+    if request.method == 'POST':
+        # Traiter les données du formulaire de facturation
+        billing_data = {
+            'first_name': request.POST.get('billing_first_name'),
+            'last_name': request.POST.get('billing_last_name'),
+            'email': request.POST.get('billing_email'),
+            'phone': request.POST.get('billing_phone'),
+            'company': request.POST.get('billing_company'),
+            'street_number': request.POST.get('billing_street_number'),
+            'address_complement': request.POST.get('billing_address_complement'),
+            'city': request.POST.get('billing_city'),
+            'postal_code': request.POST.get('billing_postal_code'),
+            'notes': request.POST.get('billing_notes'),
+        }
+        
+        # Ici vous pouvez sauvegarder les données de facturation
+        # et rediriger vers le processus de paiement
+        
+        messages.success(request, 'Informations de facturation enregistrées avec succès.')
+        return redirect('photobooth_validation')
+    
+    # Récupérer les données de la réservation depuis la session ou les paramètres
+    # Pour l'exemple, on utilise des valeurs par défaut
+    context = {
+        'booking': {
+            'event_date': '2024-01-15',
+            'location': 'Saint-Denis'
+        },
+        'total_price': '450.00',
+        'reste_a_payer': '350.00'
+    }
+    
+    return render(request, 'app/photobooth_validation.html', context)
+
 def handler404(request, exception=None):
     """
     Vue personnalisée pour gérer les erreurs 404
@@ -325,4 +358,10 @@ def trigger_404(request):
     Vue qui génère une vraie erreur 404 pour tester le middleware
     """
     raise Http404("Cette page n'existe pas - test du middleware 404")
+
+def photobooth_terms(request):
+    """
+    Vue pour afficher les conditions générales de location photobooth
+    """
+    return render(request, 'app/photobooth_terms.html')
 

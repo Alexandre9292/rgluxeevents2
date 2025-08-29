@@ -92,12 +92,125 @@ header {
     transform: translateY(-2px);
 }
 
-/* Banner principal */
+/* Bannière principale */
 .hero-banner {
-    background: linear-gradient(135deg, var(--primary-color) 0%, #c4a85a 100%);
-    padding: 40px 0;
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.banner-background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.banner-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 20px;
+    gap: 0; /* Coller les images */
+}
+
+.banner-left,
+.banner-center,
+.banner-right {
+    flex: 0 0 auto; /* Pas de flex grow pour éviter l'espacement */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Images en forme de trapèze avec côtés droits */
+.transport-image.diamond1,
+.drone-image.diamond1,
+.photobooth-image.diamond1 {
+    width: 325px;
+    height: 430px;
     position: relative;
     overflow: hidden;
+    background: var(--white-color);
+    /* Créer un trapèze avec des côtés droits */
+    clip-path: polygon(0% 5%, 100% 0%, 100% 100%, 100% 100%, 100% 95%, 0% 100%);
+}
+
+.transport-image.diamond1 img,
+.drone-image.diamond1 img,
+.photobooth-image.diamond1 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Pas de rotation nécessaire pour les trapèzes */
+}
+
+.transport-image.diamond2,
+.drone-image.diamond2,
+.photobooth-image.diamond2 {
+    width: 325px;
+    height: 430px;
+    position: relative;
+    overflow: hidden;
+    background: var(--white-color);
+    /* Créer un trapèze avec des côtés droits */
+    clip-path: polygon(0% 0%, 100% 5%, 100% 100%, 100% 100%, 100% 100%, 0% 95%);
+}
+
+.transport-image.diamond2 img,
+.drone-image.diamond2 img,
+.photobooth-image.diamond2 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Pas de rotation nécessaire pour les trapèzes */
+}
+
+/* Logo overlay au centre de l'image du milieu */
+.logo-overlay {
+    position: absolute;
+    top: -20px; /* Remonter le logo pour qu'il dépasse en haut */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10; /* Augmenter le z-index pour être au-dessus de tout */
+}
+
+/* Positionner le logo par rapport au drone-panel */
+.drone-panel {
+    position: relative;
+}
+
+#drone-image {
+    width: 250px;
+    height: 165px;
+    border-radius: 20%;
+    object-fit: cover;
+}
+
+/* Panels de service */
+.transport-panel,
+.drone-panel,
+.photobooth-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Image bannière haute */
@@ -106,6 +219,7 @@ header {
     height: 500px;
     overflow: hidden;
     text-align: center;
+    background: linear-gradient(135deg, var(--primary-color) 0%, #c4a85a 100%);
 }
 
 .ban-haut img {
@@ -113,35 +227,6 @@ header {
     height: 500px;
     object-fit: fill;
     display: inline-block;
-}
-
-.banner-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-.banner-left, .banner-center, .banner-right {
-    flex: 1;
-    text-align: center;
-    position: relative;
-}
-
-.transport-panel, .drone-panel, .photobooth-panel {
-    position: relative;
-    height: 200px;
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    box-shadow: var(--shadow);
-}
-
-.transport-panel img, .drone-panel img, .photobooth-panel img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
 }
 
 .main-logo {
@@ -329,6 +414,11 @@ header {
     align-items: start;
 }
 
+/* Spécifique à la page transport pour aligner la carte avec le formulaire */
+.transport-content {
+    align-items: stretch;
+}
+
 /* Formulaire de réservation */
 .booking-form-container {
     background: var(--white-color);
@@ -336,6 +426,10 @@ header {
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
     border: 2px solid var(--primary-color);
+    height: fit-content;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
 }
 
 .booking-form-container h2 {
@@ -519,17 +613,22 @@ header {
     border-radius: var(--border-radius);
     overflow: hidden;
     box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    transition: height 0.3s ease;
 }
 
 #map {
     width: 100%;
-    height: 400px;
+    flex: 1;
+    min-height: 400px;
     background-color: var(--gray-light);
 }
 
 .map-info {
     padding: 20px;
     border-top: 1px solid var(--gray-light);
+    flex-shrink: 0;
 }
 
 .map-info h3 {
@@ -718,7 +817,7 @@ header {
 /* Présentation des services */
 .service-presentation {
     background: var(--white-color);
-    padding: 40px;
+    padding: 25px;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
 }
@@ -726,27 +825,27 @@ header {
 .service-presentation h3 {
     color: var(--black-color);
     font-size: 28px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     text-align: center;
 }
 
 .service-presentation p {
     color: var(--gray-medium);
     line-height: 1.8;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     text-align: center;
 }
 
 .service-features {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 30px;
-    margin-bottom: 40px;
+    gap: 20px;
+    margin-bottom: 10px;
 }
 
 .feature {
     text-align: center;
-    padding: 20px;
+    padding: 10px;
 }
 
 .feature-icon {
@@ -781,14 +880,14 @@ header {
     list-style: none;
 }
 
-.pricing-info li, .applications li, .equipment-info li {
+.applications li, .equipment-info li {
     padding: 8px 0;
     color: var(--gray-medium);
     position: relative;
     padding-left: 25px;
 }
 
-.pricing-info li:before, .applications li:before, .equipment-info li:before {
+.applications li:before, .equipment-info li:before {
     content: "•";
     position: absolute;
     left: 0;
@@ -803,23 +902,59 @@ header {
 
 /* Affichage du prix */
 .price-display {
-    background: var(--primary-color);
-    padding: 20px;
+    background: var(--white-color);
+    padding: 25px;
     border-radius: var(--border-radius);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    border: 2px solid var(--primary-color);
     margin: 20px 0;
 }
 
-.price-label {
+.price-details {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--gray-light);
+}
+
+.price-row:last-child {
+    border-bottom: none;
+}
+
+.price-row.total-row {
+    border-top: 2px solid var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    font-weight: bold;
     font-size: 18px;
+    padding: 15px 0;
+}
+
+.price-label {
     font-weight: 600;
     color: var(--black-color);
 }
 
 .price-value {
-    font-size: 24px;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.price-acompte {
+    font-size: 18px;
+    font-weight: bold;
+    color: #28a745;
+}
+
+.price-reste {
+    font-size: 18px;
     font-weight: bold;
     color: var(--black-color);
 }
@@ -1413,7 +1548,7 @@ footer {
     line-height: 1.6;
 }
 
-.service-features {
+.service-features-transport {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 60px;
@@ -1488,6 +1623,331 @@ footer {
     
     .feature-list h3 {
         font-size: 20px;
+    }
+}
+
+/* Styles spécifiques pour la page photobooth */
+.photobooth-section .service-presentation {
+    background: var(--white-color);
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    height: fit-content;
+}
+
+.photobooth-section .service-presentation h3 {
+    color: var(--black-color);
+    font-size: 28px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.photobooth-section .service-presentation p {
+    color: var(--gray-medium);
+    line-height: 1.8;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.photobooth-section .service-presentation-section {
+    padding: 80px 0;
+    background-color: var(--gray-light);
+    margin-top: 0;
+}
+
+.photobooth-section .service-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+}
+
+.photobooth-section .feature {
+    background: var(--white-color);
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    text-align: center;
+    border: 2px solid var(--primary-color);
+}
+
+.photobooth-section .feature-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.photobooth-section .feature h4 {
+    color: var(--black-color);
+    margin-bottom: 15px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.photobooth-section .feature p {
+    color: var(--gray-medium);
+    font-size: 14px;
+    margin: 0 0 10px 0;
+    line-height: 1.6;
+}
+
+.photobooth-section .pricing-info {
+    background: var(--white-color);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin: 30px 0;
+    border: 2px solid var(--primary-color);
+}
+
+.photobooth-section .pricing-info h4 {
+    color: var(--primary-color);
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 15px;
+}
+
+.photobooth-section .pricing-info p {
+    color: var(--gray-medium);
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.photobooth-section .pricing-info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.photobooth-section .pricing-info li {
+    color: var(--gray-medium);
+    font-size: 16px;
+    line-height: 1.8;
+    padding: 12px 0;
+    position: relative;
+    padding-left: 25px;
+    border-bottom: 1px solid var(--gray-light);
+}
+
+.photobooth-section .pricing-info li:last-child {
+    border-bottom: none;
+}
+
+.photobooth-section .pricing-info li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.photobooth-section .pricing-info a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.photobooth-section .pricing-info a:hover {
+    color: #c4a85a;
+    text-decoration: underline;
+}
+
+/* Nouvelle structure pour la page photobooth */
+.photobooth-booking-section {
+    padding: 80px 0;
+    background-color: var(--white-color);
+}
+
+.photobooth-booking-section .booking-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--white-color);
+    padding: 50px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    border: 2px solid var(--primary-color);
+}
+
+.photobooth-booking-section .booking-form-container h2 {
+    color: var(--black-color);
+    font-size: 32px;
+    margin-bottom: 40px;
+    text-align: center;
+    border-bottom: 3px solid var(--primary-color);
+    padding-bottom: 20px;
+}
+
+.photobooth-booking-section .booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.photobooth-booking-section .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.photobooth-booking-section .form-group label {
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--black-color);
+    font-size: 16px;
+}
+
+.photobooth-booking-section .form-group input,
+.photobooth-booking-section .form-group select {
+    padding: 15px;
+    border: 2px solid var(--gray-light);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+    background-color: var(--white-color);
+}
+
+.photobooth-booking-section .form-group input:focus,
+.photobooth-booking-section .form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(219, 192, 103, 0.1);
+}
+
+.photobooth-booking-section .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.photobooth-booking-section .price-display {
+    background: var(--gray-light);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    border: 2px solid var(--primary-color);
+    margin: 30px 0;
+}
+
+.photobooth-booking-section .btn {
+    font-size: 18px;
+    padding: 15px 30px;
+    margin-top: 20px;
+}
+
+/* Responsive pour la nouvelle structure */
+@media (max-width: 768px) {
+    .photobooth-booking-section .booking-form-container {
+        padding: 30px 20px;
+        margin: 0 20px;
+    }
+    
+    .photobooth-booking-section .form-row {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .photobooth-booking-section .booking-form-container h2 {
+        font-size: 28px;
+        margin-bottom: 30px;
+    }
+    
+    .photobooth-booking-section .form-group input,
+    .photobooth-booking-section .form-group select {
+        padding: 12px;
+        font-size: 15px;
+    }
+}
+
+/* Conteneur pour les deux sections de tarifs en colonnes */
+.pricing-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 90px;
+    margin: 40px 0;
+}
+
+.pricing-info {
+    margin: 0; /* Supprimer la marge car gérée par le conteneur */
+}
+
+.pricing-info h4 {
+    color: var(--black-color);
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 15px;
+}
+
+.pricing-info p {
+    color: var(--gray-medium);
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.pricing-info ul {
+    list-style: none;
+    padding: 0;
+}
+
+.pricing-info li {
+    color: var(--gray-medium);
+    font-size: 16px;
+    line-height: 1.8;
+    padding: 12px 0;
+    position: relative;
+    border-bottom: 1px solid var(--gray-light);
+}
+
+.pricing-info li:last-child {
+    border-bottom: none;
+}
+
+.pricing-info a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.pricing-info a:hover {
+    color: #c4a85a;
+    text-decoration: underline;
+}
+
+/* Responsive pour la page photobooth */
+@media (max-width: 768px) {
+    .photobooth-section .service-features {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin: 30px 0;
+    }
+    
+    .photobooth-section .feature {
+        padding: 20px;
+    }
+    
+    .pricing-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin: 30px 0;
+    }
+    
+    .pricing-info {
+        padding: 25px 20px;
+        margin: 0;
+    }
+    
+    .pricing-info h4 {
+        font-size: 20px;
+    }
+    
+    .pricing-info li {
+        font-size: 15px;
+        padding: 10px 0;
     }
 }
 
@@ -1688,6 +2148,500 @@ footer {
     
     .quick-link span {
         font-size: 24px;
+    }
+}
+
+/* Page de validation photobooth */
+.validation-section {
+    padding: 80px 0;
+    background-color: var(--gray-light);
+}
+
+.validation-title {
+    text-align: center;
+    color: var(--primary-color);
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 50px;
+    text-transform: uppercase;
+}
+
+.validation-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+}
+
+.billing-form-container {
+    background: var(--white-color);
+    padding: 40px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    border: 2px solid var(--primary-color);
+}
+
+.billing-form-container h2 {
+    color: var(--black-color);
+    font-size: 28px;
+    margin-bottom: 30px;
+    text-align: center;
+    border-bottom: 3px solid var(--primary-color);
+    padding-bottom: 15px;
+}
+
+.billing-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.payment-container {
+    background: var(--white-color);
+    padding: 40px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    border: 2px solid var(--primary-color);
+}
+
+.payment-container h2 {
+    color: var(--black-color);
+    font-size: 28px;
+    margin-bottom: 30px;
+    text-align: center;
+    border-bottom: 3px solid var(--primary-color);
+    padding-bottom: 15px;
+}
+
+.payment-details {
+    background: var(--gray-light);
+    padding: 25px;
+    border-radius: var(--border-radius);
+    margin: 20px 0;
+    border: 2px solid var(--primary-color);
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--white-color);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-row.total-row {
+    border-top: 2px solid var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    font-weight: bold;
+    font-size: 18px;
+    padding: 15px 0;
+}
+
+.detail-label {
+    font-weight: 600;
+    color: var(--black-color);
+}
+
+.detail-value {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.acompte-value {
+    color: #28a745;
+}
+
+.payment-btn {
+    width: 100%;
+    margin-top: 20px;
+    font-size: 18px;
+    padding: 15px 30px;
+}
+
+/* Responsive pour la validation */
+@media (max-width: 768px) {
+    .validation-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .validation-title {
+        font-size: 28px;
+    }
+    
+    .billing-form-container,
+    .payment-container {
+        padding: 30px 20px;
+    }
+}
+
+/* Styles pour les champs d'adresse structurée */
+.form-group input[type="text"],
+.form-group select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--gray-light);
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+    background-color: var(--white-color);
+}
+
+.form-group input[type="text"]:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(219, 192, 103, 0.1);
+}
+
+.form-group input[type="text"]::placeholder {
+    color: var(--gray);
+}
+
+.form-group select {
+    cursor: pointer;
+}
+
+.form-group select option {
+    padding: 10px;
+}
+
+/* Responsive pour les champs d'adresse */
+@media (max-width: 768px) {
+    .form-group input[type="text"],
+    .form-group select {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+}
+
+/* Styles pour la checkbox et le toggle de facturation */
+.billing-toggle {
+    margin: 30px 0;
+    padding: 20px;
+    background: var(--white-color);
+    border-radius: var(--border-radius);
+    border: 2px solid var(--primary-color);
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--black-color);
+}
+
+.checkbox-label input[type="checkbox"] {
+    margin-right: 15px;
+    width: 20px;
+    height: 20px;
+    accent-color: var(--primary-color);
+}
+
+/* Styles pour le formulaire client */
+.client-form-container {
+    background: var(--white-color);
+    padding: 40px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    border: 2px solid var(--primary-color);
+    margin-bottom: 30px;
+}
+
+.client-form-container h2 {
+    color: var(--primary-color);
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 28px;
+}
+
+.client-form-container h3 {
+    color: var(--primary-color);
+    margin: 30px 0 20px 0;
+    font-size: 24px;
+    border-top: 2px solid var(--primary-color);
+    padding-top: 20px;
+}
+
+/* Styles pour la section de facturation */
+.billing-form-section {
+    border-top: 2px solid var(--primary-color);
+    padding-top: 20px;
+    margin-top: 20px;
+}
+
+/* Styles pour la zone de prix en deux colonnes */
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.price-row:last-child {
+    border-bottom: none;
+}
+
+.price-label {
+    font-weight: 600;
+    color: var(--black-color);
+    text-align: left;
+    flex: 1;
+}
+
+.price-value,
+.price-acompte,
+.price-reste {
+    font-weight: bold;
+    color: var(--primary-color);
+    text-align: right;
+    flex: 1;
+}
+
+.total-row {
+    border-top: 2px solid var(--primary-color);
+    padding-top: 15px;
+    margin-top: 15px;
+    font-size: 18px;
+}
+
+.total-row .price-label,
+.total-row .price-value {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* Styles pour les formulaires */
+.client-form,
+.billing-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Responsive pour les nouveaux éléments */
+@media (max-width: 768px) {
+    .billing-toggle {
+        padding: 15px;
+        margin: 20px 0;
+    }
+    
+    .checkbox-label {
+        font-size: 16px;
+    }
+    
+    .client-form-container {
+        padding: 30px 20px;
+        margin-bottom: 20px;
+    }
+    
+    .price-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .price-label,
+    .price-value,
+    .price-acompte,
+    .price-reste {
+        text-align: left;
+        flex: none;
+    }
+}
+
+/* Bouton de retour */
+.back-button-container {
+    margin-bottom: 30px;
+    text-align: left;
+}
+
+.back-button-container .btn {
+    font-size: 16px;
+    padding: 10px 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Texte facultatif */
+.optional-text {
+    color: var(--gray-medium);
+    font-size: 14px;
+    font-weight: normal;
+    font-style: italic;
+}
+
+/* Message d'information */
+.message-info {
+    border-left-color: #17a2b8;
+    background-color: #d1ecf1;
+    color: #0c5460;
+}
+
+/* Styles pour les conditions générales */
+.terms-conditions {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--gray-light);
+    text-align: center;
+}
+
+.terms-link {
+    color: var(--gray-medium);
+    font-size: 12px;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease;
+}
+
+.terms-link:hover {
+    color: var(--gray-dark);
+    text-decoration: underline;
+}
+
+/* Styles pour la page des conditions générales */
+.terms-section {
+    padding: 80px 0;
+    background-color: var(--white-color);
+}
+
+.terms-title {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.terms-title h1 {
+    color: var(--gray-dark);
+    font-size: 36px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+.terms-content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.terms-section-item {
+    background: var(--white-color);
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
+    border: 1px solid var(--gray-light);
+}
+
+.terms-section-item h2 {
+    color: var(--gray-dark);
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--gray-light);
+}
+
+.terms-section-item p {
+    color: var(--gray-medium);
+    font-size: 16px;
+    line-height: 1.7;
+    margin-bottom: 15px;
+}
+
+.terms-section-item ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.terms-section-item li {
+    color: var(--gray-medium);
+    font-size: 16px;
+    line-height: 1.6;
+    padding: 8px 0;
+    position: relative;
+    padding-left: 25px;
+}
+
+.terms-section-item li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--gray-medium);
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.terms-actions {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.terms-actions .btn {
+    background-color: var(--gray-medium);
+    color: var(--white-color);
+    border: 2px solid var(--gray-medium);
+    transition: all 0.3s ease;
+}
+
+.terms-actions .btn:hover {
+    background-color: var(--gray-dark);
+    border-color: var(--gray-dark);
+    transform: translateY(-2px);
+}
+
+/* Responsive pour la page des conditions */
+@media (max-width: 768px) {
+    .terms-section {
+        padding: 60px 0;
+    }
+    
+    .terms-title h1 {
+        font-size: 28px;
+    }
+    
+    .terms-content {
+        padding: 0 20px;
+    }
+    
+    .terms-section-item {
+        padding: 25px 20px;
+        margin-bottom: 25px;
+    }
+    
+    .terms-section-item h2 {
+        font-size: 20px;
+    }
+    
+    .terms-section-item p,
+    .terms-section-item li {
+        font-size: 15px;
+    }
+}
+
+/* Styles pour l'image de la carte dans le footer */
+.bloc_footer img[src*="carte_footer.png"] {
+    height: auto;
+    width: 300px;
+    opacity: 0.9;
+}
+
+/* Responsive pour l'image de la carte */
+@media (max-width: 768px) {
+    .bloc_footer img[src*="carte_footer.png"] {
+        width: 120px;
+        margin-top: 10px;
     }
 }
 

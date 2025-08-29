@@ -4,42 +4,45 @@
 {% block title %}RG Luxe Events - Récapitulatif Transport{% endblock %}
 
 {% block content %}
-<!-- Banner principal avec le design de l'image -->
-<div class="hero-banner" style="display: none;">
+<!-- Banner principal avec l'image back_ban.jpg étirée sur toute la largeur -->
+<div class="hero-banner">
+    <div class="banner-background">
+        <img src="{% static 'images/back_ban.jpg' %}" alt="Bannière RG Luxe Events">
+    </div>
+    
     <div class="banner-content">
         <div class="banner-left">
             <div class="transport-panel">
-                <div class="transport-image">
-                    <img src="{% static 'images/voiture-porsche.jpg' %}" alt="Transport de luxe">
-                    <div class="transport-overlay">
-                        <div class="luxury-car">
-                            <img src="{% static 'images/voiture-amg.jpg' %}" alt="Voiture de luxe">
-                        </div>
-                        <div class="private-jet">
-                            <img src="{% static 'images/aeroport.jpg' %}" alt="Jet privé">
-                        </div>
-                    </div>
+                <div class="transport-image diamond1">
+                    <a href="{% url 'transport' %}">
+                        <img src="{% static 'images/transport_ban.png' %}" alt="Transport de luxe">
+                    </a>
                 </div>
             </div>
         </div>
-        
+
         <div class="banner-center">
-            <div class="logo-container">
-                <div class="main-logo">
-                    <h1>RG Luxe Events</h1>
-                </div>
-            </div>
             <div class="drone-panel">
-                <div class="drone-image">
-                    <img src="{% static 'images/service-aeroport.jpg' %}" alt="Services drone">
+                <div class="drone-image diamond2">                    
+                    <a href="{% url 'drone' %}">
+                        <img src="{% static 'images/drone_ban.png' %}" alt="Services drone">
+                    </a>
+                </div>
+                <!-- Logo déplacé en dehors du conteneur avec overflow: hidden -->
+                <div class="logo-overlay">
+                    <a href="{% url 'home' %}">
+                        <img src="{% static 'images/logo_ban.jpg' %}" alt="Logo RG Luxe Events" id="drone-image">
+                    </a>
                 </div>
             </div>
         </div>
-        
+
         <div class="banner-right">
             <div class="photobooth-panel">
-                <div class="photobooth-image">
-                    <img src="{% static 'images/service-mariage.jpg' %}" alt="Photobooth">
+                <div class="photobooth-image diamond1">                  
+                    <a href="{% url 'photobooth' %}">
+                        <img src="{% static 'images/photobooth_ban.png' %}" alt="Photobooth">
+                    </a>
                 </div>
             </div>
         </div>
@@ -47,7 +50,7 @@
 </div>
 
 <!-- Image bannière haute -->
-<div class="ban-haut">
+<div class="ban-haut" style="display: none;">
     <img src="{% static 'images/ban_haut.jpg' %}" alt="Bannière RG Luxe Events">
 </div>
 
@@ -155,6 +158,11 @@
                 </ul>
             </div>
         </div>
+        <div class="terms-actions">
+            <button onclick="goBack()" class="btn btn-primary">
+                <span>←</span> Retour à la réservation
+            </button>
+        </div>
     </div>
 </section>
 
@@ -163,6 +171,9 @@ function proceedToPayment() {
     // Ici vous pouvez rediriger vers votre système de paiement PayPal
     // ou afficher un modal de paiement
     alert('Redirection vers le système de paiement...');
+}
+function goBack() {
+    window.history.back();
 }
 </script>
 {% endblock %} 

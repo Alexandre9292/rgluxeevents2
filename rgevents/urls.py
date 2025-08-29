@@ -63,6 +63,8 @@ urlpatterns = [
     path('transport/', app.views.transport, name='transport'),
     path('transport/summary/<int:booking_id>/', app.views.transport_summary, name='transport_summary'),
     path('photobooth/', app.views.photobooth, name='photobooth'),
+    path('photobooth/validation/', app.views.photobooth_validation, name='photobooth_validation'),
+    path('photobooth/conditions/', app.views.photobooth_terms, name='photobooth_terms'),
     path('drone/', app.views.drone, name='drone'),
     
     # URL de test pour la page 404 (à supprimer en production)

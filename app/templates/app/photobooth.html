@@ -4,42 +4,45 @@
 {% block title %}RG Luxe Events - Photobooth{% endblock %}
 
 {% block content %}
-<!-- Banner principal avec le design de l'image -->
-<div class="hero-banner" style="display: none;">
+<!-- Banner principal avec l'image back_ban.jpg étirée sur toute la largeur -->
+<div class="hero-banner">
+    <div class="banner-background">
+        <img src="{% static 'images/back_ban.jpg' %}" alt="Bannière RG Luxe Events">
+    </div>
+    
     <div class="banner-content">
         <div class="banner-left">
             <div class="transport-panel">
-                <div class="transport-image">
-                    <img src="{% static 'images/voiture-porsche.jpg' %}" alt="Transport de luxe">
-                    <div class="transport-overlay">
-                        <div class="luxury-car">
-                            <img src="{% static 'images/voiture-amg.jpg' %}" alt="Voiture de luxe">
-                        </div>
-                        <div class="private-jet">
-                            <img src="{% static 'images/aeroport.jpg' %}" alt="Jet privé">
-                        </div>
-                    </div>
+                <div class="transport-image diamond1">
+                    <a href="{% url 'transport' %}">
+                        <img src="{% static 'images/transport_ban.png' %}" alt="Transport de luxe">
+                    </a>
                 </div>
             </div>
         </div>
-        
+
         <div class="banner-center">
-            <div class="logo-container">
-                <div class="main-logo">
-                    <h1>RG Luxe Events</h1>
-                </div>
-            </div>
             <div class="drone-panel">
-                <div class="drone-image">
-                    <img src="{% static 'images/service-aeroport.jpg' %}" alt="Services drone">
+                <div class="drone-image diamond2">                    
+                    <a href="{% url 'drone' %}">
+                        <img src="{% static 'images/drone_ban.png' %}" alt="Services drone">
+                    </a>
+                </div>
+                <!-- Logo déplacé en dehors du conteneur avec overflow: hidden -->
+                <div class="logo-overlay">
+                    <a href="{% url 'home' %}">
+                        <img src="{% static 'images/logo_ban.jpg' %}" alt="Logo RG Luxe Events" id="drone-image">
+                    </a>
                 </div>
             </div>
         </div>
-        
+
         <div class="banner-right">
             <div class="photobooth-panel">
-                <div class="photobooth-image">
-                    <img src="{% static 'images/service-mariage.jpg' %}" alt="Photobooth">
+                <div class="photobooth-image diamond1">                  
+                    <a href="{% url 'photobooth' %}">
+                        <img src="{% static 'images/photobooth_ban.png' %}" alt="Photobooth">
+                    </a>
                 </div>
             </div>
         </div>
@@ -47,149 +50,164 @@
 </div>
 
 <!-- Image bannière haute -->
-<div class="ban-haut">
+<div class="ban-haut" style="display: none;">
     <img src="{% static 'images/ban_haut.jpg' %}" alt="Bannière RG Luxe Events">
 </div>
 
-<!-- Section principale -->
-<section class="photobooth-section">
+<!-- Section de présentation du service -->
+<section class="service-presentation-section">
     <div class="container">
-        <div class="photobooth-content">
-            <!-- Formulaire de réservation -->
-            <div class="booking-form-container">
-                <h2>Réservation Photobooth</h2>
+        <div class="service-content">
+            <h2>Location Photobooth</h2>
+            <p class="service-intro">Créez l'éffet "WOUAH" à votre événement !</p>
+            <p class="service-description">Avec notre PHOTOBOOTH, offrez à vos invités des poses déjantées, des fous rires, des clichés à
+                imprimer ou à partager sur les réseaux sociaux ...</p>
+            <p class="service-description">Mariage, anniversaire, baby-shower, soirée privée, ou divers événements</p>
+        </div>
+    </div>
+</section>
+
+<!-- Section du formulaire de réservation -->
+<section class="photobooth-booking-section">
+    <div class="container">
+        <div class="booking-form-container">
+            <h2>Réservation</h2>
+            <form method="post" class="booking-form" id="photobooth-form">
+                {% csrf_token %}
                 
-                <form method="post" class="booking-form" id="photobooth-form">
-                    {% csrf_token %}
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            {{ form.first_name.label_tag }}
-                            {{ form.first_name }}
-                        </div>
-                        <div class="form-group">
-                            {{ form.last_name.label_tag }}
-                            {{ form.last_name }}
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        {{ form.address.label_tag }}
-                        {{ form.address }}
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            {{ form.email.label_tag }}
-                            {{ form.email }}
-                        </div>
-                        <div class="form-group">
-                            {{ form.phone.label_tag }}
-                            {{ form.phone }}
-                        </div>
-                    </div>
-                    
+                <!-- Champs cachés pour stocker les données de calcul -->
+                <input type="hidden" id="calculated-price" name="calculated_price" value="0">
+                <input type="hidden" id="calculated-acompte" name="calculated_acompte" value="100">
+                <input type="hidden" id="calculated-reste" name="calculated_reste" value="0">
+                
+                <div class="form-row">
                     <div class="form-group">
                         {{ form.service_type.label_tag }}
                         {{ form.service_type }}
                     </div>
-                    
-                    <div class="form-row" id="hours-fields" style="display: none;">
-                        <div class="form-group">
-                            {{ form.hours.label_tag }}
-                            {{ form.hours }}
-                        </div>
+                    <div class="form-group" id="hours-fields" style="display: none;">
+                        {{ form.hours.label_tag }}
+                        {{ form.hours }}
                     </div>
-                    
-                    <div class="form-row" id="days-fields" style="display: none;">
-                        <div class="form-group">
-                            {{ form.days.label_tag }}
-                            {{ form.days }}
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            {{ form.event_date.label_tag }}
-                            {{ form.event_date }}
-                        </div>
-                        <div class="form-group">
-                            {{ form.event_time.label_tag }}
-                            {{ form.event_time }}
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group">
-                            {{ form.location.label_tag }}
-                            {{ form.location }}
-                        </div>
-                        <div class="form-group">
-                            {{ form.event_type.label_tag }}
-                            {{ form.event_type }}
-                        </div>
-                    </div>
-                    
-                    <!-- Affichage du prix -->
-                    <div class="price-display" id="price-display" style="display: none;">
-                        <div class="price-label">Prix estimé :</div>
-                        <div class="price-value" id="price-value">0€</div>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-primary">Envoyer la demande</button>
-                </form>
-            </div>
-            
-            <!-- Présentation du service -->
-            <div class="service-presentation">
-                <h3>Location Photobooth</h3>
-                <p>Créez l'éffet “WOUAH” à votre événement !</p>
-                <p>Avec notre PHOTOBOOTH, offrez à vos invités des poses déjantées, des fous rires, des clichés à
-                    imprimer ou à partager sur les réseaux sociaux ...</p>
-                <p>Mariage, anniversaire, baby-shower, soirée privée, ou divers événements</p>
-                <br>
-                <p style="font-weight: bold;">Inclus dans toutes les formules :</p>
-                <ul>
-                    <li>tirage photo illimité avec impression instantanée en format 10x15cm ou 15x10cm</li>
-                    <li>envoi photo par e-mail</li>
-                    <li>personnalisation de l'écran de la machine</li>
-                    <li>personnalisation du cadre photo aux couleurs de votre événement</li>
-                    <li>galerie photo en ligne</li>
-                    <li>accessoires de déguisements ( lunettes, chapeaux, masques,...)</li>
-                    <li>livraison, installation et récupération de la machine</li>
-                    <li>service assistance</li>
-                </ul>
-
-                <div class="service-features">
-                    <div class="feature">
-                        <i class="feature-icon">📸</i>
-                        <h4>Haute qualité</h4>
-                        <p>Tirage photo illimité avec impression instantanée en format 10x15cm ou 15x10cm</p>
-                        <p>Personnalisation de l'écran de la machine</p>
-                        <p>Personnalisation du cadre photo aux couleurs de votre événement</p>
-                    </div>
-                    
-                    <div class="feature">
-                        <i class="feature-icon">💾</i>
-                        <h4>Partage numérique</h4>
-                        <p>Galerie photo en ligne</p>
-                        <p>Envoi photo par e-mail</p>
-                    </div>
-                    
-                    <div class="feature">
-                        <i class="feature-icon">🎭</i>
-                        <h4>Accessoires inclus</h4>
-                        <p>Accessoires de déguisements ( lunettes, chapeaux, masques,...)</p>
-                    </div>
-                    
-                    <div class="feature">
-                        <i class="feature-icon">🚛</i>
-                        <h4>Service assistance</h4>
-                        <p>livraison, installation et récupération de la machine</p>
+                    <div class="form-group" id="days-fields" style="display: none;">
+                        {{ form.days.label_tag }}
+                        {{ form.days }}
                     </div>
                 </div>
                 
+                <div class="form-row">
+                    <div class="form-group">
+                        {{ form.event_date.label_tag }}
+                        {{ form.event_date }}
+                    </div>
+                    <div class="form-group">
+                        {{ form.event_time.label_tag }}
+                        {{ form.event_time }}
+                    </div>
+                </div>
                 
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="location">Lieu :</label>
+                        <select name="location" id="location" required>
+                            <option value="">Sélectionnez une commune</option>
+                            <option value="Avirons (Les)">Avirons (Les)</option>
+                            <option value="Bras-Panon">Bras-Panon</option>
+                            <option value="Cilaos">Cilaos</option>
+                            <option value="Entre-Deux">Entre-Deux</option>
+                            <option value="Étang-Salé">Étang-Salé</option>
+                            <option value="Petite-Île">Petite-Île</option>
+                            <option value="Plaine-des-Palmistes (La)">Plaine-des-Palmistes (La)</option>
+                            <option value="Possession (La)">Possession (La)</option>
+                            <option value="Port (Le)">Port (Le)</option>
+                            <option value="Saint-André">Saint-André</option>
+                            <option value="Saint-Benoît">Saint-Benoît</option>
+                            <option value="Saint-Denis">Saint-Denis</option>
+                            <option value="Saint-Joseph">Saint-Joseph</option>
+                            <option value="Saint-Leu">Saint-Leu</option>
+                            <option value="Saint-Louis">Saint-Louis</option>
+                            <option value="Saint-Paul">Saint-Paul</option>
+                            <option value="Saint-Philippe">Saint-Philippe</option>
+                            <option value="Saint-Pierre">Saint-Pierre</option>
+                            <option value="Sainte-Marie">Sainte-Marie</option>
+                            <option value="Sainte-Rose">Sainte-Rose</option>
+                            <option value="Sainte-Suzanne">Sainte-Suzanne</option>
+                            <option value="Salazie">Salazie</option>
+                            <option value="Tampon (Le)">Tampon (Le)</option>
+                            <option value="Trois-Bassins">Trois-Bassins</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        {{ form.event_type.label_tag }}
+                        {{ form.event_type }}
+                    </div>
+                </div>
+                
+                <!-- Affichage du prix -->
+                <div class="price-display" id="price-display" style="display: none;">
+                    <div class="price-details">
+                        <div class="price-row">
+                            <div class="price-label">Prix total :</div>
+                            <div class="price-value" id="price-value">0€</div>
+                        </div>
+                        <div class="price-row">
+                            <div class="price-label">Acompte :</div>
+                            <div class="price-acompte">100€</div>
+                        </div>
+                        <div class="price-row total-row">
+                            <div class="price-label">Reste à payer :</div>
+                            <div class="price-reste" id="price-reste">0€</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" id="submit-btn" style="display: none;">Suivant</button>
+                
+                <!-- Lien vers les conditions générales -->
+                <div class="terms-conditions">
+                    <a href="{% url 'photobooth_terms' %}" class="terms-link">CONDITIONS GENERALES DE LOCATION</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Section de présentation complète du service -->
+<section class="service-presentation-section">
+    <div class="container">
+        <div class="service-content">
+            <p style="font-weight: bold;font-size: 30px;">Inclus dans toutes les formules :</p>
+            <br><br><br>
+            <div class="service-features">
+                <div class="feature">
+                    <i class="feature-icon">📸</i>
+                    <h4>Haute qualité</h4>
+                    <p>Tirage photo illimité avec impression instantanée en format 10x15cm ou 15x10cm</p>
+                    <p>Personnalisation de l'écran de la machine</p>
+                    <p>Personnalisation du cadre photo aux couleurs de votre événement</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="feature-icon">💾</i>
+                    <h4>Partage numérique</h4>
+                    <p>Galerie photo en ligne</p>
+                    <p>Envoi photo par e-mail</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="feature-icon">🎭</i>
+                    <h4>Accessoires inclus</h4>
+                    <p>Accessoires de déguisements ( lunettes, chapeaux, masques,...)</p>
+                </div>
+                
+                <div class="feature">
+                    <i class="feature-icon">🚛</i>
+                    <h4>Service assistance</h4>
+                    <p>livraison, installation et récupération de la machine</p>
+                </div>
+            </div>
+            
+            <div class="pricing-container">
                 <div class="pricing-info">
                     <h4>Tarifs particuliers</h4>
                     <p>Choisissez la formule qui vous convient :</p>
@@ -207,9 +225,10 @@
                         <li><strong>Location longue durée :</strong> 400,00€ / jour ( durée de 10h00) - tarif dégressif selon le nombre
                             de jour<br><span style="font-style: italic;">Pour une utilisation sur plusieurs jours ou semaines (foires, animations permanentes,
                                 campagnes marketing).</span></li>
-                        <li><strong>Location à l’événement :</strong> 80€/heure ou 490,00€ ( durée de 7h00)
+                        <li><strong>Location à l'événement :</strong> 85€/heure ou 490,00€ ( durée de 7h00)
                             <br><span style="font-style: italic;">Pour vos salons, séminaires, inaugurations ou opérations commerciales.</span></li>
                     </ul>
+                    <p>Pour un devis ou tout autre information, n'hésitez pas à <br><a href="{% url 'contact' %}" style="color: var(--primary-color);">nous contacter</a>.</p>
                 </div>
             </div>
         </div>
@@ -233,6 +252,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const hoursFields = document.getElementById('hours-fields');
     const daysFields = document.getElementById('days-fields');
     const priceValue = document.getElementById('price-value');
+    const priceReste = document.getElementById('price-reste');
+    const submitBtn = document.getElementById('submit-btn');
     
     // Gestion de l'affichage des champs selon le type de service
     function updateFields() {
@@ -254,29 +275,90 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Calcul du prix
     function calculatePrice() {
-        const selectedValue = serviceTypeSelect.value;
-        let price = 0;
+        const serviceType = serviceTypeSelect.value;
+        const location = document.getElementById('location').value;
+        const hoursInput = document.getElementById('id_hours');
+        const daysInput = document.getElementById('id_days');
         
-        if (selectedValue === 'heure') {
-            const hours = parseInt(document.getElementById('id_hours').value) || 0;
+        let totalPrice = 0;
+        
+        if (serviceType === 'heure' && hoursInput) {
+            const hours = parseInt(hoursInput.value) || 0;
             if (hours >= 2) {
-                price = hours * 85;
+                totalPrice = hours * 79.90;
             }
-        } else if (selectedValue === 'journee') {
-            const days = parseInt(document.getElementById('id_days').value) || 0;
+        } else if (serviceType === 'journee' && daysInput) {
+            const days = parseInt(daysInput.value) || 0;
             if (days >= 1) {
-                price = days * 400;
+                // Tarifs selon la commune
+                const eastCommunes = ['Saint-André', 'Bras-Panon', 'Saint-Benoît', 'Sainte-Rose', 'Sainte-Suzanne', 'Sainte-Marie', 'Salazie'];
+                if (eastCommunes.includes(location)) {
+                    totalPrice = days * 395;
+                } else {
+                    totalPrice = days * 450;
+                }
             }
         }
         
-        priceValue.textContent = price + '€';
-        
-        // Afficher/masquer la zone de prix selon la valeur
+        // Afficher le prix seulement si toutes les conditions sont remplies
         const priceDisplay = document.getElementById('price-display');
-        if (price > 0) {
-            priceDisplay.style.display = 'flex';
+        const submitBtn = document.getElementById('submit-btn');
+        
+        if (totalPrice > 0 && location) {
+            priceDisplay.style.display = 'block';
+            submitBtn.style.display = 'block';
+            
+            // Mettre à jour les valeurs affichées
+            document.getElementById('price-value').textContent = totalPrice.toFixed(2) + '€';
+            document.getElementById('price-reste').textContent = (totalPrice - 100).toFixed(2) + '€';
+            
+            // Mettre à jour les champs cachés
+            document.getElementById('calculated-price').value = totalPrice.toFixed(2);
+            document.getElementById('calculated-reste').value = (totalPrice - 100).toFixed(2);
         } else {
             priceDisplay.style.display = 'none';
+            submitBtn.style.display = 'none';
+        }
+    }
+    
+    // Fonction pour remplir automatiquement la ville selon le code postal
+    function autoFillCity(postalCode) {
+        const citySelect = document.getElementById('location');
+        
+        // Mapping des codes postaux vers les villes
+        const postalCodeMap = {
+            '97400': 'Saint-Denis',
+            '97410': 'Saint-Paul',
+            '97420': 'Le Port',
+            '97430': 'Le Tampon',
+            '97440': 'Saint-André',
+            '97450': 'Saint-Louis',
+            '97460': 'Saint-Pierre',
+            '97470': 'Saint-Benoît',
+            '97480': 'Saint-Joseph',
+            '97490': 'Saint-Philippe',
+            '97411': 'La Possession',
+            '97412': 'Saint-Gilles-les-Bains',
+            '97413': 'Saint-Leu',
+            '97414': 'Cilaos',
+            '97415': 'Entre-Deux',
+            '97416': 'Petite-Île',
+            '97417': 'Saint-Philippe',
+            '97418': 'Sainte-Rose',
+            '97419': 'Salazie',
+            '97421': 'Les Avirons',
+            '97422': 'Bras-Panon',
+            '97423': 'Sainte-Marie',
+            '97424': 'Sainte-Suzanne',
+            '97425': 'Étang-Salé',
+            '97426': 'La Plaine-des-Palmistes',
+            '97427': 'Trois-Bassins'
+        };
+        
+        if (postalCodeMap[postalCode]) {
+            citySelect.value = postalCodeMap[postalCode];
+            // Déclencher le calcul du prix
+            calculatePrice();
         }
     }
     
@@ -285,6 +367,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const hoursInput = document.getElementById('id_hours');
     const daysInput = document.getElementById('id_days');
+    const locationSelect = document.getElementById('location');
     
     if (hoursInput) {
         hoursInput.addEventListener('input', calculatePrice);
@@ -294,8 +377,53 @@ document.addEventListener('DOMContentLoaded', function() {
         daysInput.addEventListener('input', calculatePrice);
     }
     
+    if (locationSelect) {
+        locationSelect.addEventListener('change', calculatePrice);
+    }
+    
     // Initialisation
     updateFields();
+    
+    // Bloquer les dates antérieures à aujourd'hui
+    const eventDateInput = document.getElementById('id_event_date');
+    if (eventDateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        eventDateInput.setAttribute('min', today);
+        
+        // Validation supplémentaire côté client
+        eventDateInput.addEventListener('change', function() {
+            const selectedDate = new Date(this.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (selectedDate < today) {
+                alert('Veuillez sélectionner une date future.');
+                this.value = '';
+            }
+        });
+    }
+    
+    // Gestion de la soumission du formulaire
+    document.getElementById('photobooth-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Stocker les données dans localStorage pour la récupération sur la page de validation
+        localStorage.setItem('photobooth_booking', JSON.stringify({
+            location: document.getElementById('location').value,
+            service_type: document.getElementById('id_service_type').value,
+            hours: document.getElementById('id_hours').value || '',
+            days: document.getElementById('id_days').value || '',
+            event_date: document.getElementById('id_event_date').value,
+            event_time: document.getElementById('id_event_time').value,
+            event_type: document.getElementById('id_event_type').value,
+            total_price: document.getElementById('calculated-price').value,
+            acompte: document.getElementById('calculated-acompte').value,
+            reste: document.getElementById('calculated-reste').value
+        }));
+        
+        // Rediriger vers la page de validation
+        window.location.href = "{% url 'photobooth_validation' %}";
+    });
 });
 </script>
 {% endblock %} 

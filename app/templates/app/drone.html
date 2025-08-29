@@ -4,42 +4,45 @@
 {% block title %}RG Luxe Events - Drone{% endblock %}
 
 {% block content %}
-<!-- Banner principal avec le design de l'image -->
-<div class="hero-banner" style="display: none;">
+<!-- Banner principal avec l'image back_ban.jpg étirée sur toute la largeur -->
+<div class="hero-banner">
+    <div class="banner-background">
+        <img src="{% static 'images/back_ban.jpg' %}" alt="Bannière RG Luxe Events">
+    </div>
+    
     <div class="banner-content">
         <div class="banner-left">
             <div class="transport-panel">
-                <div class="transport-image">
-                    <img src="{% static 'images/voiture-porsche.jpg' %}" alt="Transport de luxe">
-                    <div class="transport-overlay">
-                        <div class="luxury-car">
-                            <img src="{% static 'images/voiture-amg.jpg' %}" alt="Voiture de luxe">
-                        </div>
-                        <div class="private-jet">
-                            <img src="{% static 'images/aeroport.jpg' %}" alt="Jet privé">
-                        </div>
-                    </div>
+                <div class="transport-image diamond1">
+                    <a href="{% url 'transport' %}">
+                        <img src="{% static 'images/transport_ban.png' %}" alt="Transport de luxe">
+                    </a>
                 </div>
             </div>
         </div>
-        
+
         <div class="banner-center">
-            <div class="logo-container">
-                <div class="main-logo">
-                    <h1>RG Luxe Events</h1>
-                </div>
-            </div>
             <div class="drone-panel">
-                <div class="drone-image">
-                    <img src="{% static 'images/service-aeroport.jpg' %}" alt="Services drone">
+                <div class="drone-image diamond2">                    
+                    <a href="{% url 'drone' %}">
+                        <img src="{% static 'images/drone_ban.png' %}" alt="Services drone">
+                    </a>
+                </div>
+                <!-- Logo déplacé en dehors du conteneur avec overflow: hidden -->
+                <div class="logo-overlay">
+                    <a href="{% url 'home' %}">
+                        <img src="{% static 'images/logo_ban.jpg' %}" alt="Logo RG Luxe Events" id="drone-image">
+                    </a>
                 </div>
             </div>
         </div>
-        
+
         <div class="banner-right">
             <div class="photobooth-panel">
-                <div class="photobooth-image">
-                    <img src="{% static 'images/service-mariage.jpg' %}" alt="Photobooth">
+                <div class="photobooth-image diamond1">                  
+                    <a href="{% url 'photobooth' %}">
+                        <img src="{% static 'images/photobooth_ban.png' %}" alt="Photobooth">
+                    </a>
                 </div>
             </div>
         </div>
@@ -47,7 +50,7 @@
 </div>
 
 <!-- Image bannière haute -->
-<div class="ban-haut">
+<div class="ban-haut" style="display: none;">
     <img src="{% static 'images/ban_haut.jpg' %}" alt="Bannière RG Luxe Events">
 </div>
 
@@ -105,12 +108,6 @@
                 <p>Prises de vue aériennes par drone – Photo & Vidéo</p>
                 <p>Offrez une nouvelle dimension à vos projets grâce à nos images aériennes en haute définition.</p>
                 <p style="font-weight: bold;">Idéal pour :</p>
-                <ul>
-                    <li>Immobilier : mise en valeur de biens avec vues panoramiques</li>
-                    <li>Mariages : souvenirs uniques vus du ciel</li>
-                    <li>Événements : festivals, compétitions sportives, inaugurations</li>
-                    <li>Projets professionnels : chantiers, suivi d’avancement, valoriser l'image de l’entreprise</li>
-                </ul>
 
                 <div class="service-features">                    
                     <div class="feature">
@@ -137,20 +134,6 @@
                         <p>Chantiers, suivi d’avancement, valoriser l'image de l’entreprise</p>
                     </div>
                 </div>
-                
-                <div class="equipment-info">
-                    <h4>Notre équipement</h4>
-                    <ul>
-                        <li>Drones professionnels</li>
-                        <li>Caméras avec stabilisation</li>
-                        <li>Batteries haute capacité</li>
-                    </ul>
-                </div>
-                
-                <div class="certification-info">
-                    <h4>Certifications et sécurité</h4>
-                    <p>Tous nos pilotes sont certifiés DGAC et respectent strictement les réglementations en vigueur. Nous disposons de toutes les autorisations nécessaires pour voler en zones urbaines et sensibles.</p>
-                </div>
             </div>
         </div>
     </div>
@@ -166,4 +149,27 @@
     {% endfor %}
 </div>
 {% endif %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Bloquer les dates antérieures à aujourd'hui
+    const dateInput = document.getElementById('id_date');
+    if (dateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+        
+        // Validation supplémentaire côté client
+        dateInput.addEventListener('change', function() {
+            const selectedDate = new Date(this.value);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (selectedDate < today) {
+                alert('Veuillez sélectionner une date future.');
+                this.value = '';
+            }
+        });
+    }
+});
+</script>
 {% endblock %} 

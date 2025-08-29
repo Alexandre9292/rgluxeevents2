@@ -4,49 +4,53 @@
 {% block title %}RG Luxe Events - Accueil{% endblock %}
 
 {% block content %}
-<!-- Banner principal avec le design de l'image -->
-<div class="hero-banner" style="display: none;">
+<!-- Banner principal avec l'image back_ban.jpg étirée sur toute la largeur -->
+<div class="hero-banner">
+    <div class="banner-background">
+        <img src="{% static 'images/back_ban.jpg' %}" alt="Bannière RG Luxe Events">
+    </div>
+    
     <div class="banner-content">
         <div class="banner-left">
             <div class="transport-panel">
-                <div class="transport-image">
-                    <img src="{% static 'images/voiture-porsche.jpg' %}" alt="Transport de luxe">
-                    <div class="transport-overlay">
-                        <div class="luxury-car">
-                            <img src="{% static 'images/voiture-amg.jpg' %}" alt="Voiture de luxe">
-                        </div>
-                        <div class="private-jet">
-                            <img src="{% static 'images/aeroport.jpg' %}" alt="Jet privé">
-                        </div>
-                    </div>
+                <div class="transport-image diamond1">
+                    <a href="{% url 'transport' %}">
+                        <img src="{% static 'images/transport_ban.png' %}" alt="Transport de luxe">
+                    </a>
                 </div>
             </div>
         </div>
-        
+
         <div class="banner-center">
-            <div class="logo-container">
-                <div class="main-logo">
-                    <h1>RG Luxe Events</h1>
-                </div>
-            </div>
             <div class="drone-panel">
-                <div class="drone-image">
-                    <img src="{% static 'images/service-aeroport.jpg' %}" alt="Services drone">
+                <div class="drone-image diamond2">                    
+                    <a href="{% url 'drone' %}">
+                        <img src="{% static 'images/drone_ban.png' %}" alt="Services drone">
+                    </a>
+                </div>
+                <!-- Logo déplacé en dehors du conteneur avec overflow: hidden -->
+                <div class="logo-overlay">
+                    <a href="{% url 'home' %}">
+                        <img src="{% static 'images/logo_ban.jpg' %}" alt="Logo RG Luxe Events" id="drone-image">
+                    </a>
                 </div>
             </div>
         </div>
-        
+
         <div class="banner-right">
             <div class="photobooth-panel">
-                <div class="photobooth-image">
-                    <img src="{% static 'images/service-mariage.jpg' %}" alt="Photobooth">
+                <div class="photobooth-image diamond1">                  
+                    <a href="{% url 'photobooth' %}">
+                        <img src="{% static 'images/photobooth_ban.png' %}" alt="Photobooth">
+                    </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div class="ban-haut">
+<!-- Image bannière haute -->
+<div class="ban-haut" style="display: none;">
     <img src="{% static 'images/ban_haut.jpg' %}" alt="Bannière RG Luxe Events">
 </div>
 
@@ -58,7 +62,7 @@
             <div class="service-bubble2 transport-bubble">
                 <a href="{% url 'transport' %}">
                     <div class="bubble-image2">
-                        <img src="{% static 'images/voiture-classeC.jpg' %}" alt="Transport de luxe">
+                        <img src="{% static 'images/transport_bulle.jpg' %}" alt="Transport de luxe">
                     </div>
                     <h3>Transport</h3>
                 </a>
@@ -68,7 +72,7 @@
             <div class="service-bubble2 photobooth-bubble">
                 <a href="{% url 'photobooth' %}">
                     <div class="bubble-image2">
-                        <img src="{% static 'images/service-mariage2.jpg' %}" alt="Photobooth">
+                        <img src="{% static 'images/photobooth_bulle.jpg' %}" alt="Photobooth">
                     </div>
                     <h3>Photobooth</h3>
                 </a>
@@ -82,49 +86,6 @@
                     </div>
                     <h3>Drone</h3>
                 </a>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Section des services avec les trois bulles -->
-<section class="services-section" style="display: none;">
-    <div class="container">
-        <div class="services-grid">
-            <!-- Bulle Transport -->
-            <div class="service-bubble transport-bubble">
-                <div class="bubble-content">
-                    <div class="bubble-image">
-                        <img src="{% static 'images/voiture-classeC.jpg' %}" alt="Transport de luxe">
-                    </div>
-                    <h3>Transport</h3>
-                    <p>Service de transport premium avec chauffeur privé</p>
-                    <a href="{% url 'transport' %}" class="service-link">Découvrir</a>
-                </div>
-            </div>
-            
-            <!-- Bulle Photobooth -->
-            <div class="service-bubble photobooth-bubble">
-                <div class="bubble-content">
-                    <div class="bubble-image">
-                        <img src="{% static 'images/service-mariage2.jpg' %}" alt="Photobooth">
-                    </div>
-                    <h3>Photobooth</h3>
-                    <p>Photobooth professionnel pour vos événements</p>
-                    <a href="{% url 'photobooth' %}" class="service-link">Découvrir</a>
-                </div>
-            </div>
-            
-            <!-- Bulle Drone -->
-            <div class="service-bubble drone-bubble">
-                <div class="bubble-content">
-                    <div class="bubble-image">
-                        <img src="{% static 'images/drone.jpg' %}" alt="Services drone">
-                    </div>
-                    <h3>Drone</h3>
-                    <p>Captation aérienne et vidéographie professionnelle</p>
-                    <a href="{% url 'drone' %}" class="service-link">Découvrir</a>
-                </div>
             </div>
         </div>
     </div>

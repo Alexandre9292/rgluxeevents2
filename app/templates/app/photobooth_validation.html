@@ -1,0 +1,394 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}RG Luxe Events - Validation de votre commande Photobooth{% endblock %}
+
+{% block content %}
+<!-- Banner principal -->
+<div class="hero-banner">
+    <div class="banner-background">
+        <img src="{% static 'images/back_ban.jpg' %}" alt="Bannière RG Luxe Events">
+    </div>
+    
+    <div class="banner-content">
+        <div class="banner-left">
+            <div class="transport-panel">
+                <div class="transport-image diamond1">
+                    <a href="{% url 'transport' %}">
+                        <img src="{% static 'images/transport_ban.png' %}" alt="Transport de luxe">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="banner-center">
+            <div class="drone-panel">
+                <div class="drone-image diamond2">                    
+                    <a href="{% url 'drone' %}">
+                        <img src="{% static 'images/drone_ban.png' %}" alt="Services drone">
+                    </a>
+                </div>
+                <div class="logo-overlay">
+                    <a href="{% url 'home' %}">
+                        <img src="{% static 'images/logo_ban.jpg' %}" alt="Logo RG Luxe Events" id="drone-image">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="banner-right">
+            <div class="photobooth-panel">
+                <div class="photobooth-image diamond1">                  
+                    <a href="{% url 'photobooth' %}">
+                        <img src="{% static 'images/photobooth_ban.png' %}" alt="Photobooth">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Image bannière haute -->
+<div class="ban-haut" style="display: none;">
+    <img src="{% static 'images/ban_haut.jpg' %}" alt="Bannière RG Luxe Events">
+</div>
+
+<!-- Section de validation -->
+<section class="validation-section">
+    <div class="container">
+        
+        <h1 class="validation-title">Validation de votre commande</h1>
+        
+        <div class="validation-content">
+            <!-- Formulaire des informations client et facturation -->
+            <div class="client-form-container">
+                <h2>Informations du client</h2>
+                
+                <form method="post" class="client-form" id="client-form">
+                    {% csrf_token %}
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="client_first_name">Prénom :</label>
+                            <input type="text" id="client_first_name" name="client_first_name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="client_last_name">Nom :</label>
+                            <input type="text" id="client_last_name" name="client_last_name" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="client_email">Email :</label>
+                            <input type="email" id="client_email" name="client_email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="client_phone">Téléphone :</label>
+                            <input type="tel" id="client_phone" name="client_phone" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="client_company">Nom de l'entreprise : <span class="optional-text">(facultatif)</span></label>
+                        <input type="text" id="client_company" name="client_company">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="client_street_number">Numéro et nom de rue :</label>
+                        <input type="text" id="client_street_number" name="client_street_number" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="client_address_complement">Complément d'adresse :</label>
+                        <input type="text" id="client_address_complement" name="client_address_complement">
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="client_city">Ville :</label>
+                            <input type="text" id="client_city" name="client_city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="client_postal_code">Code postal :</label>
+                            <input type="text" id="client_postal_code" name="client_postal_code" required>
+                        </div>
+                    </div>
+                </form>
+                
+                <!-- Checkbox pour utiliser une autre adresse de facturation -->
+                <div class="billing-toggle">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="use-different-billing" name="use_different_billing">
+                        <span class="checkmark"></span>
+                        Utiliser une autre adresse pour la facturation
+                    </label>
+                </div>
+                
+                <!-- Formulaire de facturation (caché par défaut) -->
+                <div class="billing-form-section" id="billing-form-section" style="display: none;">
+                    <h3>Détails de facturation</h3>
+                    
+                    <form method="post" class="billing-form" id="billing-form">
+                        {% csrf_token %}
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="billing_first_name">Prénom :</label>
+                                <input type="text" id="billing_first_name" name="billing_first_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="billing_last_name">Nom :</label>
+                                <input type="text" id="billing_last_name" name="billing_last_name" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="billing_email">Email :</label>
+                                <input type="email" id="billing_email" name="billing_email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="billing_phone">Téléphone :</label>
+                                <input type="tel" id="billing_phone" name="billing_phone" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="billing_company">Nom de l'entreprise : <span class="optional-text">(facultatif)</span></label>
+                            <input type="text" id="billing_company" name="billing_company">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="billing_street_number">Numéro et nom de rue :</label>
+                            <input type="text" id="billing_street_number" name="billing_street_number" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="billing_address_complement">Complément d'adresse :</label>
+                            <input type="text" id="billing_address_complement" name="billing_address_complement">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="billing_city">Ville :</label>
+                                <input type="text" id="billing_city" name="billing_city" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="billing_postal_code">Code postal :</label>
+                                <input type="text" id="billing_postal_code" name="billing_postal_code" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="billing_notes">Commentaires ou notes sur la commande :</label>
+                            <textarea id="billing_notes" name="billing_notes" rows="4"></textarea>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Zone de paiement -->
+            <div class="payment-container">
+                <h2>Paiement</h2>
+                
+                <!-- Onglets de paiement -->
+                <div class="tabs">
+                    <button class="tab-button active" data-tab="acompte">Payer un acompte</button>
+                    <button class="tab-button" data-tab="totalite">Payer la totalité</button>
+                </div>
+                
+                <!-- Onglet Acompte -->
+                <div class="tab-content active" id="acompte-tab">
+                    <div class="payment-details">
+                        <div class="detail-row">
+                            <div class="detail-label">Date :</div>
+                            <div class="detail-value" id="acompte-date">-</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Lieu :</div>
+                            <div class="detail-value" id="acompte-location">-</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Type d'événement :</div>
+                            <div class="detail-value" id="acompte-event-type">-</div>
+                        </div>
+                        <div class="detail-row total-row">
+                            <div class="detail-label">Prix total :</div>
+                            <div class="detail-value" id="acompte-total">-</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Acompte à payer :</div>
+                            <div class="detail-value acompte-value">100€</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Reste :</div>
+                            <div class="detail-value" id="acompte-reste">-</div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary payment-btn" onclick="processPayment('acompte')">
+                        RÉGLER
+                    </button>
+                </div>
+                
+                <!-- Onglet Totalité -->
+                <div class="tab-content" id="totalite-tab">
+                    <div class="payment-details">
+                        <div class="detail-row">
+                            <div class="detail-label">Date :</div>
+                            <div class="detail-value" id="totalite-date">-</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Lieu :</div>
+                            <div class="detail-value" id="totalite-location">-</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Type d'événement :</div>
+                            <div class="detail-value" id="totalite-event-type">-</div>
+                        </div>
+                        <div class="detail-row total-row">
+                            <div class="detail-label">Montant total :</div>
+                            <div class="detail-value" id="totalite-amount">-</div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="btn btn-primary payment-btn" onclick="processPayment('totalite')">
+                        RÉGLER
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="terms-actions">
+            <button onclick="goBackToReservation()" class="btn btn-primary">
+                <span>←</span> Retour à la réservation
+            </button>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Récupérer les données de réservation depuis localStorage
+    const bookingData = JSON.parse(localStorage.getItem('photobooth_booking') || '{}');
+    
+    // Gestion de la checkbox pour afficher/masquer le formulaire de facturation
+    const billingCheckbox = document.getElementById('use-different-billing');
+    const billingFormSection = document.getElementById('billing-form-section');
+    
+    billingCheckbox.addEventListener('change', function() {
+        if (this.checked) {
+            billingFormSection.style.display = 'block';
+            // Remplir automatiquement le formulaire de facturation avec les données client
+            copyClientDataToBilling();
+        } else {
+            billingFormSection.style.display = 'none';
+        }
+    });
+    
+    // Fonction pour copier les données client vers le formulaire de facturation
+    function copyClientDataToBilling() {
+        document.getElementById('billing_first_name').value = document.getElementById('client_first_name').value;
+        document.getElementById('billing_last_name').value = document.getElementById('client_last_name').value;
+        document.getElementById('billing_email').value = document.getElementById('client_email').value;
+        document.getElementById('billing_phone').value = document.getElementById('client_phone').value;
+        document.getElementById('billing_street_number').value = document.getElementById('client_street_number').value;
+        document.getElementById('billing_address_complement').value = document.getElementById('client_address_complement').value;
+        document.getElementById('billing_city').value = document.getElementById('client_city').value;
+        document.getElementById('billing_postal_code').value = document.getElementById('client_postal_code').value;
+    }
+    
+    // Afficher les informations de réservation dans la zone de paiement
+    if (bookingData.event_date) {
+        // Formater la date en texte français
+        const date = new Date(bookingData.event_date);
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = date.toLocaleDateString('fr-FR', options);
+        
+        document.getElementById('acompte-date').textContent = formattedDate;
+        document.getElementById('totalite-date').textContent = formattedDate;
+    }
+    
+    if (bookingData.location) {
+        document.getElementById('acompte-location').textContent = bookingData.location;
+        document.getElementById('totalite-location').textContent = bookingData.location;
+    }
+    
+    if (bookingData.event_type) {
+        document.getElementById('acompte-event-type').textContent = bookingData.event_type;
+        document.getElementById('totalite-event-type').textContent = bookingData.event_type;
+    }
+    
+    if (bookingData.total_price) {
+        document.getElementById('acompte-total').textContent = bookingData.total_price + '€';
+        document.getElementById('totalite-amount').textContent = bookingData.total_price + '€';
+    }
+    
+    if (bookingData.reste) {
+        document.getElementById('acompte-reste').textContent = bookingData.reste + '€';
+    }
+    
+    // Gestion des onglets
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const tabName = button.getAttribute('data-tab');
+            
+            // Retirer la classe active de tous les onglets
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Ajouter la classe active à l'onglet sélectionné
+            button.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+        });
+    });
+});
+
+function processPayment(type) {
+    // Ici vous pouvez implémenter la logique de paiement
+    if (type === 'acompte') {
+        alert('Redirection vers le paiement de l\'acompte de 100€...');
+    } else {
+        alert('Redirection vers le paiement de la totalité...');
+    }
+}
+
+function goBackToReservation() {
+    // Sauvegarder les données des formulaires dans localStorage
+    const clientData = {
+        first_name: document.getElementById('client_first_name').value,
+        last_name: document.getElementById('client_last_name').value,
+        email: document.getElementById('client_email').value,
+        phone: document.getElementById('client_phone').value,
+        company: document.getElementById('client_company').value,
+        street_number: document.getElementById('client_street_number').value,
+        address_complement: document.getElementById('client_address_complement').value,
+        city: document.getElementById('client_city').value,
+        postal_code: document.getElementById('client_postal_code').value
+    };
+    
+    const billingData = {
+        first_name: document.getElementById('billing_first_name').value,
+        last_name: document.getElementById('billing_last_name').value,
+        email: document.getElementById('billing_email').value,
+        phone: document.getElementById('billing_phone').value,
+        company: document.getElementById('billing_company').value,
+        street_number: document.getElementById('billing_street_number').value,
+        address_complement: document.getElementById('billing_address_complement').value,
+        city: document.getElementById('billing_city').value,
+        postal_code: document.getElementById('billing_postal_code').value,
+        notes: document.getElementById('billing_notes').value
+    };
+    
+    // Sauvegarder dans localStorage
+    localStorage.setItem('photobooth_client_data', JSON.stringify(clientData));
+    localStorage.setItem('photobooth_billing_data', JSON.stringify(billingData));
+    
+    // Retourner à la page de réservation
+    window.location.href = "{% url 'photobooth' %}";
+}
+</script>
+{% endblock %}

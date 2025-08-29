@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Conditions Générales de Location - RG Luxe Events{% endblock %}
+
+{% block content %}
+<!-- Bannière principale -->
+<div class="hero-banner">
+    <div class="banner-background">
+        <img src="{% static 'images/back_ban.jpg' %}" alt="Bannière RG Luxe Events">
+    </div>
+    
+    <div class="banner-content">
+        <div class="banner-left">
+            <div class="transport-panel">
+                <div class="transport-image diamond1">
+                    <a href="{% url 'transport' %}">
+                        <img src="{% static 'images/transport_ban.png' %}" alt="Transport de luxe">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="banner-center">
+            <div class="drone-panel">
+                <div class="drone-image diamond2">                    
+                    <a href="{% url 'drone' %}">
+                        <img src="{% static 'images/drone_ban.png' %}" alt="Services drone">
+                    </a>
+                </div>
+                <!-- Logo déplacé en dehors du conteneur avec overflow: hidden -->
+                <div class="logo-overlay">
+                    <a href="{% url 'home' %}">
+                        <img src="{% static 'images/logo_ban.jpg' %}" alt="Logo RG Luxe Events" id="drone-image">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="banner-right">
+            <div class="photobooth-panel">
+                <div class="photobooth-image diamond1">                  
+                    <a href="{% url 'photobooth' %}">
+                        <img src="{% static 'images/photobooth_ban.png' %}" alt="Photobooth">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Image bannière haute (cachée) -->
+<div class="ban-haut" style="display: none;">
+    <img src="{% static 'app/images/ban_haut.jpg' %}" alt="Bannière haute">
+</div>
+
+<!-- Section des conditions générales -->
+<section class="terms-section">
+    <div class="container">
+        <div class="terms-title">
+            <h1>CONDITIONS GENERALES DE LOCATION</h1>
+        </div>
+        
+        <div class="terms-content">
+            <div class="terms-section-item">
+                <h2>1. Tarifs et modalités de paiement</h2>
+                <p>Un acompte de 100,00€, vous sera demander pour valider la réservation. En cas d'annulation par le client, moins de 30 jours avant la date de location, l'acompte ne sera pas remboursé. Le solde restant sera régler le jour de l'événement, soit en espèces, soit par virement bancaire.</p>
+            </div>
+            
+            <div class="terms-section-item">
+                <h2>2. Obligations du Prestataire</h2>
+                <p>RG Luxe Events s'engage à :</p>
+                <ul>
+                    <li>Fournir le matériel en bon état de fonctionnement et prêt à l'emploi.</li>
+                    <li>Assurer la livraison, l'installation et la reprise de l'équipement.</li>
+                    <li>Proposer un service d'assistance pendant la durée de l'événement.</li>
+                </ul>
+            </div>
+            
+            <div class="terms-section-item">
+                <h2>3. Obligations du Client</h2>
+                <p>Le client s'engage à :</p>
+                <ul>
+                    <li>Utiliser le matériel avec soin et respecter les consignes d'utilisation fournies par RG Luxe Events.</li>
+                    <li>Assurer la surveillance de l'équipement durant la durée de la location pour éviter tout vol, dommage ou usage inapproprié.</li>
+                    <li>Informer immédiatement RG Luxe Events de tout problème technique ou incident lié au photobooth.</li>
+                </ul>
+            </div>
+            
+            <div class="terms-section-item">
+                <h2>4. Responsabilités et assurances</h2>
+                <p>RG Luxe Events est couvert par une assurance Responsabilité Civile Professionnelle (RC Pro) pour le matériel mis en location. Toutefois, le client est responsable de tout dommage causé au photobooth en raison d'une mauvaise utilisation ou d'un acte de négligence. En cas de détérioration, de perte ou de vol, le client devra assumer les frais de réparation ou de remplacement.</p>
+            </div>
+            
+            <div class="terms-section-item">
+                <h2>5. Annulation</h2>
+                <p>En cas d'annulation de la part du client à moins de 30 jours de la date de l'événement, l'acompte ne sera pas remboursé.</p>
+            </div>
+        </div>
+        
+        <div class="terms-actions">
+            <button onclick="goBack()" class="btn btn-primary">
+                <span>←</span> Retour à la réservation
+            </button>
+        </div>
+    </div>
+</section>
+
+<script>
+function goBack() {
+    window.history.back();
+}
+</script>
+{% endblock %}
